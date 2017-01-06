@@ -1,0 +1,80 @@
+
+//颜色定义
+$white:                           #fff !default;
+$light:                           #F0F3F4 !default;
+$stable:                          #cfcfcf !default;
+$dark:                            #3A3F51 !default;
+$black:                           #000000 !default;
+
+$primary:                         darken(#428bca, 6.5%) !default;
+$success:                         #5cb85c !default;
+$info:                            #5bc0de !default;
+$warning:                         #f0ad4e !default;
+$danger:                          #d9534f !default;
+
+$colors : (
+	white:$white,
+	light:$light,
+	stable:$stable,
+	dark:$dark,
+	primary:$primary,
+	info:$info,
+	success : $success,
+	danger:$danger,
+	warning:$warning
+	);
+
+$size : (
+	no : 0px,
+	xs:5px,
+	sm:10px,
+	md:15px,
+	lg:20px,
+	xl:25px
+	);
+
+@each $s,$v in $size{
+	.wrapper-#{$s}{
+		padding : $v !important;
+	}
+	.wrapper-x-#{$s}{
+		padding : 0px $v !important;
+	}
+	.wrapper-y-#{$s}{
+		padding : $v 0px !important;
+	}
+	.wrapper-t-#{$s}{
+		padding-top : $v !important;
+	}
+	.wrapper-l-#{$s}{
+		padding-left : $v !important;
+	}
+	.wrapper-r-#{$s}{
+		padding-right : $v !important;
+	}
+	.wrapper-b-#{$s}{
+		padding-bottom : $v !important;
+	}
+
+	.m-#{$s}{
+		margin : $v !important;
+	}
+	.m-x-#{$s}{
+		margin : 0px $v !important;
+	}
+	.m-y-#{$s}{
+		margin : $v 0px !important;
+	}
+	.m-t-#{$s}{
+		margin-top : $v !important;
+	}
+	.m-l-#{$s}{
+		margin-left : $v !important;
+	}
+	.m-r-#{$s}{
+		margin-right : $v !important;
+	}
+	.m-b-#{$s}{
+		margin-bottom : $v !important;
+	}
+}

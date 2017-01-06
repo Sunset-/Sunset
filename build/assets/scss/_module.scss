@@ -1,0 +1,982 @@
+//登录
+.peaimage-login-box{
+	position:fixed;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	z-index:100;
+	display: none;
+	-webkit-perspective: 1200px;
+	-moz-perspective: 1200px;
+	-ms-perspective: 1200px;
+	-o-perspective: 1200px;
+	perspective: 1200px;
+	.shim{
+		position:absolute;
+		top:0px;
+		bottom:0px;
+		left:0px;
+		right:0px;
+		z-index: 0;
+		background:rgba($dark,0.7);
+	}
+	&.show{
+		display: block;
+	}
+	$loginBoxWidth : 500px;
+	$loginBoxHeight : 600px;
+	.login-wrap{
+		position:absolute;
+		top:30px;
+		left:50%;
+		width:$loginBoxWidth;
+		height:$loginBoxHeight;
+		margin-left: -($loginBoxWidth/2);
+		z-index: 1;
+		-webkit-transform-style: preserve-3d;
+		-moz-transform-style: preserve-3d;
+		-ms-transform-style: preserve-3d;
+		-o-transform-style: preserve-3d;
+		transform-style: preserve-3d;
+		@include animate();
+		text-align: center;
+		.regist-box{
+			display: none;
+		}
+		.forget-box{
+			display: none;
+		}
+		&.regist{
+			// -webkit-transform: rotateY(180deg);
+			.regist-box{
+				display: block;
+			}
+			.forget-box{
+				display: none;
+			}
+			.login-box{
+				display: none;
+			}
+		}
+		&.forget{
+			// -webkit-transform: rotateY(-180deg);
+			.regist-box{
+				display: none;
+			}
+			.forget-box{
+				display: block;
+			}
+			.login-box{
+				display: none;
+			}
+		}
+		.login-box,.regist-box,.forget-box{
+			position:absolute;
+			top:0px;
+			bottom:0px;
+			left:0px;
+			right:0px;
+			width:$loginBoxWidth;
+			height:$loginBoxHeight;
+			box-sizing:border-box;
+			border-radius:30px;
+			color:$white;
+			backface-visibility:hidden;
+			background-image:url(/assets/img/login_bg.png);
+			background-color:$primary;
+			background-size:cover;
+		}
+		// 登录
+		.login-box{ 
+			img{
+				margin:100px 0px 30px 0px;
+			}
+		}
+		.regist-box,.forget-box{
+			// -webkit-transform: rotateY(180deg);
+			// -moz-transform: rotateY(180deg);
+			// -ms-transform: rotateY(180deg);
+			// -o-transform: rotateY(180deg);
+			// transform: rotateY(180deg);
+			backface-visibility:hidden;
+		}
+		.peaimage-login-field-wrap{
+			margin-bottom:25px;
+			.peaimage-login-field{
+				display: inline-block;
+				width:300px;
+				height:50px;
+				line-height: 50px;
+				background:rgba($white,0.3);
+				border-radius:100px;
+				color: $white;
+				i{
+					position:relative;
+					top:-2px;
+					font-size: 24px;
+					margin-right: 20px;
+					vertical-align: middle;
+				}
+				input{
+					width: 160px;
+					background-color:transparent;
+					border:none;
+					padding-left:10px;
+					border-left: 1px solid $white;
+					color: $white;
+					&:-webkit-autofill {
+						-webkit-box-shadow: 0 0 0px 1000px transparent inset;
+						background-color: transparent !important;
+						color: $white;
+					}
+					&:focus{
+						outline:none;
+					}
+					:-moz-placeholder { 
+						color: $white;  
+					}
+					::-moz-placeholder { 
+						color: $white;
+					}
+					&:-ms-input-placeholder{
+						color: $white;
+					}
+					&::-webkit-input-placeholder{
+						color: $white;
+					}
+				}
+				.remove{
+					margin-left: 20px;
+				}
+			}
+			.code{
+				display: inline-block;
+				font-size: 12px;
+				border:1px solid $white;
+				padding:2px;
+				border-radius:5px;
+				text-align: center;
+				width:70px;
+				height:20px;
+				line-height: 20px;
+			}	
+		}
+		button{
+			width:300px;
+			height:50px;
+			border:none;
+			background:$white;
+			color:$primary;
+			border-radius:50px;
+			font-size: 18px;
+			&.hollow{
+				border:2px solid $white;
+				background:transparent;
+				color: $white;
+			}
+		}
+		.login-links{
+			width:300px;
+			margin:20px auto;
+			span{
+				color:$white;
+				font-size: 14px;
+				float:left;
+				&:last-child{
+					float: right;
+				}
+			}
+		}
+		.regist-box{
+			padding-top:20px;
+			p{
+				margin-top: 0px;
+				margin-bottom: 30px;
+				font-size: 14px;
+				color: $white;
+			}
+		}
+		.forget-box{
+			padding-top:100px;
+		}
+	}
+}
+
+
+//任务列表
+.peaimage-tasks-container{
+	position:absolute;
+	left:0px;
+	right:0px;
+	top:55px;
+	bottom:0px;
+	overflow:auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+//任务
+.task-type-switcher{
+	padding-top:10px;
+}
+.peaimage-task{
+	overflow:hidden;
+	position:relative;
+	padding-bottom:15px;
+	margin-bottom:10px;
+	background:$white;
+	.peaimage-task-tags{
+		position:absolute;
+		left:0px;
+		top:0px;
+		span{
+			position:relative;
+			width:18px;
+			font-size: 14px;
+			display:inline-block;
+			padding:5px 3px;
+			color:$white;
+			background:$danger;
+			margin-left: 10px;
+			&:after{
+				content:'';
+				position:absolute;
+				left:0px;
+				bottom:-7px;
+				width:0px;
+				height:0px;
+				border-style:solid;
+				border-width:6px 12px 6px 12px;
+				border-color:$danger $danger transparent $danger;
+			}
+			@each $c,$v in $colors{
+				&.#{$c}{
+					background:$v;
+				}
+				&.#{$c}:after{
+					border-color:$v $v transparent $v;
+				}
+				&.#{$c}:before{
+					border-color:transparent transparent darken($v,25%) darken($v,25%);
+				}
+			}
+		}
+	}
+	.peaimage-task-wrap{
+		padding:15px 50px;
+		background:#FFF;
+		img{
+			float:left;
+			display: block;
+			width:100px;
+			height:100px;
+		}
+		.peaimage-task-patientInfo,.peaimage-task-studyInfo{
+			text-align: left;
+			padding-left:120px;
+			font-size: 20px;
+			margin-top: 10px;
+			margin-bottom:15px;
+			span{
+				margin-right:20px;
+			}
+		}
+		.peaimage-task-patientInfo{
+			font-size: 20px;
+		}
+		.peaimage-task-studyInfo{
+			font-size: 16px;
+		}
+		.peaimage-task-toolbar{
+			float:right;
+			text-align: right;
+			span{
+				float:left;
+			}
+		}
+		.module-mywork-item-checking{
+			color : $warning;
+		}
+		.module-mywork-item-finished{
+			color : $success;
+		}
+		.module-mywork-item-reject{
+			color : $danger;
+		}
+	}
+	.peaimage-task-roles{
+		float:left;
+		text-align: left;
+		padding:5px 0px 0px 50px;
+		height: 15px;
+		span{
+			position:relative;
+			margin-right: 10px;
+			&.task-report-doctor,&.task-check-doctor{
+				padding-left:25px;
+			}
+			&.task-report-doctor:before,&.task-check-doctor:before{
+				content:'';
+				position:absolute;
+				left:0px;
+				bottom:0px;
+				width:25px;
+				height:25px;
+				background-size:100% 200%;
+				background-repeat: no-repeat;  
+				background-image:url(/assets/img/work-roles.png);
+			}
+			&.task-report-doctor:before{
+				background-position:0% 0%;
+			}
+			&.task-check-doctor:before{
+				background-position:0% 100%;
+			}
+		}
+	}
+}
+
+.peaimage-report-reject{
+	padding:10px;
+	footer{
+		padding-top:10px;
+	}
+}
+
+
+//报告
+.peaimage-report-editor{	
+	h3{
+		text-align: center;
+	}
+	.peaimage-report-patientinfo{
+		border-top:1px solid $light;
+		border-bottom:1px solid $light;
+		padding:10px 0px;
+		text-align: left;
+		line-height: 26px;
+		div{
+			font-family: 微软雅黑 !important;
+			font-size:14px;
+		}
+	}
+	p{
+		font-size: 14px;
+		h4{
+			font-size: 16px;		
+		}
+	}
+	.peaimage-report-toolbar{
+		button{
+			margin-right: 6px;
+			&:last-child{
+				margin-right: 0px;
+			}
+		}
+	}
+}
+
+.peaimage-report-view{
+	footer{
+		font-size: 14px;
+		div{
+			&:first-child{
+				padding-bottom:8px;
+				border-bottom:1px solid $stable;
+			}
+			&:last-child{
+				padding-top:8px;
+			}
+			span:last-child{
+				width: 200px;
+				float:right;
+			}
+		}
+	}
+
+	//印章
+	.peaimage-reportview-yz{
+		text-align: right;
+		padding-right:30px;
+		img{
+			width: 100px;
+		}
+	}
+
+	//角标
+	.sunset-reply-flag{
+		position:absolute;
+		left: 100px;
+		top: 11px;
+		width:70px;
+		height:35px;
+		background:lighten($warning,10%);
+		color:#FFF;
+		font-size:14px;
+		line-height: 30px;
+		text-align: center;
+		@include border-radius(0px 0px 3px 3px);
+		&:before{
+			content:'';
+			position:absolute;
+			top:0px;
+			right:-3px;
+			width:0px;
+			height:0px;
+			border-style:solid;
+			border-width:2px;
+			border-color:transparent transparent darken($warning,10%) darken($warning,10%);
+		}
+		&:after{
+			content:'';
+			position:absolute;
+			bottom:0px;
+			left:5px;
+			width:0px;
+			height:0px;
+			border-style:solid;
+			border-width:7px 30px;
+			border-color:transparent transparent $white transparent;
+		}
+        //标签
+        //新写
+        &.sunset-reply-flag-new{
+        	background:lighten($info,10%);
+        }
+        &.sunset-reply-flag-new:before{
+        	border-color:transparent transparent darken($info,10%) darken($info,10%);
+        }
+        //重写
+        &.sunset-reply-flag-rewrite{
+        	background:lighten($info,10%);
+        }
+        &.sunset-reply-flag-rewrite:before{
+        	border-color:transparent transparent darken($info,10%) darken($info,10%);
+        }
+        //待审核
+        &.sunset-reply-flag-review{
+        	background:lighten($warning,10%);
+        }
+        &.sunset-reply-flag-review:before{
+        	border-color:transparent transparent darken($warning,10%) darken($warning,10%);
+        }
+        //驳回
+        &.sunset-reply-flag-reject{
+        	background:lighten($danger,10%);
+        }
+        &.sunset-reply-flag-reject:before{
+        	border-color:transparent transparent darken($danger,10%) darken($danger,10%);
+        }
+        //完成
+        &.sunset-reply-flag-finished{
+        	background:#14a73d;
+        }
+        &.sunset-reply-flag-finished:before{
+        	border-color:transparent transparent #0a7d2a #0a7d2a;
+        }
+    }
+}
+
+//历史报告
+.peaimage-history-report{
+	border-bottom:1px solid $light;
+	p{
+		font-size: 14px;
+		margin-top:0px;
+	}
+	&:last-child{
+		border:none;
+	}
+	i{
+		font-size: 12px;
+		color:$dark;
+		margin-left: 10px;
+		font-style: normal;
+	}
+}
+
+
+//报告信息
+.peaimage-report-info{
+	position:relative;
+	font-size:14px;
+	h3{
+		font-size: 16px;
+		span{
+			font-size: 12px;
+		}
+	}
+}
+
+
+/*报告流程*/
+.sunset-reply-flow{
+	border-left:2px solid darken($light,10%);
+	padding-left:30px;
+	position:relative;
+	color:lighten($dark,10%);
+	margin-left:20px;
+	font-size:14px;
+	span{
+		position:relative;
+		display: block;
+		padding:8px 0px 8px 0px;
+		p{
+			margin:0px;
+		}
+	}
+	div{
+		padding-bottom:10px;
+		color:$dark;
+	}
+	&.flow-report:before{
+		font-family:'FontAwesome';
+		content:'\f040';
+		color:#FFF;
+		position:absolute;
+		left:-17px;
+		width:32px;
+		height:32px;
+		background:$info;
+		text-align: center;
+		line-height: 32px;
+		font-size:16px;
+		@include border-radius(25px);
+	}
+	&.flow-simple:before{
+		content:'';
+		position:absolute;
+		top:2px;
+		left:-14px;
+		width:22px;
+		height:22px;
+		background:#FFF;
+		border:2px solid darken($light,10%);
+		@include border-radius(25px);
+	}
+	&.flow-simple:after{
+		content:'';
+		position:absolute;
+		top:12px;
+		left:-4px;
+		width:6px;
+		height:6px;
+		background: darken($light,10%);
+		@include border-radius(25px);
+	}
+	&.flow-reject:before{
+		font-family:'FontAwesome';
+		content:'\f00d';
+		position:absolute;
+		left:-17px;
+		width:32px;
+		height:32px;
+		background:darken($danger,10%);
+		text-align: center;
+		line-height: 34px;
+		font-size:16px;
+		color: #FFF;
+		@include border-radius(25px);
+		line-height: 33px;
+	}
+	&.flow-finished:before{
+		font-family:'FontAwesome';
+		content:'\f00c';
+		position:absolute;
+		left:-17px;
+		width:32px;
+		height:32px;
+		background:darken($success,10%);
+		text-align: center;
+		line-height: 34px;
+		font-size:16px;
+		color: #FFF;
+		@include border-radius(25px);
+	}
+	&:last-child{
+		border-left:2px solid transparent;
+	}
+	&:last-child>span:after{
+		content:'';
+		width:2px;
+		height:20px;
+		position:absolute;
+		left:-32px;
+		top:-5px;
+		z-index: -1;
+		background:darken($light,10%);
+	}
+}
+
+//模板
+.peaimage-template-selector{
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	padding:30px;
+	font-size:14px;
+	text-align: left;
+	header{
+		position:absolute;
+		top:15px;
+		left:30px;
+		right:30px;
+		padding-bottom:5px;
+		border-bottom:1px solid $light;
+	}
+	.peaimage-template-selector-wrap{
+		position:absolute;
+		top:50px;
+		left:30px;
+		right:30px;
+		bottom:50px;
+		padding:10px 0px;
+		.peaimage-template-selector-catagory{
+			button{
+				margin-right:5px;
+			}
+		}
+		.peaimage-template-selector-templates{
+			position:absolute;
+			top:45px;
+			left:0px;
+			right:0px;
+			bottom:10px;
+			padding:10px 0px;
+			overflow: auto;
+			-webkit-overflow-scrolling: touch;
+			.peaimage-template{
+				margin-bottom:2px;
+				.peaimage-template-title{
+					position:relative;
+					height:35px;
+					line-height: 35px;
+					padding-left:20px; 
+					padding-right:85px;    
+					color:$white;
+					background:$primary;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					&:after{
+						content:'正常';
+						position:absolute;
+						right:0px;
+						top:0px;
+						bottom:0px;
+						width:80px;
+						background:darken($primary,10%);
+						text-align: center;
+					}
+				}
+				.peaimage-template-detail{
+					padding:5px 20px;
+					p{
+						margin:0px;
+						line-height: 20px;
+						&:first-child{
+							margin-bottom:5px;
+						}
+					}
+				}
+				&.abnormal{
+					.peaimage-template-title{
+						background:$danger;
+						&:after{
+							content:'异常';
+							background:darken($danger,10%);
+						}
+					}	
+				}
+			}	
+		}
+	}
+	footer{
+		position:absolute;
+		bottom:10px;
+		left:30px;
+		right:30px;
+		text-align: center;
+	}
+}
+
+// 模板编辑器
+.peaimage-tempalte-editor{
+	footer{
+		margin: 20px;
+		text-align: center;
+	}
+}
+
+//报告影像
+.report-image-wrap{
+	position:absolute;
+	left:0px;
+	right:0px;
+	top:0px;
+	bottom:0px;
+	overflow:hidden;
+}
+
+
+//阅片工具
+.cateyes-frame-wrap{
+	position:absolute;
+	left:0px;
+	right:0px;
+	top:0px;
+	bottom:0px;
+	overflow:hidden;
+	.cateyes-frame{
+		width: 100%;
+		height: 100%;
+		border:none;
+	}
+}
+
+//团队医生选择
+.peaimage-selector-teamdoctors{
+	position:relative;
+	height:auto;
+	padding-bottom:55px;
+	&>div{
+		top:0px;
+		width:100%;
+		max-height: 500px;
+		bottom:50px;
+		overflow: auto;
+		ul{
+			text-align:left;
+			font-size:14px;
+			padding-left: 0px;
+			li{
+				list-style:none;
+				height: 55px;
+				line-height: 55px;
+				padding:0px 50px;
+				img{
+					width:40px;
+					height:40px;
+					border:2px solid $light;
+					border-radius:25px;
+					vertical-align: middle;
+					margin-left: 10px;
+				}
+				span{
+					display: inline-block;
+					min-width: 60px;
+					margin-left: 15px;
+				}
+				&:before{
+					display: inline-block;
+					content : '';
+					width:6px;
+					height:6px;
+					border:1px solid $stable;
+					border-radius:5px;
+				}
+				&.active{
+					background:$light;
+					&:before{
+						border:1px solid $primary;
+						background:$primary;
+					}
+				}
+			}	
+		}
+	}
+	footer{
+		position:absolute;
+		width: 100%;
+		bottom:0px;
+		padding:10px 0px;
+	}
+}
+
+
+//影像云盘
+.peaimage-image{
+	.image-search-wrap{
+		height: 43px;
+		text-align: center;
+		.image-search{
+			position:relative;
+			display: inline-block;
+			width:40%;
+			height: 20px;
+			padding:2px 50px 4px 20px;
+			margin-top: 8px;
+			border :1px solid $primary;
+			border-radius:20px;
+			input{
+				width:100%;
+				height: 16px;
+				border:none;
+				font-size: 14px;
+			}
+			.search-btn{
+				position:absolute;
+				right:18px;
+				top:4px;
+				color:$primary;
+			}
+		}
+	}
+	.no-data{
+		font-size: 18px;
+		text-align: center;
+		color: $dark;
+	}
+	.peaimage-image-list-wrap{
+		position:absolute;
+		top:10px;
+		bottom:10px;
+		left:20px;
+		right:20px;
+		font-size: 0px;
+		text-align: left;
+		.image-item{
+			margin: 10px;
+			padding:20px;
+			.dicom-thumbnail{
+				position:relative;
+				height: 200px;
+				overflow: hidden;
+				label{
+					position:absolute;
+					font-size: 12px;
+					color:$primary;
+					&.studyno{
+						top:5px;
+						left:5px;
+					}
+					&.studydate{
+						top:5px;
+						right:5px;
+					}
+					&.studytype{
+						top:25px;
+						right:5px;
+					}
+				}
+				span{
+					height: 100%;
+					display: inline-block;
+					vertical-align: middle;
+				}
+				img{
+					width:100%;
+					margin-top: -20%;
+				}
+			}
+			h4{
+				margin:5px 0px;
+				font-size: 16px;
+				font-family:微软雅黑;
+			}
+			p{
+				font-size: 14px;
+				margin:10px 0px;
+			}
+		}
+	}
+}
+.cloud-image-info{
+	margin:20px 50px;
+	background:$white;
+	text-align:left;
+	padding:10px 50px;
+	h2{
+		font-size:22px;
+		font-family: 微软雅黑;
+		font-weight: normal;
+		text-align: center;
+	}
+	p{
+		border-bottom:1px solid $light;
+		margin: 0px;
+		padding:20px 0px;
+		&:last-child{
+			border:none;
+		}
+	}
+}
+
+
+
+//个人中心
+.peaimage-center{
+	.banner{
+		width:100%;
+		height:150px;
+		background:url(/assets/img/center-banner.png);
+		background-size:cover;
+		text-align: center;
+		figure{
+			margin-top: 30px;
+			display: inline-block;
+			img{
+				width:70px;
+				height:70px;
+				border:2px solid $white;
+				border-radius:100px;
+				vertical-align: middle;
+			}
+			p{
+				display: inline-block;
+				vertical-align: middle;
+				text-align: left;
+				padding:10px;
+				color: $white;
+				font-size: 14px;
+			}
+		}
+	}
+	ul{
+		margin:0px;
+		padding:30px;
+		li{
+			list-style: none;
+			height: 50px;
+			line-height: 50px;
+			border-bottom:1px solid $light;
+			.center-icon{
+				display: inline-block;
+				vertical-align: middle;
+				width:30px;
+				height:30px;
+				background-image:url(/assets/img/center-icon.png);
+				background-repeat:no-repeat;
+				background-size:100%;
+				margin-right: 10px;
+				&.info{
+					background-position:0 0;
+				}
+				&.password{
+					background-position:0 25%;
+				}
+				&.statistics{
+					background-position:0 50%;
+				}
+				&.feedback{
+					background-position:0 75%;
+				}
+				&.about{
+					background-position:0 100%;
+				}
+			}
+		}
+	}
+	.logout-btn{
+		display: block;
+		margin:0px auto;
+		width:80%;
+		height: 45px;
+		border-radius:100px;
+		color: $white;
+		border:none;
+		background:$danger;
+	}
+}
