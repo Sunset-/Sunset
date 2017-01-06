@@ -1,2 +1,2 @@
 # Sunset
-manage-front
+manage-front-bootstrap
