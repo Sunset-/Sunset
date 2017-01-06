@@ -1,5 +1,4 @@
 <template>
-	
 	<validator name="validation">
 		<div :class="['form-group']">
 			<label class="control-label col-xs-3">{{options.label}}</label>
@@ -10,71 +9,60 @@
 				</span>
 			</div>
 		</div>
-		<modal-table :options="options.table" :title="options.label" :multi="multi"></modal-table>
+		<sunset-table-modal :options="options.modalOptions"></sunset-table-modal>
 	</validator>
-	
 </template>
-
 <script>
-
-	import ModalTable from '../ModalTableSelector';
-	
 	export default {
-		components : {
-			ModalTable
-		},
-		props : {
-			options : {
-				type : Object
+		props: {
+			options: {
+				type: Object
 			},
-			value : {
-			}
+			value: {}
 		},
-		data(){
-			return {
-			};
+		data() {
+			return {};
 		},
-		computed : {
-			multi(){
+		computed: {
+			multi() {
 				return !!this.options.multi;
 			},
-			idKey(){
-				return this.options.idKey||'id';
+			idKey() {
+				return this.options.idKey || 'id';
 			},
-			nameKey(){
-				return this.options.nameKey||'name';
+			nameKey() {
+				return this.options.nameKey || 'name';
 			},
-			text : {
-				get(){
-					return this.options.text||'';
+			text: {
+				get() {
+					return this.options.text || '';
 				},
-				set(v){
+				set(v) {
 					this.options.text = v;
 				}
 			}
 		},
-		methods : {
-			select(){
+		methods: {
+			select() {
 				this.$broadcast('MODEL_TABLE_SELECTOR_SHOW')
 			}
 		},
-		events : {
-			CRUD_TABLE_SELECTOR_ENSURE(records){
+		events: {
+			CRUD_TABLE_SELECTOR_ENSURE(records) {
 				var val = null,
-				text ='',
-				idKey = this.idKey,
-				nameKey = this.nameKey;
-				if(records&&records.length){
-					val =  this.multi?records.map(item=>item[idKey]).join(','):records[0][idKey];
-					text =  this.multi?records.map(item=>item[nameKey]).join(','):records[0][nameKey];
+					text = '',
+					idKey = this.idKey,
+					nameKey = this.nameKey;
+				if (records && records.length) {
+					val = this.multi ? records.map(item => item[idKey]).join(',') : records[0][idKey];
+					text = this.multi ? records.map(item => item[nameKey]).join(',') : records[0][nameKey];
 				}
 				this.value = val;
 				this.text = text;
 			},
-			WIDGET_RESET(){
+			WIDGET_RESET() {
 				this.text = '';
 			}
 		}
 	};
-
 </script>

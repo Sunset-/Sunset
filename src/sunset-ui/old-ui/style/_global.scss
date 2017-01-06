@@ -1,0 +1,11 @@
+@each $c,$v in $colors{
+	.b-#{$c}{
+		border-color:$v;
+	}
+}
+@for $i from 1 through 5 {
+  .b-#{$i}x { 
+		border-style:solid;
+		border-width:#{$i}px;
+  }
+}

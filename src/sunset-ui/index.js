@@ -11,6 +11,11 @@ import Toolbar from './components/crud/Toolbar.vue';
 import Table from './components/crud/Table.vue';
 import Form from './components/crud/Form.vue';
 
+import Tree from './components/tree/Tree.vue';
+
+import FormModal from './components/modal/FormModal.vue';
+import TableModal from './components/modal/TableModal.vue';
+
 import Layout from './layout/ContentLayout.vue';
 
 import Store from './components/crud/Store';
@@ -21,7 +26,10 @@ const components = {
     Filter: Filter,
     Table: Table,
     Form: Form,
-    Toolbar: Toolbar
+    Toolbar: Toolbar,
+    Tree : Tree,
+    FormModal: FormModal,
+    TableModal :TableModal
 }
 const Layouts = {
     Layout: Layout

@@ -1,0 +1,27 @@
+
+//颜色定义
+$white:                           #fff !default;
+$light:                           #efefef !default;
+$stable:                          #cfcfcf !default;
+$dark:                            #444 !default;
+
+$primary:                         darken(#428bca, 6.5%) !default;
+$success:                         #5cb85c !default;
+$info:                            #5bc0de !default;
+$warning:                         #f0ad4e !default;
+$danger:                          #d9534f !default;
+
+$colors : (
+	white:$white,
+	light:$light,
+	stable:$stable,
+	dark:$dark,
+	primary:$primary,
+	info:$info,
+	success : $success,
+	danger:$danger,
+	warning:$warning
+);
+
+//
+$common-border-style : 1px solid #eaeeea;

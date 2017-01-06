@@ -40,6 +40,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 			}
 		}
 		.sunset-crud-table-toolbar-wrap {
+			padding-right:0px;
 			.sunset-toolbar {
 				float: left;
 				.btn {
@@ -54,7 +55,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 		<!--过滤器-->
 		<div v-if="options.filter" class="panel-body sunset-crud-table-toolbar-wrap">
 			<sunset-toolbar :options="options.toolbar" @signal="operateRecord"></sunset-toolbar>
-			<search-form v-if="options.filter" :options="options.filter" @filter="search"></search-form>
+			<search-form v-ref:filter v-if="options.filter" :options="options.filter" @filter="search"></search-form>
 		</div>
 		<!--表格主体-->
 		<div class="table-wrap sunset-crud-table-wrap" :style="{maxHeight:domTableHeight}">
@@ -99,7 +100,6 @@ CRUD_OPERATE_SEARCH(filter) 查询
 	import SunsetPage from '../pager/Page.vue';
 	import SearchForm from './SearchForm';
 	import SunsetToolbar from './Toolbar';
-	import RecordTools from './RecordTools';
 
 	import Vue from 'vue';
 
@@ -238,6 +238,9 @@ CRUD_OPERATE_SEARCH(filter) 查询
 		methods: {
 			getColValue(item, name) {
 				return Sunset.getAttribute(item, name, '');
+			},
+			resetFilter(){
+				this.$refs.filter&&this.$refs.filter.reset();
 			},
 			search(filter, localFilter, force) {
 				this.filter = filter || {};

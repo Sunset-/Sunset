@@ -1,0 +1,144 @@
+$simpleControlHeight : 30px;
+
+$formControlFontSize : 14px;
+
+
+//输入框
+.sunset-input{
+	box-sizing:border-box;
+	width:100%;
+	height:$simpleControlHeight;
+	border:1px solid $primary;
+	padding:0px 8px;
+	outline : none;
+	border-radius:2px;
+	font-size:$formControlFontSize;
+	@include animate();
+	&:focus{
+		box-shadow: 1px 1px 5px lighten($primary,20%);
+	}
+	&:-webkit-autofill {
+		-webkit-box-shadow: 0 0 0px 1000px white inset;
+	}
+}
+
+//下拉框
+.sunset-select{
+	height:$simpleControlHeight;
+	display:inline-block;
+	border:1px solid $primary;
+	padding:2px 5px;
+	font-size: $formControlFontSize;
+}
+
+
+//文本域
+.sunset-textarea{
+	box-sizing: border-box;
+	width:100%;
+	border:1px solid $primary;
+	padding :5px;
+	outline : none;
+	border-radius:2px;
+	@include animate();
+	&:focus{
+		box-shadow: 1px 1px 5px lighten($primary,20%);
+	}
+	&:-webkit-autofill {
+		-webkit-box-shadow: 0 0 0px 1000px white inset;
+	}
+}
+
+
+//单选按钮
+.sunset-radios{
+	display:inline-block;
+	&.radios-vertical{
+		display: block;
+		text-align: left;
+	}
+}
+.sunset-radio{
+	display:none;
+}
+.sunset-radio + label{
+	position:relative;
+	padding-left:22px;
+	margin-right:10px;
+	cursor:pointer;
+	color: inherit;
+	font-size:$formControlFontSize;
+    font-weight: normal;
+	&:before{
+		content :'';
+		position:absolute;
+	    top: 50%;
+	    margin-top: -9px;
+		left:0px;
+		width:18px;
+		height:18px;
+		border-radius:10px;
+		border:1px solid $primary;
+	}
+	&:after{
+		content :'';
+		position:absolute;
+		left:9px;
+	    top: 50%;
+	    margin-top: 0px;
+		width:0px;
+		height:0px;
+		border-radius:10px;
+		background: $primary;
+		@include animate();
+	}
+}
+@each $c,$v in $colors{
+	.sunset-radio.#{$c} + label:before{
+		border:1px solid $v;
+		
+	}
+	.sunset-radio.#{$c} + label:after{
+		background: $v;
+	}
+}
+
+.sunset-radio:checked + label{
+	&:after{
+		left:4px;
+	    top: 50%;
+	    margin-top: -5px;
+		width:10px;
+		height:10px;
+	}
+}
+
+.sunset-radio[disabled] + label{
+	color:$stable;
+	&:before{
+		border:1px solid $stable;
+	}
+	&:after{
+		background: $stable;
+	}
+}
+
+
+//表单项
+.sunset-formcontrol{
+	display:block;
+	padding:10px;
+	&>*{
+		display: inline-block;
+		width:200px;
+	}
+	&>label{
+		width:150px;
+		text-align: right;
+		margin-right:30px;
+		vertical-align: top;
+	}
+	&>*:last-child{
+		width:200px;
+	}
+}

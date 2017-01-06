@@ -1,0 +1,134 @@
+<style lang="sass">
+    .sunset-table-modal {
+        .ivu-select-dropdown {
+            position: absolute !important;
+        }
+        .table-modal-selected-item {
+            display: inline-block;
+            height: 22px;
+            line-height: 22px;
+            margin: 2px 4px 2px 0;
+            padding: 0 8px;
+            border: 1px solid #3399ff;
+            border-radius: 3px;
+            background: #3399ff;
+            font-size: 12px;
+            vertical-align: middle;
+            opacity: 1;
+            overflow: hidden;
+            cursor: pointer;
+            color: #FFF;
+            &.clear {
+                border: 1px solid #ff6600;
+                background: #ff6600;
+            }
+            .ivu-icon-ios-close-empty {
+                position: relative;
+                top: 1px;
+                margin-left: 3px;
+                -webkit-transform: scale(1.42857143) rotate(0);
+                transform: scale(1.42857143) rotate(0);
+            }
+        }
+    }
+</style>
+<template>
+    <Modal class-name="sunset-table-modal" :visible.sync="visible" :title="options.title" @on-ok="ok" @on-cancel="cancel" :width="options.width||700">
+        <div class="table-modal-selected-item" v-for="item in checkeds">
+            <span>{{item[label]}}</span>
+            <Icon type="ios-close-empty" size="14" @click="removeItem($index)"></Icon>
+        </div>
+        <div v-if="checkeds.length" class="table-modal-selected-item clear" @click="removeAll">
+            <span>清空</span>
+        </div>
+        <sunset-table v-ref:table :options="tableOptions" :checkeds.sync="checkeds" :store="options.store"></sunset-table>
+        <div slot="footer">
+            <i-button type="ghost" @click="cancel">{{options.cancelText||'取消'}}</i-button>
+            <i-button type="info" :loading="modal_loading" @click="ok">{{options.okText||'确定'}}</i-button>
+        </div>
+    </Modal>
+</template>
+<script>
+    export default {
+        props: {
+            options: {
+                type: Object
+            }
+        },
+        data() {
+            return {
+                visible: false,
+                checkeds: []
+            }
+        },
+        computed: {
+            tableOptions() {
+                var tableOptions = this.options.tableOptions;
+                //多选
+                if (this.checked.multi) {
+                    tableOptions.multiCheck = true;
+                    tableOptions.recordTools = [];
+                } else {
+                    tableOptions.multiCheck = false;
+                    tableOptions.recordTools = [{
+                        label: '选择',
+                        color: 'info',
+                        operate: (record) => {
+                            this.checkeds = [record];
+                            this.ok();
+                        }
+                    }];
+                }
+                tableOptions.condensed = true;
+                return tableOptions;
+            },
+            checked() {
+                return this.options.checked || {};
+            },
+            label() {
+                return this.checked.label;
+            }
+        },
+        methods: {
+            removeItem(index) {
+                this.checkeds.splice(index, 1);
+            },
+            removeAll() {
+                this.checkeds = [];
+            },
+            open(checkeds) {
+                this.checkeds = checkeds || [];
+                this.$refs.table.resetFilter();
+                this.visible = true;
+            },
+            ok() {
+                Promise.resolve().then(res => {
+                    var checkeds = this.checkeds;
+                    if (this.checked.max && checkeds.length > this.checked.max) {
+                        throw new Error(`最多选择${this.checked.max}个`);
+                    }
+                    if (this.options.validate) {
+                        return Promise.resolve().then(() => {
+                            return this.options.validate(checkeds);
+                        }).then(validateResult => {
+                            if (validateResult !== true) {
+                                throw new Error(validateResult);
+                            } else {
+                                return checkeds;
+                            }
+                        });
+                    }
+                    return checkeds;
+                }).then(result => {
+                    this.$emit('submit', checkeds);
+                    this.cancel();
+                }).catch(e => {
+                    Sunset.tip(e.message, 'warning');
+                });
+            },
+            cancel() {
+                this.visible = false;
+            }
+        }
+    };
+</script>

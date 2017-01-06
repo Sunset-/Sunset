@@ -1,0 +1,127 @@
+
+$btn-size : (xs 60px 28px 12px) (sm 80px 30px 12px) (md 105px 35px 14px) (lg 120px 40px 16px) (xl 140px 50px 20px);
+$btn-border-radius : 100px;
+
+$defaultBtn : nth($btn-size,3);
+$defaultBtnWidth : nth($defaultBtn,2);
+$defaultBtnHeight : nth($defaultBtn,3);
+$defaultBtnFontSize : nth($defaultBtn,4);
+
+.sunset-btn{
+	min-width: $defaultBtnWidth;
+	height:$defaultBtnHeight;
+	background-color:$primary;
+	border : 1px solid $primary;
+	color : $white;
+	font-size:$defaultBtnFontSize;
+	border-radius : $btn-border-radius;
+	outline:none;
+	&:hover{
+		background-color:lighten($primary,5%);
+	}
+	&:active{
+		background-color:darken($primary,5%);
+	}
+	&.active{
+		background-color:$primary;
+		color:$white;
+	}
+	&[disabled]{
+		background-color: $light;
+		border : 1px solid $light;
+	}
+	&.hollow{
+		background-color:$white;
+		border : 1px solid $primary;
+		color : $primary;
+		&:hover{
+			background-color:lighten($light,2%);
+			border : 1px solid lighten($primary,5%);
+		}
+		&:active{			
+			background-color:$light;
+			border : 1px solid darken($primary,5%);
+		}
+		&.active{
+			background-color:$primary;
+			color:$white;
+		}
+		&[disabled]{
+			background-color: $light;
+			border : 1px solid $light;
+		}
+	}
+}
+
+@each $c,$v in $colors{
+	@each $size in $btn-size{
+
+		$name : nth($size,1);
+		$width : nth($size,2);
+		$height : nth($size,3);
+		$fontSize : nth($size,4);
+
+		.sunset-btn.#{$c}{
+			background-color:$v;
+			border : 1px solid $v;
+			color : $white;
+			&:hover{
+				background-color:lighten($v,5%);
+			}
+			&:active{
+				background-color:darken($v,5%);
+			}
+			&.active{
+				background-color:$white;
+				color:$v;
+			}
+			&[disabled]{
+				background-color:lighten($v,30%);
+				border : 1px solid $light;
+			}
+			&.hollow{
+				background-color:$white;
+				border : 1px solid $v;
+				color : $v;
+				&:hover{
+					background-color:lighten($light,2%);
+					border : 1px solid lighten($v,5%);
+				}
+				&:active{			
+					background-color:$light;
+					border : 1px solid darken($v,5%);
+				}
+				&.active{
+					background-color:$v;
+					color:$white;
+				}
+				&[disabled]{
+					background-color: $light;
+					border : 1px solid $light;
+				}
+			}
+		}
+		.sunset-btn.#{$name}{
+			min-width: $width;
+			height:$height;
+			font-size: $fontSize;
+		}
+	}
+}
+
+
+.sunset-btn-group{
+	display: inline-block;
+	font-size:0px;
+	button{
+		border-radius:0px;
+	}
+	button:first-child{
+		border-radius:$btn-border-radius 0px 0px $btn-border-radius;
+		border-right:none;
+	}
+	button:last-child{
+		border-radius:0px $btn-border-radius $btn-border-radius 0px;
+		border-left:none;
+	}
+}

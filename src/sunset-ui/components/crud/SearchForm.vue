@@ -62,6 +62,10 @@
 			searchClick() {
 				this.search()
 			},
+			reset() {
+				this.filter = {};
+				this.search();
+			},
 			search() {
 				var filter = Object.assign({}, this.filter);
 				if (Sunset.isFunction(this.options.format)) {

@@ -1,0 +1,28 @@
+.sunset-widget-tabs{
+	position : relative;
+	display: inline-block;
+	padding-bottom:2px;
+	.sunset-widget-tab{
+		box-sizing:border-box;
+		width:100px;
+		padding:10px 15px;
+		color : $dark;
+		text-align: center;
+		display:  inline-block;
+		cursor: pointer;
+		&.active{
+			color : $primary;
+		}
+		&:hover{
+			color : $primary;
+		}
+	}
+	.sunset-widget-tabs-nonius{
+		@include animate(all,0.2s,ease)
+		position : absolute;
+		background-color : $primary;
+		bottom:0px;
+		width:10px;
+		height:3px;
+	}
+}

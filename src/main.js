@@ -17,12 +17,16 @@ import Validators from './common/validators';
 import App from './components/App.vue';
 import Layout from './components/Layout.vue';
 
+//组件库示例
+import Crud from './components/bootstrap/crud/Crud.vue';
+import Modal from './components/bootstrap/modal/Modal.vue';
+import Tree from './components/bootstrap/tree/Tree.vue';
+
 //登陆
 import Sign from './components/sign/Sign.vue';
 import SignStore from './components/sign/SignStore';
 
 //系统管理
-import ManagerAccount from './components/system/managerAccount/ManagerAccount.vue';
 import Dictionary from './components/system/dictionary/Dictionary.vue';
 
 
@@ -37,11 +41,17 @@ router.map({
 	'/': {
 		component: Layout,
 		subRoutes: {
-			'/app/system/managerAccount': {
-				component: ManagerAccount
-			},
 			'/app/system/dictionary': {
 				component: Dictionary
+			},
+			'/app/bootstrap/crud': {
+				component: Crud
+			},
+			'/app/bootstrap/modal': {
+				component: Modal
+			},
+			'/app/bootstrap/tree': {
+				component: Tree
 			}
 		}
 	}

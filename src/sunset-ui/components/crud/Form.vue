@@ -18,12 +18,13 @@
 				</i-col>
 			</template>
 		</Row>
-		<sunset-toolbar :options="tools" @signal="operateSignal" style="text-align:center;"></sunset-toolbar>
+		<sunset-toolbar v-if="options.tools!==false" :options="tools" @signal="operateSignal" style="text-align:center;"></sunset-toolbar>
 	</form>
 </template>
 <script>
 	import SunsetField from './Field';
 	import SunsetToolbar from './Toolbar.vue';
+	import Pop from '../pop';
 
 	const FULL_COLS = 24;
 	const DEFAULT_COLS = 3;
@@ -129,23 +130,28 @@
 				switch (signal) {
 					case 'SUBMIT':
 						try {
-							this.submit(this.generateModel());
+							this.submit();
 						} catch (e) {}
 						break;
 					default:
 						this.$emit.apply(this, ['signal'].concat([].slice.call(arguments)));
 				}
 			},
-			submit(model) {
-				if (Sunset.isFunction(this.options.submit)) {
-					this.options.submit(model);
-				} else if (this.options.store) {
-					this.options.store[this.options.method || 'save'](model).then(res => {
-						Sunset.tip('保存成功', 'success');
-						this.$emit('signal', 'SAVED', res, model);
-					}).catch(e => {
-						this.$emit('signal', 'SAVE-ERROR', e);
-					});
+			submit() {
+				try {
+					var model = this.generateModel();
+					if (Sunset.isFunction(this.options.submit)) {
+						this.options.submit(model);
+					} else if (this.options.store) {
+						this.options.store[this.options.method || 'save'](model).then(res => {
+							Sunset.tip('保存成功', 'success');
+							this.$emit('signal', 'SAVED', res, model);
+						}).catch(e => {
+							this.$emit('signal', 'SAVE-ERROR', e);
+						});
+					}
+				} catch (e) {
+					this.$emit('signal', 'SAVE-ERROR', e);
 				}
 			},
 			reset(record) {
@@ -168,11 +174,6 @@
 					}
 				});
 				return model;
-			}
-		},
-		events: {
-			CRUD_FORM_SAVE() {
-				this.save();
 			}
 		}
 	}

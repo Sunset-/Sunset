@@ -65,10 +65,13 @@
 					icon: 'fa-home',
 					subMenus: [{
 						title: 'CURD',
-						path: '/app/hospital'
+						path: '/app/bootstrap/crud'
+					},{
+						title: 'Tree',
+						path: '/app/bootstrap/tree'
 					}, {
 						title: 'Model',
-						path: '/app/referral/assessmentCase'
+						path: '/app/bootstrap/modal'
 					}, {
 						title: '图标',
 						path: '/app/referral/assessmentCase'

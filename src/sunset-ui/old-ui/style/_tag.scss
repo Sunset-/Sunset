@@ -1,0 +1,21 @@
+.sunset-widget-tag{
+	position:relative;
+	display:inline-block;
+	top:-5px;
+	color : $white;
+	width:30px;
+	text-align:center;
+	font-size:14px;
+	background:red;
+	&:after{
+		content:'';
+		position:absolute;
+		left:0px;
+		bottom:-10px;
+		width:0px;
+		height:0px;
+		border-style:solid;
+		border-width:6px 15px 6px 15px;
+		border-color:red red transparent red;
+	}
+}

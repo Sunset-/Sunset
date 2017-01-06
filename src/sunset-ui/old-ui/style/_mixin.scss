@@ -1,0 +1,19 @@
+@mixin absolute($top:auto,$bottom:auto,$left:auto,$right:auto,$z:0){
+	position:absolute;
+	top : $top;
+	bottom : $bottom;
+	left : $left;
+	right : $right;
+	z-index : $z;
+}
+@mixin size($w:auto,$h:auto){
+	width:$w;
+	height:$h;
+}
+
+@mixin animate($property:all, $duration:0.2s, $timing-function:linear, $delay:0s){
+	transition: $property $duration $timing-function $delay;
+	-moz-transition: $property $duration $timing-function $delay; /* Firefox 4 */
+	-webkit-transition: $property $duration $timing-function $delay; /* Safari 和 Chrome */
+	-o-transition: $property $duration $timing-function $delay; /* Opera */
+}
