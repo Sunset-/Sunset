@@ -2,7 +2,7 @@
 	<div class="sunset-toolbar">
 		<template v-for="tool in options" v-permission="tool.permission">
 			<template v-if="!tool.type">
-				<button :class="['m-r-sm','btn',btnClass,'btn-'+(tool.color||'primary')]" type="button" @click="operate(tool)"><i v-if="tool.icon" :class="[tool.icon,'m-r-xs']"></i>&nbsp;{{tool.label}}</button>
+				<i-button :size="size" :type="tool.color||'primary'" :icon="tool.icon" @click="operate(tool)">{{tool.label}}</i-button>
 			</template>
 			<template v-if="tool.type=='file'">
 				<tool-file :options="tool" :ctx="ctx"></tool-file>

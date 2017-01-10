@@ -25,12 +25,6 @@
 						}, {
 							title: '类型',
 							name: 'type'
-						}, {
-							title: '是否评测项目',
-							name: 'isAccessmentCase',
-							format: (v) => {
-								return v ? '是' : '否';
-							}
 						}],
 						pageSize: 10,
 						localPage: false,
@@ -51,26 +45,26 @@
 						},
 						toolbar: [{
 							label: '新增',
-							icon: 'glyphicon glyphicon-plus',
+							icon: 'plus-round',
 							color: 'success',
 							signal: 'ADD'
 						}],
 						recordTools: [{
 							label: '枚举',
-							icon: 'glyphicon glyphicon-upload',
-							color: 'pink',
+							icon: 'ios-pricetags',
+							color: 'info',
 							operate: (record) => {
 								this.$broadcast('DICTIONARY_ENUM_SHOW', record);
 							}
 						}, {
 							label: '修改',
-							icon: 'glyphicon glyphicon-edit',
+							icon: 'edit',
 							color: 'warning',
 							signal: 'MODIFY'
 						}, {
 							label: '删除',
-							icon: 'glyphicon glyphicon-remove',
-							color: 'danger',
+							icon: 'trash-a',
+							color: 'error',
 							signal: 'DELETE'
 						}]
 					},
@@ -91,19 +85,11 @@
 								required: true,
 								maxlength: 32
 							}
-						}, {
-							label: '评测项目',
-							name: 'isAccessmentCase',
-							type: 'switch'
 						}],
 						format: (model) => {
-							if (model.isAccessmentCase) {
-								model.desc = 'ACCESSMENT_CASE';
-							} else {
-								model.desc = model.desc == 'ACCESSMENT_CASE' ? '' : model.desc;
-							}
 							return model;
-						}
+						},
+						store : DictionaryStore
 					}
 				}
 			}

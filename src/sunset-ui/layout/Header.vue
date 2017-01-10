@@ -1,7 +1,5 @@
 <style lang="sass" rel="stylesheet/scss">
-
 	@import '../style/index.scss';
-
 	.sunset-header {
 		height: 60px;
 		.ivu-dropdown {
@@ -9,31 +7,39 @@
 			margin-top: 15px;
 			margin-right: 15px;
 		}
-		.avator-link{
-			cursor:pointer;
+		.avator-link {
+			cursor: pointer;
 		}
 	}
 </style>
 <template>
 	<header class="sunset-header">
-		<Dropdown>
+		<Dropdown @on-click="operate">
 			<span class="avator-link">
-				<img src="/assets/xenon-img/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" /> 下拉菜单
+				<img src="/assets/xenon-img/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" /> {{nickName}}
 				<Icon type="arrow-down-b"></Icon>
 			</span>
 			<Dropdown-menu slot="list">
-				<Dropdown-item>个人信息</Dropdown-item>
-				<Dropdown-item>修改密码</Dropdown-item>
-				<Dropdown-item divided>安全退出</Dropdown-item>
+				<Dropdown-item v-for="menu in menus" :divided="menu.divided" :key="$index">{{menu.title}}</Dropdown-item>
 			</Dropdown-menu>
 		</Dropdown>
 	</header>
 </template>
 <script>
 	export default {
+		props: {
+			currentUser: {
+				default: {}
+			},
+			menus: {}
+		},
+		computed: {
+			nickName() {
+				return this.currentUser && this.currentUser.nickname || '';
+			}
+		},
 		data() {
 			return {
-				currentUser: {},
 				//快递表单
 				passwordModalOptions: {
 					options: {
@@ -72,10 +78,8 @@
 			updatePassword() {
 
 			},
-			logout() {
-				// SignStore.logout().then(data=>{
-				// 	Router.go('/sign');
-				// });
+			operate(index) {
+				Sunset.isFunction(this.menus[index].operate)&&this.menus[index].operate();
 			}
 		},
 		ready() {

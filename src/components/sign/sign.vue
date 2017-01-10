@@ -252,7 +252,7 @@
 		methods : {
 			login(){
 				SignStore.login(this.model).then(function(data){
-					Router.go('/');
+					Router.go('/app');
 				});
 			}
 		},

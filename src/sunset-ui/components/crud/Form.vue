@@ -72,7 +72,7 @@
 					signal: 'SUBMIT'
 				}, {
 					label: '取消',
-					color: 'white',
+					color: 'ghost',
 					signal: 'CANCEL'
 				}];
 			},

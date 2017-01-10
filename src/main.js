@@ -28,6 +28,10 @@ import SignStore from './components/sign/SignStore';
 
 //系统管理
 import Dictionary from './components/system/dictionary/Dictionary.vue';
+import Account from './components/system/account/Account.vue';
+
+//业务
+import Payment from './components/business/payment/Payment.vue';
 
 
 var router = new Router();
@@ -44,6 +48,9 @@ router.map({
 			'/system/dictionary': {
 				component: Dictionary
 			},
+			'/system/account': {
+				component: Account
+			},
 			'/bootstrap/crud': {
 				component: Crud
 			},
@@ -52,6 +59,9 @@ router.map({
 			},
 			'/bootstrap/tree': {
 				component: Tree
+			},
+			'/payment': {
+				component: Payment
 			}
 		}
 	}

@@ -1,16 +1,28 @@
 <template>
     <sunset-container>
         <sunset-sidebar slot="leftside" :menus="menus"></sunset-sidebar>
-        <sunset-header></sunset-header>
+        <sunset-header :current-user="currentUser" :menus="headerMenus">
+        </sunset-header>
         <sunset-major>
             <router-view></router-view>
         </sunset-major>
     </sunset-container>
 </template>
 <script>
+    import SignStore from './sign/SignStore';
+
     export default {
         data() {
             return {
+                currentUser: null,
+                headerMenus: [{
+                    title: '安全退出',
+                    operate() {
+                        SignStore.logout().then(data => {
+                            Router.go('/sign');
+                        });
+                    }
+                }],
                 menus: [{
                     title: 'Sunset组件库',
                     icon: 'fa-home',
@@ -33,7 +45,7 @@
                     permission: 'SYSTEM_MANAGER',
                     subMenus: [{
                         title: '管理帐号',
-                        path: '/app/system/managerAccount',
+                        path: '/app/system/account',
                         permission: 'SYSTEM_MANAGER_DICTIONARY'
                     }, {
                         title: '数据字典',
@@ -43,18 +55,17 @@
                 }, {
                     title: '业务管理',
                     icon: 'fa-home',
-                    permission: 'SYSTEM_MANAGER',
                     subMenus: [{
-                        title: '医院管理',
-                        path: '/app/hospital',
-                        permission: 'SYSTEM_MANAGER_USER'
-                    }, {
-                        title: '测题管理',
-                        path: '/app/referral/assessmentCase',
-                        permission: 'SYSTEM_MANAGER_USER'
+                        title: '缴费查询',
+                        path: '/app/payment'
                     }]
                 }]
             }
+        },
+        ready() {
+            SignStore.currentUser().then(user => {
+                this.currentUser = user;
+            })
         }
     }
 </script>

@@ -47,16 +47,21 @@ CRUD_OPERATE_SEARCH(filter) 查询
 					margin-bottom: 0px;
 				}
 			}
+			&:after {
+				content: '';
+				display: block;
+				clear: both;
+			}
 		}
-		.sunset-crud-table-footer{
-			margin-top:15px;
+		.sunset-crud-table-footer {
+			margin-top: 15px;
 		}
 	}
 </style>
 <template>
 	<div class="sunset-crud-table-container">
 		<!--过滤器-->
-		<div v-if="options.filter" class="sunset-crud-table-toolbar-wrap">
+		<div v-if="options.filter||options.toolbar" class="sunset-crud-table-toolbar-wrap">
 			<sunset-toolbar :options="options.toolbar" @signal="operateRecord"></sunset-toolbar>
 			<search-form v-ref:filter v-if="options.filter" :options="options.filter" @filter="search"></search-form>
 		</div>
@@ -115,10 +120,10 @@ CRUD_OPERATE_SEARCH(filter) 查询
 			} else {
 				switch (col.format) {
 					case 'DATETIME':
-						return Sunset.Dates.format(new Date(+value));
+						return Sunset.Dates.format(new Date(value));
 						break;
 					case 'DATE':
-						return Sunset.Dates.format(new Date(+value), 'yyyy-MM-dd');
+						return Sunset.Dates.format(new Date(value), 'yyyy-MM-dd');
 						break;
 				}
 			}
@@ -375,10 +380,10 @@ CRUD_OPERATE_SEARCH(filter) 查询
 					content: '确定删除此条目',
 					loading: true,
 					onOk: () => {
-						store.removeById(record[this.idKey || 'id']).then(res => {
+						store[this.options.deleteMethod||'removeById'](record[this.idKey || 'id']).then(res => {
 							clear();
 							Sunset.tip('删除成功', 'success');
-							this.refresh();
+							this.refresh(void 0,true);
 						});
 					}
 				});
