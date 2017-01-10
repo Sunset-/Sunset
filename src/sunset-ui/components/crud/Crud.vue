@@ -1,28 +1,27 @@
 <style lang="sass">
+	@import '../../style/index.scss';
 	.sunset-crud-container {
-		.panel {
-			margin-bottom: 0px;
-			.panel-body {
-				padding: 15px 0px;
-			}
+		background: #FFF;
+		padding: 20px;
+		.sunset-crud-breadcrumb {
+			border-bottom: 1px solid $border;
+			padding-bottom: 5px;
+			margin-bottom: 20px;
 		}
 	}
 </style>
 <!-- 数据表布局（标准增删改查） -->
 <template>
 	<div class="sunset-crud-container">
+		<div class="sunset-crud-breadcrumb">
+			<sunset-breadcrumb v-ref:breadcrumb :options="pathOptions" @route="routePath"></sunset-breadcrumb>
+		</div>
 		<!-- 数据表格 -->
-		<div v-show="PAGE=='CRUD_TABLE'" class="panel panel-default">
-			<div class="panel-heading">
-				{{options.title+'列表'}}
-			</div>
+		<div v-show="PAGE=='CRUD_TABLE'">
 			<sunset-table v-ref:table :options="options.tableOptions" @signal="operateSignal"></sunset-table>
 		</div>
 		<!-- 编辑表单 -->
-		<div v-show="PAGE=='CRUD_FORM'" class="panel panel-default">
-			<div class="panel-heading">
-				{{options.title+' - '+PAGE_DETAIL}}
-			</div>
+		<div v-show="PAGE=='CRUD_FORM'">
 			<div class="panel-body">
 				<sunset-form v-ref:form :options="options.formOptions" @signal="operateSignal"></sunset-form>
 			</div>
@@ -30,12 +29,14 @@
 	</div>
 </template>
 <script>
+	import SunsetBreadcrumb from '../breadcrumb/Breadcrumb.vue';
 	import SunsetTable from './Table';
 	import SunsetForm from './Form';
 	import Store from './Store';
 
 	export default {
 		components: {
+			SunsetBreadcrumb,
 			SunsetTable,
 			SunsetForm
 		},
@@ -47,6 +48,9 @@
 		data() {
 			return {
 				PAGE: 'CRUD_TABLE',
+				pathOptions: {
+					paths: []
+				},
 				PAGE_DETAIL: '',
 				store: (this.options.store instanceof Store ? this.options.store : new Store(this.options.store))
 			}
@@ -58,23 +62,42 @@
 					case 'SAVED':
 						this.$refs.table.refresh(void 0, true);
 						this.PAGE = 'CRUD_TABLE';
+						this.$refs.breadcrumb.pop();
 						Sunset.tip('保存成功', 'success');
 						break;
 					case 'ADD':
 						this.$refs.form.reset({});
 						this.PAGE = 'CRUD_FORM';
 						this.PAGE_DETAIL = '新增';
+						this.$refs.breadcrumb.append({
+							title: '新增'
+						});
 						break;
 					case 'MODIFY':
 						this.$refs.form.reset(Object.assign({}, record));
 						this.PAGE = 'CRUD_FORM';
 						this.PAGE_DETAIL = '编辑';
+						this.$refs.breadcrumb.append({
+							title: '编辑'
+						});
 						break;
 					case 'CANCEL':
 						this.PAGE = 'CRUD_TABLE';
+						this.$refs.breadcrumb.pop();
 						break;
 				}
+			},
+			routePath(path) {
+				if (path.key == 'HOME') {
+					this.PAGE = 'CRUD_TABLE';
+				}
 			}
+		},
+		ready() {
+			this.$refs.breadcrumb.append({
+				key: 'HOME',
+				title: this.options.title + '列表'
+			});
 		}
 	};
 </script>

@@ -40,7 +40,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 			}
 		}
 		.sunset-crud-table-toolbar-wrap {
-			padding-right:0px;
+			padding-bottom: 15px;
 			.sunset-toolbar {
 				float: left;
 				.btn {
@@ -48,12 +48,15 @@ CRUD_OPERATE_SEARCH(filter) 查询
 				}
 			}
 		}
+		.sunset-crud-table-footer{
+			margin-top:15px;
+		}
 	}
 </style>
 <template>
 	<div class="sunset-crud-table-container">
 		<!--过滤器-->
-		<div v-if="options.filter" class="panel-body sunset-crud-table-toolbar-wrap">
+		<div v-if="options.filter" class="sunset-crud-table-toolbar-wrap">
 			<sunset-toolbar :options="options.toolbar" @signal="operateRecord"></sunset-toolbar>
 			<search-form v-ref:filter v-if="options.filter" :options="options.filter" @filter="search"></search-form>
 		</div>
@@ -91,7 +94,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 			</table>
 		</div>
 		<!--分页-->
-		<div class="text-right m-t-sm">
+		<div class="sunset-crud-table-footer">
 			<sunset-page @change="refresh" right="true" :page-number.sync="pageNumber" :show-total="true" :page-size="pageSize" :total.sync="count"></sunset-page>
 		</div>
 	</div>
@@ -239,8 +242,8 @@ CRUD_OPERATE_SEARCH(filter) 查询
 			getColValue(item, name) {
 				return Sunset.getAttribute(item, name, '');
 			},
-			resetFilter(){
-				this.$refs.filter&&this.$refs.filter.reset();
+			resetFilter() {
+				this.$refs.filter && this.$refs.filter.reset();
 			},
 			search(filter, localFilter, force) {
 				this.filter = filter || {};
@@ -370,7 +373,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 				var store = this.options.store;
 				var clear = store && Sunset.confirm({
 					content: '确定删除此条目',
-					loading : true,
+					loading: true,
 					onOk: () => {
 						store.removeById(record[this.idKey || 'id']).then(res => {
 							clear();

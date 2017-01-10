@@ -15,6 +15,7 @@ import Directives from './common/directives';
 import Validators from './common/validators';
 
 import App from './components/App.vue';
+import Modules from './components/Modules.vue';
 
 //组件库示例
 import Crud from './components/bootstrap/crud/Crud.vue';
@@ -37,17 +38,22 @@ router.map({
 	'/sign': {
 		component: Sign
 	},
-	'/app/system/dictionary': {
-		component: Dictionary
-	},
-	'/app/bootstrap/crud': {
-		component: Crud
-	},
-	'/app/bootstrap/modal': {
-		component: Modal
-	},
-	'/app/bootstrap/tree': {
-		component: Tree
+	'/app': {
+		component: Modules,
+		subRoutes: {
+			'/system/dictionary': {
+				component: Dictionary
+			},
+			'/bootstrap/crud': {
+				component: Crud
+			},
+			'/bootstrap/modal': {
+				component: Modal
+			},
+			'/bootstrap/tree': {
+				component: Tree
+			}
+		}
 	}
 });
 

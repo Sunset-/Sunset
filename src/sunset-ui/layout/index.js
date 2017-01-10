@@ -1,13 +1,15 @@
-import Major from './Major';
-import Header from './Header';
+import Container from './Container.vue';
 import Sidebar from './Sidebar';
+import Header from './Header';
+import Major from './Major';
 import Layout from './Layout';
 
 
 var api = {
-	Major,
-	Header,
+	Container,
 	Sidebar,
+	Header,
+	Major,
 	Layout
 };
 

@@ -1,80 +1,85 @@
+<style lang="sass" rel="stylesheet/scss">
+
+	@import '../style/index.scss';
+
+	.sunset-header {
+		height: 60px;
+		.ivu-dropdown {
+			float: right;
+			margin-top: 15px;
+			margin-right: 15px;
+		}
+		.avator-link{
+			cursor:pointer;
+		}
+	}
+</style>
 <template>
-	<nav class="navbar user-info-navbar wrapper-y-sm wrapper-r-md" role="navigation">
-		<ul class="user-info-menu right-links list-inline list-unstyled m-r-lg">
-			{{currentUser.nickname}}
-			<!--<dropdown>-->
-				<a href="javascript:;" data-toggle="dropdown">
-					<img src="/assets/xenon-img/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
-					<span>
-						{{currentUser.nickname}}
-						<i class="fa-angle-down"></i>
-					</span>
-				</a>
-				<ul slot="dropdown-menu" class="dropdown-menu">
-					<!--<li><a href="javascript:;" @click="showUpdatePassword">修改密码</a></li>-->
-					<!--<li role="separator" class="divider"></li>-->
-					<li><a href="javascript:;" @click="logout">安全退出</a></li>
-				</ul>
-			<!--</dropdown>-->
-		</ul>
-	</nav>
-	<!-- 修改密码 -->
-	<!--<modal-form title="修改密码" :form-options="passwordModalOptions" @saved="updatePassword()"></modal-form>-->
+	<header class="sunset-header">
+		<Dropdown>
+			<span class="avator-link">
+				<img src="/assets/xenon-img/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" /> 下拉菜单
+				<Icon type="arrow-down-b"></Icon>
+			</span>
+			<Dropdown-menu slot="list">
+				<Dropdown-item>个人信息</Dropdown-item>
+				<Dropdown-item>修改密码</Dropdown-item>
+				<Dropdown-item divided>安全退出</Dropdown-item>
+			</Dropdown-menu>
+		</Dropdown>
+	</header>
 </template>
-
 <script>
-
-	export default{
-		data(){
+	export default {
+		data() {
 			return {
-				currentUser : {},
+				currentUser: {},
 				//快递表单
-				passwordModalOptions : {
-					options : {
-						fields : [{
-							label : '原密码',
-							name : 'oldPwd',
-							type : 'password',
-							enum : 'expressCompany',
-							validate : {
-								required : true,
+				passwordModalOptions: {
+					options: {
+						fields: [{
+							label: '原密码',
+							name: 'oldPwd',
+							type: 'password',
+							enum: 'expressCompany',
+							validate: {
+								required: true,
 								maxlength: 32
 							}
-						},{
-							label : '新密码',
-							name : 'newPwd',
-							type : 'password',
-							validate : {
-								required : true,
+						}, {
+							label: '新密码',
+							name: 'newPwd',
+							type: 'password',
+							validate: {
+								required: true,
 								maxlength: 32
 							}
 						}],
-						method : 'updatePassword',
-						format : (model)=>{
+						method: 'updatePassword',
+						format: (model) => {
 							model.id = this.currentUser.id;
 							return model;
 						}
 					},
-					store : null//SignStore
+					store: null //SignStore
 				}
 			}
 		},
-		methods : {
-			showUpdatePassword(){
+		methods: {
+			showUpdatePassword() {
 				this.$broadcast('MODEL_FORM_SHOW');
 			},
-			updatePassword(){
+			updatePassword() {
 
 			},
-			logout(){
+			logout() {
 				// SignStore.logout().then(data=>{
 				// 	Router.go('/sign');
 				// });
 			}
 		},
-		ready(){
-			this.currentUser = SignStore.currentUserCache||{};
+		ready() {
+			//this.currentUser = SignStore.currentUserCache || {};
 		}
 	};
-
 </script>

@@ -1,56 +1,37 @@
 <style lang="sass">
-	.page-container .main-content .page-title.sunset-layout-module-title{
-		margin-bottom: 17px;
+	@import '../style/index.scss';
+	.sunset-title {
+		height: 50px;
+		line-height: 50px;
+		padding-left: 25px;
+		background: #f8f8f8;
+		color: $dark;
+		box-shadow: 0 1px 0 rgba(0, 1, 1, .08), inset 0 1px 0 #ededed;
 	}
 </style>
-
 <template>
-	
-	<div class="page-title sunset-layout-module-title">
-
-		<div class="title-env">
-			<h1 class="title">{{title}}</h1>
-		</div>
-
-		<div class="breadcrumb-env">
-			<ol class="breadcrumb bc-1">
-				<li>
-					<a href="javascript:;"><i class="fa-home"></i>{{module.title}}</a>
-				</li>
-				<li :class="{'active text-bold':page=='CRUD_TABLE'}">
-					<a href="javascript:;" @click="go('CRUD_TABLE')">数据列表</a>
-				</li>
-				<li  :class="{'active text-bold':page=='CRUD_FORM'}" v-if="page=='CRUD_FORM'">
-					<a href="javascript:;">条目编辑</a>
-				</li>
-			</ol>
-		</div>
-	</div>
-
+	<h1 class="sunset-title">{{title}}</h1>
 </template>
-
 <script>
-
-	export default{
-		props : {
-			title : {
+	export default {
+		props: {
+			title: {
 
 			},
-			page:{
+			page: {
 
 			}
 		},
-		computed:{
-			module(){
+		computed: {
+			module() {
 				return Base.currentModule();
 			}
 		},
-		methods : {
-			go(page){
+		methods: {
+			go(page) {
 				this.page = page;
 			}
 		}
 
 	}
-
 </script>

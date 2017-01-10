@@ -18,6 +18,7 @@ import TableModal from './components/modal/TableModal.vue';
 import TreeModal from './components/modal/TreeModal.vue';
 
 import {
+    Container,
     Sidebar,
     Header,
     Major,
@@ -39,6 +40,7 @@ const components = {
     TreeModal: TreeModal
 }
 const Layouts = {
+    Container : Container,
     Header: Header,
     Sidebar: Sidebar,
     Major: Major,

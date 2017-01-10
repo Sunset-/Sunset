@@ -1,13 +1,5 @@
 <template>
-	<div class="page-container">
-		<sunset-sidebar></sunset-sidebar>
-		<div class="main-content">
-			<sunset-header></sunset-header>
-			<sunset-major>
-				<router-view></router-view>
-			</sunset-major>
-		</div>
-	</div>
+	<router-view></router-view>
 </template>
 <script>
 	import SignStore from './sign/SignStore'
