@@ -15,8 +15,14 @@ import Tree from './components/tree/Tree.vue';
 
 import FormModal from './components/modal/FormModal.vue';
 import TableModal from './components/modal/TableModal.vue';
+import TreeModal from './components/modal/TreeModal.vue';
 
-import Layout from './layout/ContentLayout.vue';
+import {
+    Sidebar,
+    Header,
+    Major,
+    Layout
+} from './layout';
 
 import Store from './components/crud/Store';
 
@@ -27,11 +33,15 @@ const components = {
     Table: Table,
     Form: Form,
     Toolbar: Toolbar,
-    Tree : Tree,
+    Tree: Tree,
     FormModal: FormModal,
-    TableModal :TableModal
+    TableModal: TableModal,
+    TreeModal: TreeModal
 }
 const Layouts = {
+    Header: Header,
+    Sidebar: Sidebar,
+    Major: Major,
     Layout: Layout
 }
 const Services = {
@@ -73,12 +83,13 @@ exports.install = function install(Vue, options) {
             duration
         });
     };
-    Sunset.confirm = function(option){
+    Sunset.confirm = function (option) {
         Vue.prototype.$Modal.confirm(option);
-        return ()=>{
+        return () => {
             Vue.prototype.$Modal.remove();
         }
-    }//(config)
+    };
+    //(config)
     // Vue.prototype.$Loading = LoadingBar;
     // Vue.prototype.$Message = Message;
     // Vue.prototype.$Modal = Modal;

@@ -2,7 +2,7 @@
 	<nav class="navbar user-info-navbar wrapper-y-sm wrapper-r-md" role="navigation">
 		<ul class="user-info-menu right-links list-inline list-unstyled m-r-lg">
 			{{currentUser.nickname}}
-			<dropdown>
+			<!--<dropdown>-->
 				<a href="javascript:;" data-toggle="dropdown">
 					<img src="/assets/xenon-img/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
 					<span>
@@ -15,7 +15,7 @@
 					<!--<li role="separator" class="divider"></li>-->
 					<li><a href="javascript:;" @click="logout">安全退出</a></li>
 				</ul>
-			</dropdown>
+			<!--</dropdown>-->
 		</ul>
 	</nav>
 	<!-- 修改密码 -->
@@ -24,16 +24,7 @@
 
 <script>
 
-	import {dropdown} from 'vue-strap';
-	// import ModalForm from 'sunset-crud/ModalForm';
-	import SignStore from '../sign/SignStore';
-
 	export default{
-		components : {
-			dropdown
-			// ,
-			// ModalForm
-		},
 		data(){
 			return {
 				currentUser : {},
@@ -64,7 +55,7 @@
 							return model;
 						}
 					},
-					store : SignStore
+					store : null//SignStore
 				}
 			}
 		},
@@ -76,9 +67,9 @@
 
 			},
 			logout(){
-				SignStore.logout().then(data=>{
-					Router.go('/sign');
-				});
+				// SignStore.logout().then(data=>{
+				// 	Router.go('/sign');
+				// });
 			}
 		},
 		ready(){

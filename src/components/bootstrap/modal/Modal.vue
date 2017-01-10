@@ -2,21 +2,23 @@
     <sunset-layout title="Sunset组件库 - Modal">
         <i-button type="info" @click="test">表单Modal</i-button>
         <i-button type="success" @click="test2">表格Modal</i-button>
+        <i-button type="warning" @click="test3">树Modal</i-button>
         <sunset-form-modal v-ref:formmodal :options="{title : '表单modal',formOptions : options.formOptions}"></sunset-form-modal>
         <sunset-table-modal @submit="tableSelected" v-ref:tablemodal :options="{title : '表格modal',validate:tableValidate,checked:{multi:true,max:3,label : 'nickname'},tableOptions : options.tableOptions}"></sunset-table-modal>
+        <sunset-tree-modal v-ref:treemodal :options="options.treeModalOptions"></sunset-tree-modal>
     </sunset-layout>
 </template>
 <script>
-    import CrudStore from '../BootstrapStore';
+    import BootstrapStore from '../BootstrapStore';
 
     const now = new Date().getTime();
 
     export default {
         methods: {
-            tableValidate(items){
-               return Promise.resolve().then(res=>{
-                   return 'wakaka'
-               });
+            tableValidate(items) {
+                return Promise.resolve().then(res => {
+                    return 'wakaka'
+                });
             },
             test() {
                 this.$refs.formmodal.open();
@@ -24,7 +26,10 @@
             test2() {
                 this.$refs.tablemodal.open();
             },
-            tableSelected(items){
+            test3() {
+                this.$refs.treemodal.open();
+            },
+            tableSelected(items) {
                 debugger;
             },
             filter(a, b) {
@@ -39,7 +44,7 @@
                 formModalVisible: false,
                 options: {
                     title: '管理账户',
-                    store: CrudStore,
+                    store: BootstrapStore,
                     //工具
                     toolsOptions: [{
                         label: '新增',
@@ -178,12 +183,12 @@
                             permission: 'SYSTEM_MANAGER_DICTIONARY_DELETE',
                             signal: 'DELETE'
                         }],
-                        store: CrudStore
+                        store: BootstrapStore
                     },
                     //表格表单
                     formOptions: {
                         cols: 2,
-                        store: CrudStore,
+                        store: BootstrapStore,
                         fields: [{
                             label: '登录名',
                             name: 'account',
@@ -411,6 +416,39 @@
                             return true;
                         },
                         tools: null
+                    },
+                    treeModalOptions: {
+                        title: '管理账户',
+                        store: BootstrapStore,
+                        style: "height:200px;overflow:auto;",
+                        //树
+                        treeOptions: {
+                            autoExpand: false,
+                            check: 'multi',
+                            setting: {
+                                data: {
+                                    key: {
+                                        name: 'value',
+                                        title: 'value'
+                                    },
+                                    simpleData: {
+                                        enable: true,
+                                        idKey: 'key',
+                                        pIdKey: 'parent',
+                                        rootPId: null
+                                    }
+                                },
+                                check: {
+                                    radioType: 'all'
+                                },
+                                format: {
+                                    nodeToValue(treeNode) {
+                                        return treeNode && treeNode.data;
+                                    }
+                                }
+                            }
+                        },
+                        treeNodes: BootstrapStore.treeNodes()
                     }
                 }
             }

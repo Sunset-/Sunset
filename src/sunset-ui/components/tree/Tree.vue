@@ -40,7 +40,7 @@
 				return Sunset.getAttribute(this.setting, 'data.simpleData.type', 'type');
 			},
 			titlePlace() {
-				return Sunset.getAttribute(this.setting, 'data.simpleData.title', 'title');
+				return Sunset.getAttribute(this.setting, 'data.key.title', 'title');
 			},
 			setting() {
 				var self = this;
@@ -89,7 +89,7 @@
 				}).then(nodes => {
 					this.cacheInitNodes = nodes;
 					this.ztreeObj = $.fn.zTree.init($(this.$el), this.setting, nodes);
-					this.options.autoExpand&&this.expand();
+					this.options.autoExpand && this.expand();
 					this.$emit('inited');
 				});
 			},
@@ -98,7 +98,7 @@
 					rootPId = this.setting.data.simpleData.rootPId,
 					roots = ztreeObj.getNodesByParam('pId', rootPId, null);
 				roots && roots.forEach(root => ztreeObj.expandNode(root, true));
-				if (this.options.autoExpand==='all') {
+				if (this.options.autoExpand === 'all') {
 					ztreeObj.expandAll(true);
 				}
 			},
@@ -135,17 +135,15 @@
 				if (node && data) {
 					extractAttrs.forEach(attr => {
 						var place = this[attr + 'Place'] || attr;
-						node[attr] = data[attr];
-						node.icon = data.icon;
-						node.data = data;
-					})
+						node[place] = data[place];
+					});
+					node.icon = data.icon;
+					node.data = data;
 				}
 				return node;
-			}
-		},
-		events: {
+			},
 			//增加子节点
-			TREE_ADD_NODE(parentData, childs, clear) {
+			addNodes(parentData, childs, clear) {
 				if (parentData) {
 					var parentNode = this.getNodeByData(parentData);
 					if (clear === true) {
@@ -171,7 +169,7 @@
 				}
 			},
 			//更新节点
-			TREE_REFRESH_NODE(data) {
+			updateNode(data) {
 				if (data) {
 					var treeNode = this.getNodeByData(data);
 					if (treeNode) {
@@ -181,13 +179,13 @@
 				}
 			},
 			//删除节点
-			TREE_REMOVE_NODE(data) {
+			removeNode(data) {
 				if (data) {
 					this.ztreeObj.removeNode(this.getNodeByData(data));
 				}
 			},
 			//刷新节点选择
-			TREE_REFRESH_CHECK(checkedIds) {
+			refreshChecked(checkedIds) {
 				if (!this.ztreeObj) {
 					return;
 				}
@@ -214,7 +212,7 @@
 				}
 			},
 			//刷新树全部节点
-			TREE_REFRESH_NODES(nodes) {
+			refresh(nodes) {
 				this.nodes = nodes || [];
 				this.ztreeObj.destroy();
 				this.init();
