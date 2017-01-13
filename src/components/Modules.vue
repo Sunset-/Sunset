@@ -25,7 +25,7 @@
                 }],
                 menus: [{
                     title: 'Sunset组件库',
-                    icon: 'fa-home',
+                    icon: 'settings',
                     subMenus: [{
                         title: 'CURD',
                         path: '/app/bootstrap/crud'
@@ -36,12 +36,15 @@
                         title: 'Model',
                         path: '/app/bootstrap/modal'
                     }, {
+                        title: 'View',
+                        path: '/app/bootstrap/view'
+                    }, {
                         title: '图标',
                         path: '/app/referral/assessmentCase'
                     }]
                 }, {
                     title: '系统管理',
-                    icon: 'fa-home',
+                    icon: 'home',
                     permission: 'SYSTEM_MANAGER',
                     subMenus: [{
                         title: '管理帐号',
@@ -51,10 +54,14 @@
                         title: '数据字典',
                         path: '/app/system/dictionary',
                         permission: 'SYSTEM_MANAGER_DICTIONARY'
+                    }, {
+                        title: '系统变量',
+                        path: '/app/system/systemVariable',
+                        permission: 'SYSTEM_MANAGER_SYSTEMVARIABLE'
                     }]
                 }, {
                     title: '业务管理',
-                    icon: 'fa-home',
+                    icon: 'briefcase',
                     subMenus: [{
                         title: '缴费查询',
                         path: '/app/payment'

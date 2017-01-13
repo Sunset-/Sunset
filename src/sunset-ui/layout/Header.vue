@@ -9,6 +9,10 @@
 		}
 		.avator-link {
 			cursor: pointer;
+			img {
+				vertical-align: middle;
+				border-radius: 50%;
+			}
 		}
 	}
 </style>
@@ -16,7 +20,7 @@
 	<header class="sunset-header">
 		<Dropdown @on-click="operate">
 			<span class="avator-link">
-				<img src="/assets/xenon-img/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" /> {{nickName}}
+				<img src="/assets/img/user-default.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" /> {{nickName}}
 				<Icon type="arrow-down-b"></Icon>
 			</span>
 			<Dropdown-menu slot="list">
@@ -29,7 +33,9 @@
 	export default {
 		props: {
 			currentUser: {
-				default: {}
+				default () {
+					return {};
+				}
 			},
 			menus: {}
 		},
@@ -79,7 +85,7 @@
 
 			},
 			operate(index) {
-				Sunset.isFunction(this.menus[index].operate)&&this.menus[index].operate();
+				Sunset.isFunction(this.menus[index].operate) && this.menus[index].operate();
 			}
 		},
 		ready() {

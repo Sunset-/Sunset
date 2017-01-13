@@ -1,12 +1,8 @@
 <template>
 	<div class="form-group" style="margin:0px;">
-		<div class="input-group" style="display: inline-table !important;">
-			<input type="text" class="form-control" class="form-control" :placeholder="options.placeholder" :maxlength="maxlength" field="field"
-							v-model="value" />
-			<span class="input-group-btn">
-					<button class="btn btn-white" @click="search" type="button">搜索</button>
-				</span>
-		</div>
+		<i-input :value.sync="value" :placeholder="options.placeholder" :maxlength="maxlength">
+			<i-button @click="search" slot="append" icon="ios-search"></i-button>
+		</i-input>
 	</div>
 </template>
 <script>

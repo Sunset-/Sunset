@@ -1,5 +1,5 @@
 <template>
-    <label :for="uid" :class="['m-r-sm','btn','btn-'+(options.color||'primary')]">
+    <label :for="uid" :class="['ivu-btn','ivu-btn-'+(options.color||'primary')]">
 			<i v-if="options.icon" :class="[options.icon,'m-r-xs']"></i>{{options.label}}
 			<span style="position:relative;width:0px;height:0px;display:inline-block;overflow:hidden;">
 				<form :id="'FORM_'+uid">

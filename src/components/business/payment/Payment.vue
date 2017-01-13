@@ -62,7 +62,34 @@
                                 label: '缴费日期',
                                 name: 'date',
                                 widget: 'date',
-                                type: 'daterange'
+                                type: 'daterange',
+                                placement: 'bottom',
+                                placeholder: '缴费日期区间',
+                                shortcuts: [{
+                                    text: '最近一周',
+                                    value() {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                                        return [start, end];
+                                    }
+                                }, {
+                                    text: '最近一个月',
+                                    value() {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                                        return [start, end];
+                                    }
+                                }, {
+                                    text: '最近三个月',
+                                    value() {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                                        return [start, end];
+                                    }
+                                }]
                             }, {
                                 label: '车牌号',
                                 name: 'plateNumber',

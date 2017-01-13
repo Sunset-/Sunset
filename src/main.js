@@ -9,26 +9,25 @@ Vue.use(Router);
 Vue.use(VueTouch);
 Vue.use(SunsetUI);
 
-
-import Filters from './common/filters';
-import Directives from './common/directives';
-import Validators from './common/validators';
-
 import App from './components/App.vue';
 import Modules from './components/Modules.vue';
 
-//组件库示例
-import Crud from './components/bootstrap/crud/Crud.vue';
-import Modal from './components/bootstrap/modal/Modal.vue';
-import Tree from './components/bootstrap/tree/Tree.vue';
 
-//登陆
 import Sign from './components/sign/Sign.vue';
 import SignStore from './components/sign/SignStore';
 
+//模块
+//import {moduleInstanceMap} from './modules';
+
+import Crud from './components/bootstrap/crud/Crud.vue';
+import Modal from './components/bootstrap/modal/Modal.vue';
+import Tree from './components/bootstrap/tree/Tree.vue';
+import View from './components/bootstrap/view/View.vue';
+
 //系统管理
-import Dictionary from './components/system/dictionary/Dictionary.vue';
 import Account from './components/system/account/Account.vue';
+import Dictionary from './components/system/dictionary/Dictionary.vue';
+import SystemVariable from './components/system/systemVariable/SystemVariable.vue';
 
 //业务
 import Payment from './components/business/payment/Payment.vue';
@@ -45,11 +44,14 @@ router.map({
 	'/app': {
 		component: Modules,
 		subRoutes: {
+			'/system/account': {
+				component: Account
+			},
 			'/system/dictionary': {
 				component: Dictionary
 			},
-			'/system/account': {
-				component: Account
+			'/system/systemVariable': {
+				component: SystemVariable
 			},
 			'/bootstrap/crud': {
 				component: Crud
@@ -59,6 +61,9 @@ router.map({
 			},
 			'/bootstrap/tree': {
 				component: Tree
+			},
+			'/bootstrap/view': {
+				component: View
 			},
 			'/payment': {
 				component: Payment

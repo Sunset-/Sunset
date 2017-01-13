@@ -18,23 +18,35 @@ class DictionaryStore extends Sunset.Service.Store {
 		ALL: '/service/system/dictionaryItem/use/all',
 		LOAD_ENUM: '/service/system/dictionaryItem/getByType/{type}',
 		SAVE_ENUM: '/service/system/dictionaryItem',
-		DELETE_ENUM: '/service/system/dictionaryItem/{id}'
+		DELETE_ENUM: '/service/system/dictionaryItem/{id}',
+		ORDER_ENUM: '/service/system/dictionaryItem/order/{id}'
 	}
 
 	callbacks = {
-		afterList: (data)=>{
-			data&&data.rows&&data.rows.forEach(item=>{
-				item.isAccessmentCase = item.desc=='ACCESSMENT_CASE';
+		afterList: (data) => {
+			data && data.rows && data.rows.forEach(item => {
+				item.isAccessmentCase = item.desc == 'ACCESSMENT_CASE';
 			});
 			return data;
 		}
 	}
 
+	order(id, type, arrow) {
+		return $http({
+			url: this.URLS.ORDER_ENUM.replace(/\{id\}/, id),
+			type : 'POST',
+			data: {
+				type: type,
+				arrow: arrow
+			}
+		});
+	}
+
 	getAll() {
 		$http({
 			url: this.URLS.ALL,
-			async : false,
-			success:(data)=>{
+			async: false,
+			success: (data) => {
 				this.cacheDictionary(data.data);
 			}
 		});
@@ -45,24 +57,24 @@ class DictionaryStore extends Sunset.Service.Store {
 			var ENUMS = {},
 				ENUM_MAP = {};
 			//按type分类
-			data.forEach(item=>{
-				var enums = ENUMS[item.type]||(ENUMS[item.type]=[]),
-					enumMap = ENUM_MAP[item.type]||(ENUM_MAP[item.type]={});
+			data.forEach(item => {
+				var enums = ENUMS[item.type] || (ENUMS[item.type] = []),
+					enumMap = ENUM_MAP[item.type] || (ENUM_MAP[item.type] = {});
 				enums.push({
-					key : item.value,
-					value : item.name
+					key: item.value,
+					value: item.name
 				});
 				enumMap[item.value] = item.name;
 			});
 			//按value排序
-			for(var type in ENUMS){
-				ENUMS[type].sort((o1,o2)=>{
-					if(isNaN(o1.key)||isNaN(o2.key)){
-						return o1.key==o2.key?0:(o1.key<o2.key?-1:1);
-					}else{
-						return +o1.key==+o2.key?0:(+o1.key<+o2.key?-1:1);
+			for (var type in ENUMS) {
+				ENUMS[type].sort((o1, o2) => {
+					if (isNaN(o1.key) || isNaN(o2.key)) {
+						return o1.key == o2.key ? 0 : (o1.key < o2.key ? -1 : 1);
+					} else {
+						return +o1.key == +o2.key ? 0 : (+o1.key < +o2.key ? -1 : 1);
 					}
-					
+
 				});
 			}
 			//挂载到全局业务对象中
@@ -76,8 +88,8 @@ class DictionaryStore extends Sunset.Service.Store {
 	 * @param  {String} type 字典类型
 	 * @return {[type]}      [description]
 	 */
-	getEnums(type){
-		return this.ENUMS[type]||[];
+	getEnums(type) {
+		return this.ENUMS[type] || [];
 	}
 
 	/**
@@ -86,28 +98,28 @@ class DictionaryStore extends Sunset.Service.Store {
 	 * @param  {String} key  字典key
 	 * @return {[type]}      [description]
 	 */
-	transcode(type,key){
-		return this.ENUM_MAP[type]&&this.ENUM_MAP[type][key];
+	transcode(type, key) {
+		return this.ENUM_MAP[type] && this.ENUM_MAP[type][key];
 	}
 
-	loadEnums(type){
+	loadEnums(type) {
 		return $http({
-			url: this.URLS.LOAD_ENUM.replace(/\{type\}/,type),
+			url: this.URLS.LOAD_ENUM.replace(/\{type\}/, type),
 		});
 	}
 
-	saveEnum(model){
+	saveEnum(model) {
 		return $http({
 			url: this.URLS.SAVE_ENUM,
-			type : model.id?'PUT':'POST',
-			data : model
+			type: model.id ? 'PUT' : 'POST',
+			data: model
 		});
 	}
-	
-	removeEnum(id){
+
+	removeEnum(id) {
 		return $http({
-			url: this.URLS.DELETE_ENUM.replace(/\{id\}/,id),
-			type : 'DELETE'
+			url: this.URLS.DELETE_ENUM.replace(/\{id\}/, id),
+			type: 'DELETE'
 		});
 	}
 

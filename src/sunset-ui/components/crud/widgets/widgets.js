@@ -8,6 +8,7 @@ const widgets = {
 	'Number': 'Number',
 	'Region': 'Region',
 	'Cascader': 'Cascader',
+	'Textarea': 'Textarea',
 	'Image': 'Image',
 	'Editor': 'Editor'
 }

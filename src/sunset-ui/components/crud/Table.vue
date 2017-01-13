@@ -34,9 +34,80 @@ CRUD_OPERATE_SEARCH(filter) 查询
 			overflow-y: auto;
 			border-top: 1px solid #eeeeee;
 			border-bottom: 1px solid #eeeeee;
+			.text-center {
+				text-align: center;
+			}
 			table {
+				width: 100%;
+				max-width: 100%;
+				border-color: #eee;
 				margin-top: -1px;
-				margin-bottom: -1px;
+				background-color: transparent;
+				border-collapse: collapse;
+				border-spacing: 0;
+				thead {
+					display: table-header-group;
+					vertical-align: middle;
+					border-color: inherit;
+				}
+				tr {
+					display: table-row;
+					vertical-align: inherit;
+					border-color: inherit;
+					th {
+						border-top: 0;
+						border-color: #eee;
+						position: relative;
+						border: 1px solid #eee;
+						border-bottom: 1px solid #eee;
+						color: #2c2e2f;
+						padding: 12px 15px;
+						vertical-align: bottom;
+					}
+					td {
+						border-color: #eee;
+						border-top: 0;
+						border-bottom: 1px solid #eee;
+						padding: 12px 15px;
+						border: 1px solid #eee;
+						line-height: 1.42857143;
+						vertical-align: top;
+					}
+				}
+				tbody {
+					tr:nth-child(odd)>td,
+					tr:nth-child(odd)>th {
+						background-color: #f9f9f9;
+					}
+				}
+			}
+			.table>thead>tr>td,
+			.table>tbody>tr>td,
+			.table>tfood>tr>td,
+			.table>thead>tr>th,
+			.table>tbody>tr>th,
+			.table>tfood>tr>th {
+				padding: 10px 15px;
+			}
+			.table>tbody>tr>td.sunset-table-record-tools {
+				position: relative;
+				padding: 0px;
+				text-align: center;
+				&>div {
+					position: absolute;
+					top: 0px;
+					bottom: 0px;
+					width: 100%;
+					&>div {
+						display: table;
+						height: 100%;
+						width: 100%;
+						&>.sunset-toolbar {
+							display: table-cell;
+							vertical-align: middle;
+						}
+					}
+				}
 			}
 		}
 		.sunset-crud-table-toolbar-wrap {
@@ -90,8 +161,12 @@ CRUD_OPERATE_SEARCH(filter) 查询
 						</th>
 						<td v-if="options.showIndex" class="text-center">{{(pageNumber-1)*pageSize+ $index+1}}</td>
 						<td v-for="col in columns" :style="col.style||{}">{{{getColValue(item,col.name) | sunset_transcode col item}}}</td>
-						<td v-if="recordTools.length" class="text-center">
-							<sunset-toolbar :options="recordTools" :ctx="item" size="small" @signal="operateRecord"></sunset-toolbar>
+						<td class="sunset-table-record-tools" v-if="recordTools.length" class="text-center">
+							<div>
+								<div>
+									<sunset-toolbar :options="recordTools" :ctx="item" size="small" @signal="operateRecord"></sunset-toolbar>
+								</div>
+							</div>
 						</td>
 					</tr>
 				</tbody>
@@ -344,7 +419,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 				this.sortData();
 			},
 			sortData() {
-				if (!this.sortable) {
+				if (!this.sortable || !this.sortCol) {
 					return;
 				}
 				var sortCol = this.sortCol,
@@ -380,10 +455,14 @@ CRUD_OPERATE_SEARCH(filter) 查询
 					content: '确定删除此条目',
 					loading: true,
 					onOk: () => {
-						store[this.options.deleteMethod||'removeById'](record[this.idKey || 'id']).then(res => {
+						store[this.options.deleteMethod || 'removeById'](record[this.idKey || 'id']).then(res => {
 							clear();
 							Sunset.tip('删除成功', 'success');
-							this.refresh(void 0,true);
+							if (this.pageNumber > 1 && (this.count - 1 == (this.pageNumber - 1) * this.pageSize)) {
+								this.refresh(this.pageNumber - 1, true);
+							} else {
+								this.refresh(void 0, true);
+							}
 						});
 					}
 				});

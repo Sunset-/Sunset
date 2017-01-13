@@ -4,6 +4,9 @@ import 'iview/dist/styles/iview.css';
 const prefix = 'Sunset';
 
 import Sunset from './common/sunset';
+import Filters from './common/filters';
+import Directives from './common/directives';
+import Validators from './common/validators';
 
 import Crud from './components/crud/Crud.vue';
 import Filter from './components/crud/SearchForm.vue';
@@ -40,7 +43,7 @@ const components = {
     TreeModal: TreeModal
 }
 const Layouts = {
-    Container : Container,
+    Container: Container,
     Header: Header,
     Sidebar: Sidebar,
     Major: Major,

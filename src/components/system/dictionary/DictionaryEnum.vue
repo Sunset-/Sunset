@@ -1,5 +1,12 @@
+<style lang="sass">
+	.dictionary-enum-model {
+		.ivu-modal-footer {
+			display: none;
+		}
+	}
+</style>
 <template>
-	<Modal :visible.sync="show" title="字典枚举" :width="800">
+	<Modal class="dictionary-enum-model" :visible.sync="show" title="字典枚举" :width="800">
 		<sunset-table v-ref:table :options="tableOptions"></sunset-table>
 		<h5>添加枚举</h5>
 		<sunset-form v-ref:form :options="formOptions" @signal="operateSignal"></sunset-form>
@@ -24,7 +31,7 @@
 					showIndex: true,
 					pageSize: 10,
 					localPage: true,
-					multiCheck: true,
+					multiCheck: false,
 					sortable: true,
 					format: {
 						list: '',
@@ -36,7 +43,7 @@
 					toolbar: [],
 					//表格搜索
 					filter: false,
-					deleteMethod : 'removeEnum',
+					deleteMethod: 'removeEnum',
 					//数据条目操作
 					recordTools: [{
 						label: '修改',
@@ -52,16 +59,34 @@
 						color: 'error',
 						permission: 'SYSTEM_MANAGER_DICTIONARY_DELETE',
 						signal: 'DELETE'
+					}, {
+						label: '上移',
+						icon: 'arrow-up-c',
+						color: 'info',
+						operate: (record) => {
+							DictionaryStore.order(record.id, record.type, 'UP').then(res => {
+								this.$refs.table.refresh(void 0, true);
+							});
+						}
+					}, {
+						label: '下移',
+						icon: 'arrow-down-c',
+						color: 'info',
+						operate: (record) => {
+							DictionaryStore.order(record.id, record.type, 'DOWN').then(res => {
+								this.$refs.table.refresh(void 0, true);
+							});
+						}
 					}],
 					datasource: () => {
 						return this.record ? DictionaryStore.loadEnums(this.record.type).then(data => {
 							return data || [];
 						}) : [];
 					},
-					store : DictionaryStore
+					store: DictionaryStore
 				},
 				formOptions: {
-					cols : 2,
+					cols: 2,
 					fields: [{
 						label: '枚举名称',
 						name: 'name',
@@ -90,8 +115,8 @@
 			};
 		},
 		methods: {
-			loadEnums() {
-				this.$refs.table.refresh(1, true);
+			loadEnums(page) {
+				this.$refs.table.refresh(page, true);
 			},
 			edit(item) {
 				this.$refs.form.reset(Object.assign({}, item));
@@ -99,14 +124,14 @@
 			operateSignal(signal) {
 				if (signal == 'SAVED') {
 					this.$refs.form.reset();
-					this.loadEnums();
+					this.loadEnums(void 0);
 				}
 			}
 		},
 		events: {
 			DICTIONARY_ENUM_SHOW(record) {
 				this.record = record;
-				this.loadEnums();
+				this.loadEnums(1);
 				this.show = true;
 			}
 		}

@@ -2,9 +2,10 @@
 	.sunset-form-field {
 		position: relative;
 		width: 76%;
-		margin-left: 12%;
+		margin-left: 20px;
 		margin-bottom: 15px;
 		.sunset-field-wrap {
+			width: 100%;
 			display: inline-table;
 			.sunset-field-label {
 				display: table-cell;

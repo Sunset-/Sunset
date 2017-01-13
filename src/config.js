@@ -2,8 +2,8 @@ import Vue from 'vue';
 //DEPENDENTS
 import FontAwesome from 'font-awesome';
 // import appCss from './assets/scss/app.scss';
-import bootstrapStyle from './vendor/xenon/less/bootstrap.less';
-import xenonStyle from './vendor/xenon/less/xenon.less';
+// import bootstrapStyle from './vendor/xenon/less/bootstrap.less';
+// import xenonStyle from './vendor/xenon/less/xenon.less';
 
 //BASE
 import Base from 'Base';

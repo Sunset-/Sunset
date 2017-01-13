@@ -19,23 +19,6 @@ class AccountStore extends Sunset.Service.Store {
 		}
 	}
 
-	treeNodes(){
-		return Promise.resolve().then(()=>{
-			var map = Base.ENUMS,
-				nodes = [];
-			Object.keys(map).forEach(type=>{
-				nodes.push({
-					key : type,
-					value : type
-				});
-				map[type].forEach(item=>{
-					item.parent = type;
-					nodes.push(item);
-				})
-			})
-			return nodes;
-		});
-	}
 }
 
 export default new AccountStore();

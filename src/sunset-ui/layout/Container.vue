@@ -1,4 +1,30 @@
 <style lang="sass">
+    body,
+    html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+    
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: inherit;
+        font-weight: 500;
+        line-height: 1.1;
+        color: inherit;
+    }
+    
     .sunset-container {
         display: table;
         width: 100%;

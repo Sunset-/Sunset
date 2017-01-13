@@ -1,10 +1,10 @@
 <template>
-    <sunset-layout title="管理账户">
+    <sunset-layout title="系统变量">
         <sunset-crud :options="options"></sunset-crud>
     </sunset-layout>
 </template>
 <script>
-    import AccountStore from './AccountStore.js';
+    import SystemVariableStore from './SystemVariableStore.js';
 
     const now = new Date().getTime();
 
@@ -15,15 +15,24 @@
         data() {
             return {
                 options: {
-                    title: '管理账户',
+                    title: '系统变量',
                     //表格
                     tableOptions: {
                         columns: [{
-                            title: '登录名',
-                            name: 'account'
+                            title: '变量名',
+                            name: 'name',
+                            style: {
+                                'white-space': 'nowrap'
+                            }
                         }, {
-                            title: '昵称',
-                            name: 'nickname'
+                            title: '变量值',
+                            name: 'value'
+                        }, {
+                            title: '备注',
+                            name: 'desc',
+                            style: {
+                                'min-width': '150px'
+                            }
                         }],
                         showIndex: true,
                         pageSize: 10,
@@ -60,42 +69,42 @@
                             permission: 'SYSTEM_MANAGER_DICTIONARY_DELETE',
                             signal: 'DELETE'
                         }],
-                        store: AccountStore
+                        store: SystemVariableStore
                     },
                     //表格表单
                     formOptions: {
                         cols: 3,
-                        store: AccountStore,
+                        store: SystemVariableStore,
                         fields: [{
-                            label: '登录名',
-                            name: 'account',
+                            label: '变量名',
+                            name: 'name',
                             widget: 'input',
                             validate: {
                                 required: true,
                                 maxlength: 32
                             }
                         }, {
-                            label: '密码',
-                            name: 'password',
-                            widget: 'input',
-                            premise(model) {
-                                return !model.id;
-                            },
+                            label: '变量值',
+                            name: 'value',
+                            widget: 'textarea',
+                            autosize: true,
+                            monopolize: true,
                             validate: {
                                 required: true,
-                                maxlength: 32
+                                maxlength: 1000
                             }
                         }, {
-                            label: '昵称',
-                            name: 'nickname',
-                            widget: 'input',
+                            label: '备注',
+                            name: 'desc',
+                            widget: 'textarea',
+                            autosize: true,
+                            monopolize: true,
                             validate: {
-                                required: true,
-                                maxlength: 32
+                                required: false,
+                                maxlength: 200
                             }
                         }],
                         format: (model) => {
-                            model.type = 1;
                             return model;
                         },
                         validate: (model) => {

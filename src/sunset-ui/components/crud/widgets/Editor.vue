@@ -1,44 +1,34 @@
 <template>
-	
-	<validator name="validation">
-		<div :class="['form-group',invalid?'has-error':'']">
-			<label class="control-label col-xs-1">{{options.label}}</label>
-			<div class="input-group col-xs-11" style="width:86.11111111111111%;">
-				<editor :value.sync="value"></editor>
-				<i v-show="invalid" class="glyphicon glyphicon-exclamation-sign text-danger sunset-pop" :data-content="invalidMsg"></i>
-			</div>
+	<div :class="['sunset-field-wrap',invalid?'field-invalid':'']">
+		<label class="sunset-field-label">{{options.label}}</label>
+		<div class="sunset-field">
+			<editor :value.sync="value"></editor>
 		</div>
-	</validator>
-
+	</div>
 </template>
-
 <script>
+	import Editor from '../../editor/Editor';
 
-	import {Editor} from 'sunset-ui';
-	
 	export default {
-		components : {
+		components: {
 			Editor
 		},
-		props : {
-			options : {
-				type : Object
+		props: {
+			options: {
+				type: Object
 			},
-			value : {
-			}
+			value: {}
 		},
-		data(){
-			return {
-			};
+		data() {
+			return {};
 		},
-		created(){
+		created() {
 
 		},
-		events:{
-			REFRESH_WIDGET_VALUE(){
+		events: {
+			REFRESH_WIDGET_VALUE() {
 				this.$broadcast('REFRESH_VALUE');
 			}
 		}
 	};
-
 </script>
