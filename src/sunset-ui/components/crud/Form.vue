@@ -157,12 +157,11 @@
 			reset(record) {
 				this.hasModel = !!record;
 				this.record = record;
-				this.model = this.cast(record || {});
-				//this.$broadcast('WIDGET_RESET');
-				// setTimeout(() => {}, 0)
-				// setTimeout(() => {
-				// 	this.$broadcast('WIDGET_REFRESH_VALUE');
-				// }, 100)
+				var model = this.cast(record || {});
+				if (Sunset.isFunction(this.options.cast)) {
+					model = this.options.cast(model) || model;
+				}
+				this.model = model;
 			},
 			cast(model) {
 				this.fields && this.fields.forEach(f => {

@@ -1,6 +1,9 @@
 <style>
 	.sunset-editor-container {
 		width: 100%;
+		.edui-editor{
+			z-index:800 !important;
+		}
 	}
 </style>
 <template>

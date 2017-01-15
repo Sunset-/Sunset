@@ -21,12 +21,18 @@
                         columns: [{
                             title: '车牌号',
                             name: 'plateNumber'
+                        },{
+                            title: '订单号',
+                            name: 'orderNo'
                         }, {
                             title: '停车时长',
                             name: 'duration'
                         }, {
+                            title: '总费用',
+                            name: 'totalAmount'
+                        },{
                             title: '缴费金额',
-                            name: 'price'
+                            name: 'currentReceivable'
                         }, {
                             title: '入库时间',
                             format: 'DATETIME',
@@ -35,11 +41,21 @@
                             title: '出库时间',
                             format: 'DATETIME',
                             name: 'endTime'
+                        }, {
+                            title: '状态',
+                            name: 'status',
+                            format(v){
+                                return {
+                                    '0' : '<span class="text-danger">未缴费</span>',
+                                    '1' : '<span class="text-success">已缴费</span>',
+                                    '2' : '<span class="text-disabled">未缴费，已过期</span>'
+                                }[v];
+                            }
                         }],
                         showIndex: true,
                         pageSize: 10,
                         localPage: false,
-                        multiCheck: true,
+                        multiCheck: false,
                         sortable: true,
                         format: {
                             list: 'rows',
@@ -48,22 +64,16 @@
                             currentPage: 'pageNumber'
                         },
                         //表格工具栏
-                        toolbar: [{
-                            label: '新增',
-                            icon: 'plus-round',
-                            color: 'success',
-                            permission: 'SYSTEM_MANAGER_DICTIONARY_ADD',
-                            signal: 'ADD'
-                        }],
+                        toolbar: [],
                         //表格搜索
                         filter: {
-                            align: 'right',
+                            align: 'left',
                             fields: [{
                                 label: '缴费日期',
                                 name: 'date',
                                 widget: 'date',
                                 type: 'daterange',
-                                placement: 'bottom',
+                                placement: 'bottom-start',
                                 placeholder: '缴费日期区间',
                                 shortcuts: [{
                                     text: '最近一周',
@@ -99,7 +109,8 @@
                             format(model) {
                                 return {
                                     startTime: model.date && model.date[0],
-                                    endTime: model.date && (new Date(model.date[1].getTime() + 86399999)),
+                                    endTime: model.date && model.date[1] && (new Date(model.date[1].getTime() +
+                                        86399999)),
                                     plateNumber: model.plateNumber
                                 }
                             }

@@ -125,6 +125,8 @@
 				if (signal == 'SAVED') {
 					this.$refs.form.reset();
 					this.loadEnums(void 0);
+				} else if (signal == 'CANCEL') {
+					this.show = false;
 				}
 			}
 		},

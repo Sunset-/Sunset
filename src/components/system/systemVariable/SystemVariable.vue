@@ -84,11 +84,38 @@
                                 maxlength: 32
                             }
                         }, {
+                            label: '类型',
+                            name: 'type',
+                            widget: 'select',
+                            dataType: String,
+                            data: [{
+                                text: '文本',
+                                value: '1'
+                            }, {
+                                text: 'HTML',
+                                value: '2'
+                            }]
+                        }, {
                             label: '变量值',
                             name: 'value',
                             widget: 'textarea',
                             autosize: true,
                             monopolize: true,
+                            premise(model) {
+                                return model.type != '2';
+                            },
+                            validate: {
+                                required: true,
+                                maxlength: 1000
+                            }
+                        }, {
+                            label: '变量值',
+                            name: 'html',
+                            widget: 'editor',
+                            monopolize: true,
+                            premise(model) {
+                                return model.type == '2';
+                            },
                             validate: {
                                 required: true,
                                 maxlength: 1000
@@ -104,7 +131,16 @@
                                 maxlength: 200
                             }
                         }],
+                        cast(model) {
+                            if (model.type == '2') {
+                                model.html = model.value;
+                            }
+                            return model;
+                        },
                         format: (model) => {
+                            if (model.type == '2') {
+                                model.value = model.html;
+                            }
                             return model;
                         },
                         validate: (model) => {
