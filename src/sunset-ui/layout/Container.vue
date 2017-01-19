@@ -38,12 +38,12 @@
             position: relative;
             width: 300px;
             background: #2c2e2f;
-            z-index: 1;
+            z-index: 0;
         }
         .sunset-content {
             display: table-cell;
             position: relative;
-            z-index: 1;
+            z-index: 0;
             padding-bottom: 0;
             vertical-align: top;
             word-break: break-word;

@@ -22,6 +22,7 @@
 		}
 		.field-invalid-tip {
 			position: absolute;
+			font-size: 16px;
 			top: 8px;
 			right: -20px;
 		}
@@ -39,7 +40,7 @@
 		<validator name="validation">
 			<div :is="widget" :ref="widget" :options="options" :value.sync="value" :invalid="invalid"></div>
 			<input type="hidden" :maxlength="maxlength" field="field" v-model="value" v-validate="options.validate" />
-			<i v-show="invalid" class="field-invalid-tip glyphicon glyphicon-exclamation-sign text-danger sunset-pop" :data-content="invalid"></i>
+			<i v-show="invalid" class="field-invalid-tip ivu-icon ivu-icon-information-circled text-warning sunset-pop" :data-content="invalid"></i>
 		</validator>
 	</div>
 </template>

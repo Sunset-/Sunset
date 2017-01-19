@@ -11,66 +11,20 @@ Vue.use(SunsetUI);
 
 import App from './components/App.vue';
 import Modules from './components/Modules.vue';
-
+import MenuStore from './components/system/menu/MenuStore';
 
 import Sign from './components/sign/Sign.vue';
 import SignStore from './components/sign/SignStore';
 
 //模块
-//import {moduleInstanceMap} from './modules';
-
-import Crud from './components/bootstrap/crud/Crud.vue';
-import Modal from './components/bootstrap/modal/Modal.vue';
-import Tree from './components/bootstrap/tree/Tree.vue';
-import View from './components/bootstrap/view/View.vue';
-
-//系统管理
-import Account from './components/system/account/Account.vue';
-import Dictionary from './components/system/dictionary/Dictionary.vue';
-import SystemVariable from './components/system/systemVariable/SystemVariable.vue';
-
-//业务
-import Payment from './components/business/payment/Payment.vue';
-
+import {
+	moduleComponent
+} from './modules';
 
 var router = new Router();
 
 window.Router = router;
 
-router.map({
-	'/sign': {
-		component: Sign
-	},
-	'/app': {
-		component: Modules,
-		subRoutes: {
-			'/system/account': {
-				component: Account
-			},
-			'/system/dictionary': {
-				component: Dictionary
-			},
-			'/system/systemVariable': {
-				component: SystemVariable
-			},
-			'/bootstrap/crud': {
-				component: Crud
-			},
-			'/bootstrap/modal': {
-				component: Modal
-			},
-			'/bootstrap/tree': {
-				component: Tree
-			},
-			'/bootstrap/view': {
-				component: View
-			},
-			'/payment': {
-				component: Payment
-			}
-		}
-	}
-});
 
 router.beforeEach(function (transition) {
 	if (transition.to.path != '/sign') {
@@ -85,5 +39,33 @@ router.beforeEach(function (transition) {
 	}
 })
 
+MenuStore.getAllMenus().then(res => {
+	var mountedModule = {};
+	res && res.forEach(menu => {
+		if (menu.module) {
+			mountedModule[menu.module] = true;
+		}
+	});
 
-router.start(App, 'app');
+	router.map({
+		'/sign': {
+			component: Sign
+		},
+		'/': {
+			component: Modules,
+			subRoutes: (function () {
+				var map = {};
+				for (var key in moduleComponent) {
+					if (mountedModule[key] && moduleComponent.hasOwnProperty(key)) {
+						map[`/app/${key}`] = {
+							component: moduleComponent[key]
+						};
+					}
+				}
+				return map;
+			})()
+		}
+	});
+
+	router.start(App, 'app');
+})

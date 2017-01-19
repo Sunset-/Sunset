@@ -1,12 +1,20 @@
+<style lang="sass">
+	.sunset-toolbar-item {
+		display: inline-block;
+		padding: 0px 3px;
+	}
+</style>
 <template>
 	<div class="sunset-toolbar">
-		<template v-for="tool in options" v-permission="tool.permission">
-			<template v-if="!tool.type">
-				<i-button :size="size" :type="tool.color||'primary'" :icon="tool.icon" @click="operate(tool)">{{tool.label}}</i-button>
-			</template>
-			<template v-if="tool.type=='file'">
-				<tool-file :options="tool" :ctx="ctx"></tool-file>
-			</template>
+		<template v-for="tool in options">
+			<div v-permission="tool.permission" class="sunset-toolbar-item">
+				<template v-if="!tool.type">
+					<i-button :size="size" :type="tool.color||'primary'" :icon="tool.icon" @click="operate(tool)">{{tool.label}}</i-button>
+				</template>
+				<template v-if="tool.type=='file'">
+					<tool-file :options="tool" :ctx="ctx"></tool-file>
+				</template>
+			</div>
 		</template>
 	</div>
 </template>

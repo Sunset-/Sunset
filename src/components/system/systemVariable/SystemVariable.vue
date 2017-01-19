@@ -51,7 +51,8 @@
                             icon: 'plus-round',
                             color: 'success',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_ADD',
-                            signal: 'ADD'
+                            signal: 'ADD',
+							permission: 'SystemVariable_ADD'
                         }],
                         //表格搜索
                         filter: false,
@@ -61,13 +62,15 @@
                             icon: 'edit',
                             color: 'warning',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_UPDATE',
-                            signal: 'MODIFY'
+                            signal: 'MODIFY',
+							permission: 'SystemVariable_MODIFY'
                         }, {
                             label: '删除',
                             icon: 'trash-a',
                             color: 'error',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_DELETE',
-                            signal: 'DELETE'
+                            signal: 'DELETE',
+							permission: 'SystemVariable_DELETE'
                         }],
                         store: SystemVariableStore
                     },

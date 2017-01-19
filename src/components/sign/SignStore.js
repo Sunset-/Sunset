@@ -16,7 +16,7 @@ export default {
 			type: 'POST',
 			data: model
 		}).then(data => {
-			//this.updatePermission(data.permissions);
+			this.updatePermission(data.permissions);
 			return this.currentUserCache = data;
 		});
 	},
@@ -35,7 +35,7 @@ export default {
 				return $http({
 					url: URLS.CURRENT
 				}).then(data => {
-					//this.updatePermission(data.permissions);
+					this.updatePermission(data.permissions);
 					return this.currentUserCache = data;
 				});
 			}
@@ -49,8 +49,8 @@ export default {
 	},
 	updatePermission(permissions) {
 		var cache = {};
-		permissions.forEach(item => {
-			cache[item.value] = true;
+		permissions && permissions.split(',').forEach(item => {
+			cache[item] = true;
 		});
 		Base.permissions = cache;
 		Vue.directive('permission', {

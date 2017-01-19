@@ -35,7 +35,7 @@
 							currentPage: 'pageNumber'
 						},
 						filter: {
-							align : 'right',
+							align: 'right',
 							fields: [{
 								label: '搜索',
 								name: 'keyword',
@@ -47,7 +47,8 @@
 							label: '新增',
 							icon: 'plus-round',
 							color: 'success',
-							signal: 'ADD'
+							signal: 'ADD',
+							permission: 'Dictionary_ADD'
 						}],
 						recordTools: [{
 							label: '枚举',
@@ -55,17 +56,20 @@
 							color: 'info',
 							operate: (record) => {
 								this.$broadcast('DICTIONARY_ENUM_SHOW', record);
-							}
+							},
+							permission: 'Dictionary_ENUM'
 						}, {
 							label: '修改',
 							icon: 'edit',
 							color: 'warning',
-							signal: 'MODIFY'
+							signal: 'MODIFY',
+							permission: 'Dictionary_MODIFY'
 						}, {
 							label: '删除',
 							icon: 'trash-a',
 							color: 'error',
-							signal: 'DELETE'
+							signal: 'DELETE',
+							permission: 'Dictionary_DELETE'
 						}]
 					},
 					formOptions: {
@@ -75,7 +79,7 @@
 							type: 'input',
 							validate: {
 								required: true,
-								maxlength: 32
+								maxlength: 24
 							}
 						}, {
 							label: '字典类型',
@@ -83,13 +87,13 @@
 							type: 'input',
 							validate: {
 								required: true,
-								maxlength: 32
+								maxlength: 24
 							}
 						}],
 						format: (model) => {
 							return model;
 						},
-						store : DictionaryStore
+						store: DictionaryStore
 					}
 				}
 			}

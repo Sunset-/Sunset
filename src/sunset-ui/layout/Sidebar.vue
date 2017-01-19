@@ -111,7 +111,7 @@
 			<header class="logo-env">
 				<!-- logo -->
 				<div class="logo">
-					<span class="logo-text">妇产转诊后台管理</span>
+					<span class="logo-text">{{logo}}</span>
 				</div>
 			</header>
 			<ul id="main-menu" class="main-menu">
@@ -136,6 +136,7 @@
 <script>
 	export default {
 		props: {
+			logo: {},
 			menus: {}
 		},
 		data() {
@@ -233,15 +234,15 @@
 		created() {
 			//将路径解析挂载到Base中
 			Base.currentModule = () => {
-					if (this.activeMenu) {
-						return {
-							title: this.activeMenu.title,
-							icon: this.activeMenu.icon
-						};
-					}
-					return {};
+				if (this.activeMenu) {
+					return {
+						title: this.activeMenu.title,
+						icon: this.activeMenu.icon
+					};
 				}
-				//路由监听
+				return {};
+			};
+			//路由监听
 			Router.afterEach(() => {
 				this.init();
 			});

@@ -1,6 +1,6 @@
 <template>
     <sunset-container>
-        <sunset-sidebar slot="leftside" :menus="menus"></sunset-sidebar>
+        <sunset-sidebar v-ref:sidebar slot="leftside" :menus="menus" logo="Sunset管理框架"></sunset-sidebar>
         <sunset-header :current-user="currentUser" :menus="headerMenus">
         </sunset-header>
         <sunset-major>
@@ -10,6 +10,10 @@
 </template>
 <script>
     import SignStore from './sign/SignStore';
+    import MenuStore from './system/menu/MenuStore';
+    import {
+        modules
+    } from '../modules.js';
 
     export default {
         data() {
@@ -23,56 +27,57 @@
                         });
                     }
                 }],
-                menus: [{
-                    title: 'Sunset组件库',
-                    icon: 'settings',
-                    subMenus: [{
-                        title: 'CURD',
-                        path: '/app/bootstrap/crud'
-                    }, {
-                        title: 'Tree',
-                        path: '/app/bootstrap/tree'
-                    }, {
-                        title: 'Model',
-                        path: '/app/bootstrap/modal'
-                    }, {
-                        title: 'View',
-                        path: '/app/bootstrap/view'
-                    }, {
-                        title: '图标',
-                        path: '/app/referral/assessmentCase'
-                    }]
-                }, {
-                    title: '系统管理',
-                    icon: 'home',
-                    permission: 'SYSTEM_MANAGER',
-                    subMenus: [{
-                        title: '管理帐号',
-                        path: '/app/system/account',
-                        permission: 'SYSTEM_MANAGER_DICTIONARY'
-                    }, {
-                        title: '数据字典',
-                        path: '/app/system/dictionary',
-                        permission: 'SYSTEM_MANAGER_DICTIONARY'
-                    }, {
-                        title: '系统变量',
-                        path: '/app/system/systemVariable',
-                        permission: 'SYSTEM_MANAGER_SYSTEMVARIABLE'
-                    }]
-                }, {
-                    title: '业务管理',
-                    icon: 'briefcase',
-                    subMenus: [{
-                        title: '缴费查询',
-                        path: '/app/payment'
-                    }]
-                }]
+                menus: []
             }
         },
         ready() {
+            //模块
+            let moduleMap = {};
+            modules && modules.forEach(m => {
+                moduleMap[m.name] = m;
+            });
+            //菜单
+            MenuStore.getAllMenus().then(res => {
+                res && res.sort(function (o1, o2) {
+                    if ((o1.parentId == '0' || o2.parentId == '0') && o1.parentId != o2.parentId) {
+                        return o1.parentId == '0' ? -1 : (o2.parentId == '0' ? 1 : 0);
+                    } else {
+                        let f1 = +o1.orderField,
+                            f2 = +o2.orderField;
+                        return f1 < f2 ? -1 : (f1 > f2 ? 1 : 0);
+                    }
+                });
+                let menus = [];
+                let menuMap = {};
+                res && res.forEach(m => {
+                    if (m.parentId == '0') {
+                        let parentMenu = {
+                            title: m.name,
+                            icon: m.icon,
+                            path: m.module ? (`/app/${m.module}`) : null,
+                            subMenus: m.module ? null : [],
+                            permission: m.module
+                        };
+                        menus.push(parentMenu);
+                        menuMap[m.id] = parentMenu;
+                    } else {
+                        menuMap[m.parentId].subMenus.push({
+                            title: m.name,
+                            icon: m.icon,
+                            path: `/app/${m.module}`,
+                            permission: m.module
+                        })
+                    }
+                });
+                this.menus = menus;
+                this.$nextTick(() => {
+                    this.$refs.sidebar.init();
+                });
+            });
+            //登录用户
             SignStore.currentUser().then(user => {
                 this.currentUser = user;
-            })
+            });
         }
     }
 </script>

@@ -206,7 +206,7 @@
 						}, {
 							label: '删除',
 							icon: 'glyphicon glyphicon-remove',
-							color: 'danger',
+							color: 'error',
 							permission: 'SYSTEM_MANAGER_DICTIONARY_DELETE',
 							signal: 'DELETE'
 						}],

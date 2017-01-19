@@ -1,6 +1,6 @@
 <style lang="sass">
-	.sunset-form-modal{
-		.ivu-select-dropdown{
+	.sunset-form-modal {
+		.ivu-select-dropdown {
 			position: absolute !important;
 		}
 	}
@@ -28,8 +28,8 @@
 		},
 		computed: {},
 		methods: {
-			open() {
-				this.$refs.form.reset();
+			open(model) {
+				this.$refs.form.reset(model);
 				this.visible = true;
 			},
 			ok() {
@@ -45,6 +45,7 @@
 				switch (signal) {
 					case 'SAVED':
 						this.cancel();
+						this.$emit('saved');
 						break;
 					case 'SAVE-ERROR':
 						this.modal_loading = false;

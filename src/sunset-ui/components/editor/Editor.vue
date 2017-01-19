@@ -1,4 +1,4 @@
-<style>
+<style lang="sass">
 	.sunset-editor-container {
 		width: 100%;
 		.edui-editor{

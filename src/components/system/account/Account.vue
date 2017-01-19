@@ -2,18 +2,18 @@
     <sunset-layout title="管理账户">
         <sunset-crud :options="options"></sunset-crud>
     </sunset-layout>
+    <sunset-table-modal @submit="tableSelected" v-ref:tablemodal :options="options.tableModalOptions"></sunset-table-modal>
 </template>
 <script>
     import AccountStore from './AccountStore.js';
+    import PermissionStore from '../permission/PermissionStore';
 
     const now = new Date().getTime();
 
     export default {
-        methods: {
-
-        },
         data() {
             return {
+                currentAccount: null,
                 options: {
                     title: '管理账户',
                     //表格
@@ -42,23 +42,38 @@
                             icon: 'plus-round',
                             color: 'success',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_ADD',
-                            signal: 'ADD'
+                            signal: 'ADD',
+							permission: 'Account_ADD'
                         }],
                         //表格搜索
                         filter: false,
                         //数据条目操作
                         recordTools: [{
+                            label: '角色',
+                            icon: 'ios-body',
+                            color: 'info',
+                            permission: 'SYSTEM_MANAGER_DICTIONARY_UPDATE',
+                            operate: (record) => {
+                                this.currentAccount = record;
+                                PermissionStore.rolesOfAccount(record.id).then(res => {
+                                    this.$refs.tablemodal.open(res);
+                                });
+                            },
+							permission: 'Account_ROLE'
+                        }, {
                             label: '修改',
                             icon: 'edit',
                             color: 'warning',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_UPDATE',
-                            signal: 'MODIFY'
+                            signal: 'MODIFY',
+							permission: 'Account_MODIFY'
                         }, {
                             label: '删除',
                             icon: 'trash-a',
                             color: 'error',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_DELETE',
-                            signal: 'DELETE'
+                            signal: 'DELETE',
+							permission: 'Account_DELETE'
                         }],
                         store: AccountStore
                     },
@@ -102,8 +117,57 @@
                             return true;
                         },
                         tools: null
+                    },
+                    tableModalOptions: {
+                        title: '角色分配',
+                        checked: {
+                            multi: true,
+                            max: 999,
+                            label: 'name'
+                        },
+                        tableOptions: {
+                            columns: [{
+                                title: '角色名称',
+                                name: 'name'
+                            }, {
+                                title: '类型',
+                                name: 'type',
+                                enum: 'ROLE_TYPE'
+                            }],
+                            showIndex: true,
+                            pageSize: 10,
+                            localPage: true,
+                            multiCheck: true,
+                            sortable: true,
+                            format: {
+                                list: '',
+                                count: 'length',
+                                pageSize: 'pageSize',
+                                currentPage: 'pageNumber'
+                            },
+                            //表格工具栏
+                            toolbar: false,
+                            //表格搜索
+                            filter: false,
+                            //数据条目操作
+                            recordTools: false,
+                            datasource: () => {
+                                return PermissionStore.all();
+                            }
+                        }
                     }
                 }
+            }
+        },
+        methods: {
+            tableSelected(data) {
+                let roleIds = data && data.map(item => item.id).join(',');
+                PermissionStore.authRoleToAccount({
+                    accountId: this.currentAccount.id,
+                    roleIds: roleIds
+                }).then(res => {
+                    this.$refs.tablemodal.cancel();
+                });
             }
         }
     };

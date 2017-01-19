@@ -92,14 +92,16 @@
 						name: 'name',
 						type: 'input',
 						validate: {
-							required: true
+							required: true,
+							maxlength: 24
 						}
 					}, {
 						label: '枚举值',
 						name: 'value',
 						type: 'input',
 						validate: {
-							required: true
+							required: true,
+							maxlength: 24
 						}
 					}],
 					format: (model) => {

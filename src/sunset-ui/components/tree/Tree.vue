@@ -143,7 +143,7 @@
 				return node;
 			},
 			//增加子节点
-			addNodes(parentData, childs, clear) {
+			addNodes(parentData, childs, clear, editing) {
 				if (parentData) {
 					var parentNode = this.getNodeByData(parentData);
 					if (clear === true) {
@@ -165,6 +165,9 @@
 							return newNode;
 						});
 						this.ztreeObj.addNodes(parentNode, newNodes);
+						if (editing) {
+							this.ztreeObj.editName(newNodes[0]);
+						}
 					}
 				}
 			},
@@ -210,9 +213,11 @@
 						ztreeObj.checkNode(node, true);
 					});
 				}
+				this.checkedNode();
 			},
 			//刷新树全部节点
 			refresh(nodes) {
+				this.cacheInitNodes = null;
 				this.nodes = nodes || [];
 				this.ztreeObj.destroy();
 				this.init();

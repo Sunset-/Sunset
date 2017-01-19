@@ -66,17 +66,6 @@ class DictionaryStore extends Sunset.Service.Store {
 				});
 				enumMap[item.value] = item.name;
 			});
-			//按value排序
-			for (var type in ENUMS) {
-				ENUMS[type].sort((o1, o2) => {
-					if (isNaN(o1.key) || isNaN(o2.key)) {
-						return o1.key == o2.key ? 0 : (o1.key < o2.key ? -1 : 1);
-					} else {
-						return +o1.key == +o2.key ? 0 : (+o1.key < +o2.key ? -1 : 1);
-					}
-
-				});
-			}
 			//挂载到全局业务对象中
 			Base.ENUMS = ENUMS;
 			Base.ENUM_MAP = ENUM_MAP;

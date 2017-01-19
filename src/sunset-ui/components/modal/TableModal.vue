@@ -3,43 +3,48 @@
         .ivu-select-dropdown {
             position: absolute !important;
         }
-        .table-modal-selected-item {
-            display: inline-block;
-            height: 22px;
-            line-height: 22px;
-            margin: 2px 4px 2px 0;
-            padding: 0 8px;
-            border: 1px solid #3399ff;
-            border-radius: 3px;
-            background: #3399ff;
-            font-size: 12px;
-            vertical-align: middle;
-            opacity: 1;
-            overflow: hidden;
-            cursor: pointer;
-            color: #FFF;
-            &.clear {
-                border: 1px solid #ff6600;
-                background: #ff6600;
-            }
-            .ivu-icon-ios-close-empty {
-                position: relative;
-                top: 1px;
-                margin-left: 3px;
-                -webkit-transform: scale(1.42857143) rotate(0);
-                transform: scale(1.42857143) rotate(0);
+        .table-modal-selected-wrap {
+            padding-bottom: 10px;
+            .table-modal-selected-item {
+                display: inline-block;
+                height: 22px;
+                line-height: 22px;
+                margin: 2px 4px 2px 0;
+                padding: 0 8px;
+                border: 1px solid #3399ff;
+                border-radius: 3px;
+                background: #3399ff;
+                font-size: 12px;
+                vertical-align: middle;
+                opacity: 1;
+                overflow: hidden;
+                cursor: pointer;
+                color: #FFF;
+                &.clear {
+                    border: 1px solid #ff6600;
+                    background: #ff6600;
+                }
+                .ivu-icon-ios-close-empty {
+                    position: relative;
+                    top: 1px;
+                    margin-left: 3px;
+                    -webkit-transform: scale(1.42857143) rotate(0);
+                    transform: scale(1.42857143) rotate(0);
+                }
             }
         }
     }
 </style>
 <template>
     <Modal class-name="sunset-table-modal" :visible.sync="visible" :title="options.title" @on-ok="ok" @on-cancel="cancel" :width="options.width||700">
-        <div class="table-modal-selected-item" v-for="item in checkeds">
-            <span>{{item[label]}}</span>
-            <Icon type="ios-close-empty" size="14" @click="removeItem($index)"></Icon>
-        </div>
-        <div v-if="checkeds.length" class="table-modal-selected-item clear" @click="removeAll">
-            <span>清空</span>
+        <div class="table-modal-selected-wrap">
+            <div class="table-modal-selected-item" v-for="item in checkeds">
+                <span>{{item[label]}}</span>
+                <Icon type="ios-close-empty" size="14" @click="removeItem($index)"></Icon>
+            </div>
+            <div v-if="checkeds.length" class="table-modal-selected-item clear" @click="removeAll">
+                <span>清空</span>
+            </div>
         </div>
         <sunset-table v-ref:table :options="tableOptions" :checkeds.sync="checkeds" :store="options.store"></sunset-table>
         <div slot="footer">
@@ -58,6 +63,7 @@
         data() {
             return {
                 visible: false,
+                modal_loading: false,
                 checkeds: []
             }
         },
@@ -120,14 +126,15 @@
                     }
                     return checkeds;
                 }).then(result => {
-                    this.$emit('submit', checkeds);
-                    this.cancel();
+                    this.$emit('submit', result);
+                    this.modal_loading = true;
                 }).catch(e => {
                     Sunset.tip(e.message, 'warning');
                 });
             },
             cancel() {
                 this.visible = false;
+                this.modal_loading = false;
             }
         }
     };
