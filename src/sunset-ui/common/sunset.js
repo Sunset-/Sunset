@@ -370,6 +370,40 @@ window.Sunset = {
         var r = window.location.search.substr(1).match(reg);
         if (r != null) return unescape(r[2]);
         return null;
+    },
+    wait: function (promiseFactory) {
+        var lock = false,
+            cache = null,
+            resolveStack = [];
+        return function () {
+            var self = this,
+                args = [].slice.call(arguments);
+            return new Promise((resolve, reject) => {
+                if (cache !== null) {
+                    resolve(cache);
+                } else {
+                    resolveStack.push({
+                        resolve: resolve,
+                        reject: reject
+                    });
+                    if (!lock) {
+                        lock = true;
+                        promiseFactory.apply(self, args).then(res => {
+                            cache = res;
+                            lock = false;
+                            while (resolveStack.length) {
+                                resolveStack.shift().resolve(res);
+                            }
+                        }).catch(err => {
+                            lock = false;
+                            while (resolveStack.length) {
+                                resolveStack.shift().reject(err);
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 };
 

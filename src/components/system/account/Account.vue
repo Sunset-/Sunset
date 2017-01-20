@@ -10,6 +10,12 @@
 
     const now = new Date().getTime();
 
+    var obj = {
+        admin: 'HOLDER'
+    };
+
+    var s = 'function fn(v){return v+"---"+Base.ENUM_MAP.ROLE_TYPE.SYSTEM}';
+
     export default {
         data() {
             return {
@@ -24,6 +30,10 @@
                         }, {
                             title: '昵称',
                             name: 'nickname'
+                        }, {
+                            title: '登录名',
+                            name: 'account',
+                            format: (new Function("return " + s))()
                         }],
                         showIndex: true,
                         pageSize: 10,
@@ -43,7 +53,7 @@
                             color: 'success',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_ADD',
                             signal: 'ADD',
-							permission: 'Account_ADD'
+                            permission: 'Account_ADD'
                         }],
                         //表格搜索
                         filter: false,
@@ -59,21 +69,21 @@
                                     this.$refs.tablemodal.open(res);
                                 });
                             },
-							permission: 'Account_ROLE'
+                            permission: 'Account_ROLE'
                         }, {
                             label: '修改',
                             icon: 'edit',
                             color: 'warning',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_UPDATE',
                             signal: 'MODIFY',
-							permission: 'Account_MODIFY'
+                            permission: 'Account_MODIFY'
                         }, {
                             label: '删除',
                             icon: 'trash-a',
                             color: 'error',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_DELETE',
                             signal: 'DELETE',
-							permission: 'Account_DELETE'
+                            permission: 'Account_DELETE'
                         }],
                         store: AccountStore
                     },

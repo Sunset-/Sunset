@@ -16,7 +16,7 @@ export default {
 			type: 'POST',
 			data: model
 		}).then(data => {
-			this.updatePermission(data.permissions);
+			data && this.updatePermission(data.permissions);
 			return this.currentUserCache = data;
 		});
 	},
@@ -27,20 +27,14 @@ export default {
 			return this.currentUserCache = null;
 		});
 	},
-	currentUser() {
-		return Promise.resolve().then(res => {
-			if (this.currentUserCache) {
-				return this.currentUserCache;
-			} else {
-				return $http({
-					url: URLS.CURRENT
-				}).then(data => {
-					this.updatePermission(data.permissions);
-					return this.currentUserCache = data;
-				});
-			}
+	currentUser: Sunset.wait(function () {
+		return $http({
+			url: URLS.CURRENT
+		}).then(data => {
+			data && this.updatePermission(data.permissions);
+			return this.currentUserCache = data;
 		});
-	},
+	}),
 	updatePassword(model) {
 		return $http({
 			url: URLS.UPDATE_PASSWORD,

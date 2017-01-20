@@ -34,7 +34,7 @@ class DictionaryStore extends Sunset.Service.Store {
 	order(id, type, arrow) {
 		return $http({
 			url: this.URLS.ORDER_ENUM.replace(/\{id\}/, id),
-			type : 'POST',
+			type: 'POST',
 			data: {
 				type: type,
 				arrow: arrow
