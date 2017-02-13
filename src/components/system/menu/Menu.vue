@@ -181,7 +181,7 @@
                                 beforeDrag: function (treeId, treeNodes) {
                                     return treeNodes[0].data.parentId != null;
                                 },
-                                onDrop: function (event, treeId, treeNodes, targetNode, moveType, isCopy) {
+                                onDrop: (event, treeId, treeNodes, targetNode, moveType, isCopy) => {
                                     var src = treeNodes[0].data,
                                         tgt = targetNode.data;
                                     if (src.parentId == tgt.parentId && (moveType == 'next' || moveType == 'prev')) {

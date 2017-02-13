@@ -15,6 +15,7 @@ import Table from './components/crud/Table.vue';
 import Form from './components/crud/Form.vue';
 
 import Tree from './components/tree/Tree.vue';
+import Page from './components/pager/Page.vue';
 
 import FormModal from './components/modal/FormModal.vue';
 import TableModal from './components/modal/TableModal.vue';
@@ -40,7 +41,8 @@ const components = {
     Tree: Tree,
     FormModal: FormModal,
     TableModal: TableModal,
-    TreeModal: TreeModal
+    TreeModal: TreeModal,
+    Page: Page
 }
 const Layouts = {
     Container: Container,

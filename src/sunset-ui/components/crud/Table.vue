@@ -188,7 +188,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 
 	Vue.filter('sunset_transcode', function (value, col, record) {
 		if (col.enum) {
-			return Base && Base.ENUM_MAP[col.enum][value] || value;
+			return Base && Base.ENUM_MAP[col.enum] && Base.ENUM_MAP[col.enum][value] || value;
 		} else if (col.format) {
 			if (Sunset.isFunction(col.format)) {
 				return col.format(value, record);
@@ -309,7 +309,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 				return this.options.datasource;
 			},
 			checkedIds() {
-				return this.checkeds.map(item => item.id);
+				return this.checkeds.map(item => item[this.idKey]);
 			},
 			formatFilter() {
 				return this.options.formatFilter;
@@ -326,7 +326,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 				this.$refs.filter && this.$refs.filter.reset();
 			},
 			search(filter, localFilter, force) {
-				this.filter = filter || {};
+				this.filter = Object.assign(this.filter, filter || {});
 				this.localFilter = localFilter;
 				this.refresh(1, force);
 			},
@@ -339,7 +339,8 @@ CRUD_OPERATE_SEARCH(filter) 查询
 						throw new Error('table remote datasorce need store !');
 					}
 					//后端分页
-					filter[this.format['currentPage'] || 'currentPage'] = pageNumber;
+					filter[this.format['currentPage'] || 'currentPage'] = (this.options.pageNumberStart === 0) ? pageNumber - 1 :
+						pageNumber;
 					filter[this.format['pageSize'] || 'pageSize'] = this.pageSize;
 					filter = this.formatFilter && this.formatFilter(filter) || filter;
 					this.store[this.options.method || 'list'](filter).then(res => {

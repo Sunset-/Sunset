@@ -137,13 +137,15 @@
 						var place = this[attr + 'Place'] || attr;
 						node[place] = data[place];
 					});
-					node.icon = data.icon;
+					if (data.icon) {
+						node.icon = data.icon;
+					}
 					node.data = data;
 				}
 				return node;
 			},
 			//增加子节点
-			addNodes(parentData, childs, clear, editing) {
+			addNodes(parentData, childs, clear, editing, isParent) {
 				if (parentData) {
 					var parentNode = this.getNodeByData(parentData);
 					if (clear === true) {
@@ -154,20 +156,25 @@
 							remoceNodes.forEach(n => this.ztreeObj.removeNode(n));
 						}
 					}
-					if (childs) {
-						if (!Sunset.isArray(childs)) {
-							childs = [childs];
-						}
-						var newNodes = childs.map(child => {
-							var newNode = {};
-							this.extractNode(newNode, child);
+				}
+				if (childs) {
+					if (!Sunset.isArray(childs)) {
+						childs = [childs];
+					}
+					var newNodes = childs.map(child => {
+						var newNode = {};
+						this.extractNode(newNode, child);
+						if (parentNode) {
 							newNode[this.pIdPlace] = parentNode[this.idPlace];
-							return newNode;
-						});
-						this.ztreeObj.addNodes(parentNode, newNodes);
-						if (editing) {
-							this.ztreeObj.editName(newNodes[0]);
 						}
+						if (isParent) {
+							newNode.isParent = true;
+						}
+						return newNode;
+					});
+					var news = this.ztreeObj.addNodes(parentNode, newNodes);
+					if (editing) {
+						this.ztreeObj.editName(news[0]);
 					}
 				}
 			},
@@ -186,6 +193,11 @@
 				if (data) {
 					this.ztreeObj.removeNode(this.getNodeByData(data));
 				}
+			},
+			//刷新子节点
+			reAsyncChildNodes(data) {
+				var treeNode = this.getNodeByData(data);
+				this.ztreeObj.reAsyncChildNodes(treeNode, "refresh");
 			},
 			//刷新节点选择
 			refreshChecked(checkedIds) {

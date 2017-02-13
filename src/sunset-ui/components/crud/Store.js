@@ -66,7 +66,10 @@ export default class Store {
 	removeById(id) {
 		return $http(this._triggerEvent('beforeDelete', {
 			url: this._getURL('DELETE').replace(/\{id\}/, id),
-			type: this._getMethod('DELETE', 'DELETE')
+			type: this._getMethod('DELETE', 'DELETE'),
+			data: {
+				id
+			}
 		})).then(res => {
 			this._triggerEvent('dataDirty');
 			return this._triggerEvent('afterDelete', res);

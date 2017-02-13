@@ -1,8 +1,18 @@
+<style lang="sass">
+	.editor-container {
+		position: relative;
+		&>div {
+			width: 500px;
+		}
+	}
+</style>
 <template>
 	<div :class="['sunset-field-wrap',invalid?'field-invalid':'']">
 		<label class="sunset-field-label">{{options.label}}</label>
-		<div class="sunset-field">
-			<editor :value.sync="value"></editor>
+		<div class="sunset-field editor-container">
+			<div>
+				<editor v-ref:editor :value.sync="value" :toolbar="options.toolbar"></editor>
+			</div>
 		</div>
 	</div>
 </template>
@@ -20,14 +30,22 @@
 			value: {}
 		},
 		data() {
-			return {};
-		},
-		created() {
-
+			return {
+				width: 0,
+				inited: false
+			};
 		},
 		events: {
 			REFRESH_WIDGET_VALUE() {
-				this.$broadcast('REFRESH_VALUE');
+				if (!this.inited) {
+					this.inited = true;
+					this.$nextTick(() => {
+						this.$refs.editor.setWidth($(this.$el).width() + 'px');
+					});
+				} else {
+					this.value = '';
+				}
+				//this.$refs.editor.setValueSilent(this.value);
 			}
 		}
 	};

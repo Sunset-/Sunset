@@ -7,7 +7,6 @@ const URLS = {
 	FORGET: '/service/system/user/member/findPwd',
 	UPDATE_PASSWORD: '/service/system/user/member/updatePwd'
 };
-
 export default {
 	currentUserCache: null,
 	login(model) {
@@ -53,7 +52,7 @@ export default {
 					this.el.remove();
 				}
 			}
-		})
+		});
 	}
 }
 

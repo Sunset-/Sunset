@@ -48,8 +48,10 @@
         </div>
         <sunset-table v-ref:table :options="tableOptions" :checkeds.sync="checkeds" :store="options.store"></sunset-table>
         <div slot="footer">
-            <i-button type="ghost" @click="cancel">{{options.cancelText||'取消'}}</i-button>
-            <i-button type="info" :loading="modal_loading" @click="ok">{{options.okText||'确定'}}</i-button>
+            <div v-if="!options.hideFooter">
+                <i-button type="ghost" @click="cancel">{{options.cancelText||'取消'}}</i-button>
+                <i-button type="info" :loading="modal_loading" @click="ok">{{options.okText||'确定'}}</i-button>
+            </div>
         </div>
     </Modal>
 </template>
@@ -64,7 +66,8 @@
             return {
                 visible: false,
                 modal_loading: false,
-                checkeds: []
+                checkeds: [],
+                promise: null
             }
         },
         computed: {
@@ -106,6 +109,12 @@
                 this.checkeds = checkeds || [];
                 this.$refs.table.resetFilter();
                 this.visible = true;
+                return new Promise((resolve, reject) => {
+                    this.promise = {
+                        resolve,
+                        reject
+                    };
+                });
             },
             ok() {
                 Promise.resolve().then(res => {
@@ -126,10 +135,13 @@
                     }
                     return checkeds;
                 }).then(result => {
-                    this.$emit('submit', result);
                     this.modal_loading = true;
+                    this.promise && this.promise.resolve(result);
+                    this.$emit('submit', result);
                 }).catch(e => {
                     Sunset.tip(e.message, 'warning');
+                    this.modal_loading = false;
+                    this.promise && this.promise.reject(e);
                 });
             },
             cancel() {

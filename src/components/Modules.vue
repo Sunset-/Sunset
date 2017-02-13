@@ -49,6 +49,8 @@
                 });
                 let menus = [];
                 let menuMap = {};
+                let module_menu = {};
+                let parent_menu = {};
                 res && res.forEach(m => {
                     if (m.parentId == '0') {
                         let parentMenu = {
@@ -56,8 +58,12 @@
                             icon: m.icon,
                             path: m.module ? (`/app/${m.module}`) : null,
                             subMenus: m.module ? null : [],
-                            permission: m.module
+                            permission: m.module ? m.module : null,
+                            id: m.module ? null : `MENU-${m.id}`
                         };
+                        if (!m.module) {
+                            parent_menu[m.id] = `MENU-${m.id}`;
+                        }
                         menus.push(parentMenu);
                         menuMap[m.id] = parentMenu;
                     } else {
@@ -66,10 +72,23 @@
                             icon: m.icon,
                             path: `/app/${m.module}`,
                             permission: m.module
-                        })
+                        });
+                        module_menu[m.module] = m.parentId;
                     }
                 });
                 this.menus = menus;
+                SignStore.currentUser().then(user => {
+                    if (user && user.permissions) {
+                        user.permissions.split(',').forEach(p => {
+                            if (module_menu[p]) {
+                                delete parent_menu[module_menu[p]];
+                            }
+                        });
+                        Object.keys(parent_menu).forEach(m => {
+                            this.$refs.sidebar.removeMenu(parent_menu[m]);
+                        });
+                    }
+                });
                 this.$nextTick(() => {
                     this.$refs.sidebar.init();
                 });

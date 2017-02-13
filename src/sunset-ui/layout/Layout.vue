@@ -76,10 +76,10 @@
 	<!-- 左窄右宽布局 -->
 	<template v-if="layoutType=='leftside-content'">
 		<div class="sunset-layout-content">
-			<div class="leftside">
+			<div class="leftside" :style="{width:leftWidth}">
 				<slot name="leftside"></slot>
 			</div>
-			<div class="right-content">
+			<div class="right-content" :style="{left:rightLeft}">
 				<slot name="content"></slot>
 			</div>
 		</div>
@@ -103,7 +103,8 @@
 			title: {
 				type: String
 			},
-			type: {}
+			type: {},
+			leftSize: {}
 		},
 		data() {
 			return {
@@ -113,6 +114,14 @@
 		computed: {
 			layoutType() {
 				return type[this.type] || 'content';
+			},
+			leftWidth() {
+				var leftSize = this.leftSize;
+				return `${leftSize||300}px`;
+			},
+			rightLeft() {
+				var leftSize = this.leftSize;
+				return `${(+leftSize||300)+25}px`;
 			}
 		}
 	};

@@ -11,16 +11,20 @@ import Menu from './components/system/menu/Menu.vue';
 import Permission from './components/system/permission/Permission.vue';
 
 //业务
-import Payment from './components/business/payment/Payment.vue';
 
 let permissions = {
     ADD: '新增',
     MODIFY: '修改',
     DELETE: '删除',
+    ENUM_UPDATE: '枚举修改',
+    ENUM_DELETE: '枚举删除',
+    ENUM_ORDER: '枚举排序',
     ROLE: '分配角色',
     ENUM: '枚举管理',
     MOUNT_MENU: '挂载菜单',
-    AUTHORIZATION: '授权'
+    AUTHORIZATION: '授权',
+    ADDREL: '添加关联关系',
+    DELETEREL: '删除关联关系'
 };
 
 let modules = [
@@ -62,7 +66,7 @@ let modules = [
         group: '系统模块',
         name: 'Dictionary',
         title: '字典管理',
-        permission: ['ADD', 'MODIFY', 'DELETE', 'ENUM'],
+        permission: ['ADD', 'MODIFY', 'DELETE', 'ENUM', 'ENUM_UPDATE', 'ENUM_DELETE', 'ENUM_ORDER'],
         component: Dictionary
     }, {
         group: '系统模块',
@@ -82,15 +86,9 @@ let modules = [
         title: '权限管理',
         permission: ['ADD', 'MODIFY', 'DELETE', 'AUTHORIZATION'],
         component: Permission
-    },
-    //业务模块
-    {
-        group: '业务模块',
-        color: 'warning',
-        name: 'Payment',
-        title: '停车缴费',
-        component: Payment
     }
+    //业务模块
+    
 ];
 
 var moduleComponent = {};

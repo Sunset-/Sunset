@@ -51,7 +51,6 @@
                             label: '新增',
                             icon: 'plus-round',
                             color: 'success',
-                            permission: 'SYSTEM_MANAGER_DICTIONARY_ADD',
                             signal: 'ADD',
                             permission: 'Account_ADD'
                         }],

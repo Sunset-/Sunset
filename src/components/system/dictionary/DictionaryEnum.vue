@@ -49,7 +49,7 @@
 						label: '修改',
 						icon: 'edit',
 						color: 'warning',
-						permission: 'SYSTEM_MANAGER_DICTIONARY_UPDATE',
+						permission: 'Dictionary_ENUM_UPDATE',
 						operate: (record) => {
 							this.edit(record);
 						}
@@ -57,12 +57,13 @@
 						label: '删除',
 						icon: 'trash-a',
 						color: 'error',
-						permission: 'SYSTEM_MANAGER_DICTIONARY_DELETE',
+						permission: 'Dictionary_ENUM_DELETE',
 						signal: 'DELETE'
 					}, {
 						label: '上移',
 						icon: 'arrow-up-c',
 						color: 'info',
+						permission: 'Dictionary_ENUM_ORDER',
 						operate: (record) => {
 							DictionaryStore.order(record.id, record.type, 'UP').then(res => {
 								this.$refs.table.refresh(void 0, true);
@@ -72,6 +73,7 @@
 						label: '下移',
 						icon: 'arrow-down-c',
 						color: 'info',
+						permission: 'Dictionary_ENUM_ORDER',
 						operate: (record) => {
 							DictionaryStore.order(record.id, record.type, 'DOWN').then(res => {
 								this.$refs.table.refresh(void 0, true);

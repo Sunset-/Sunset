@@ -6,6 +6,9 @@
         right: 15px;
         top: 50px;
         bottom: 65px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        border: 1px solid #efefef;
     }
     
     .permission-toolbar {

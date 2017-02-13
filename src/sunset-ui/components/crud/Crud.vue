@@ -85,6 +85,9 @@
 						this.PAGE = 'CRUD_TABLE';
 						this.$refs.breadcrumb.pop();
 						break;
+					case 'REFRESH':
+						this.$refs.table.refresh(void 0, true);
+						break;
 				}
 			},
 			routePath(path) {

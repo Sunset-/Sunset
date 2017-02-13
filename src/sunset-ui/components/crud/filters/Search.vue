@@ -1,6 +1,6 @@
 <template>
-	<div class="form-group" style="margin:0px;">
-		<i-input :value.sync="value" :placeholder="options.placeholder" :maxlength="maxlength">
+	<div class="form-group" :style="{margin:'0px'}">
+		<i-input :value.sync="value" @keydown="keydown($event)" :placeholder="options.placeholder" :maxlength="maxlength">
 			<i-button @click="search" slot="append" icon="ios-search"></i-button>
 		</i-input>
 	</div>
@@ -28,6 +28,11 @@
 		methods: {
 			search() {
 				this.$dispatch('FIELD_SEARCH');
+			},
+			keydown(ev) {
+				if (ev.keyCode == 13) {
+					this.$dispatch('FIELD_SEARCH');
+				}
 			}
 		}
 	};

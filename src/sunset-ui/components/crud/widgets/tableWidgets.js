@@ -11,8 +11,7 @@ const widgets = {
 	'Textarea': 'Textarea',
 	'Image': 'Image',
 	'Editor': 'Editor',
-	'Tableselect': 'Tableselect',
-	'Table': 'Table'
+	'Tableselect': 'Tableselect'
 }
 
 

@@ -6,7 +6,7 @@
 </style>
 <template>
     <div :class="['sunset-field-wrap',invalid?'field-invalid':'']">
-        <label class="sunset-field-label">{{options.label}}</label>
+        <label v-if="options.label" class="sunset-field-label">{{options.label}}</label>
         <div class="sunset-field radio-group-wrap">
             <Radio-group v-if="items.length" :type="options.type" :size="options.size" :model.sync="value">
                 <Radio v-for="item in items" :value="item.value" :disabled="item.disabled">

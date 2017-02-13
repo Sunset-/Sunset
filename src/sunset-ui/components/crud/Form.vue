@@ -103,9 +103,10 @@
 					throw new Error('校验不通过');
 					return;
 				}
-				var model = Object.assign({}, this.model);
+				//var model = Object.assign({}, this.model);
+				var model = JSON.parse(JSON.stringify(this.model));
 				if (Sunset.isFunction(this.options.format)) {
-					model = this.options.format && this.options.format(model) || model;
+					model = this.options.format && this.options.format(model, this.record) || model;
 				}
 				if (Sunset.isFunction(this.options.validate) && (!this.options.validate(model))) {
 					throw new Error('校验不通过');
@@ -156,12 +157,15 @@
 			},
 			reset(record) {
 				this.hasModel = !!record;
-				this.record = record;
+				this.record = JSON.parse(JSON.stringify(record || {}));
 				var model = this.cast(record || {});
 				if (Sunset.isFunction(this.options.cast)) {
 					model = this.options.cast(model) || model;
 				}
-				this.model = model;
+				this.$broadcast('REFRESH_WIDGET_VALUE');
+				this.$nextTick(() => {
+					this.model = model;
+				});
 			},
 			cast(model) {
 				this.fields && this.fields.forEach(f => {

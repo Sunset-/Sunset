@@ -115,7 +115,7 @@
 				</div>
 			</header>
 			<ul id="main-menu" class="main-menu">
-				<li v-permission="menu.permission" v-for="menu in menus" :class="{'has-sub':menu.subMenus,expanded : openedMenu==menu}">
+				<li v-permission="menu.permission" :id="menu.id" v-for="menu in menus" :class="{'has-sub':menu.subMenus,expanded : openedMenu==menu}">
 					<a :class="'menu-'+$index" href="javascript:;" @click="toggleMenu(menu,$index,true)">
 						<Icon v-if="menu.icon" :type="menu.icon" :size="14"></Icon>
 						<span class="title">{{menu.title}}</span>
@@ -142,10 +142,14 @@
 		data() {
 			return {
 				openedMenu: null,
-				activeMenu: null
+				activeMenu: null,
+				hideMenu: {}
 			}
 		},
 		methods: {
+			removeMenu(menu) {
+				$(`#${menu}`).remove();
+			},
 			toggleMenu(menu, index, toggle) {
 				var $subMenu = $(`.menu-${index} + ul`);
 				if ($subMenu.length) {
