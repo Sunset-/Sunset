@@ -58,7 +58,7 @@
 					ids.push(item[this.idKey]);
 					names.push(item[this.nameKey]);
 				})
-				this.value = ids.join(',');
+				this.value = this.options.object ? (this.multi ? items : items && items[0]) : ids.join(',');
 				this.text = names.join(',');
 				this.items = items;
 				this.$refs.tablemodal.cancel();

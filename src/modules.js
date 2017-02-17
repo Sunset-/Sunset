@@ -11,6 +11,17 @@ import Menu from './components/system/menu/Menu.vue';
 import Permission from './components/system/permission/Permission.vue';
 
 //业务
+import Doctor from './components/business/doctor/Doctor.vue';
+import Hospital from './components/business/hospital/Hospital.vue';
+import Team from './components/business/team/Team.vue';
+import Customer from './components/business/customer/Customer.vue';
+import Template from './components/business/template/Template.vue';
+
+import Reporting from './components/business/reportCenter/Reporting.vue';
+import Reported from './components/business/reportCenter/Reported.vue';
+
+import DicomImage from './components/business/dicomImage/DicomImage.vue';
+import Dailycase from './components/business/dailycase/Dailycase.vue';
 
 let permissions = {
     ADD: '新增',
@@ -86,9 +97,72 @@ let modules = [
         title: '权限管理',
         permission: ['ADD', 'MODIFY', 'DELETE', 'AUTHORIZATION'],
         component: Permission
-    }
+    },
     //业务模块
-    
+    {
+        group: '业务模块',
+        color: 'warning',
+        name: 'Doctor',
+        title: '医生管理',
+        permission: ['ADD', 'MODIFY'],
+        component: Doctor
+    }, {
+        group: '业务模块',
+        color: 'warning',
+        name: 'Hospital',
+        title: '医院管理',
+        permission: ['ADD', 'MODIFY', 'DELETE'],
+        component: Hospital
+    }, {
+        group: '业务模块',
+        color: 'warning',
+        name: 'Team',
+        title: '团队管理',
+        permission: ['ADD', 'MODIFY'],
+        component: Team
+    }, {
+        group: '业务模块',
+        color: 'warning',
+        name: 'Customer',
+        title: '站点管理',
+        permission: ['ADD', 'MODIFY', 'ADDREL', 'DELETEREL'],
+        component: Customer
+    }, {
+        group: '业务模块',
+        color: 'warning',
+        name: 'Template',
+        title: '诊断模板',
+        permission: ['ADD', 'MODIFY', 'DELETE'],
+        component: Template
+    }, {
+        group: '业务模块',
+        color: 'warning',
+        name: 'DicomImage',
+        title: 'Dicom影像',
+        permission: ['ADD', 'MODIFY', 'DELETE'],
+        component: DicomImage
+    }, {
+        group: '业务模块',
+        color: 'warning',
+        name: 'Dailycase',
+        title: '每日一例',
+        permission: ['ADD', 'MODIFY', 'DELETE'],
+        component: Dailycase
+    }, {
+        group: '业务模块',
+        color: 'warning',
+        name: 'Reporting',
+        title: '诊断中心',
+        permission: ['ADD', 'MODIFY', 'DELETE'],
+        component: Reporting
+    }, {
+        group: '业务模块',
+        color: 'warning',
+        name: 'Reported',
+        title: '归档报告',
+        permission: ['ADD', 'MODIFY', 'DELETE'],
+        component: Reported
+    }
 ];
 
 var moduleComponent = {};

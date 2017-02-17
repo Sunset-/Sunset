@@ -1,5 +1,15 @@
+<style lang="sass">
+	.search-form-group {
+		.ivu-input-wrapper {
+			margin-top: -2px;
+			.ivu-input {
+				border-radius: 4px 0px 0px 4px !important;
+			}
+		}
+	}
+</style>
 <template>
-	<div class="form-group" :style="{margin:'0px'}">
+	<div class="form-group search-form-group">
 		<i-input :value.sync="value" @keydown="keydown($event)" :placeholder="options.placeholder" :maxlength="maxlength">
 			<i-button @click="search" slot="append" icon="ios-search"></i-button>
 		</i-input>

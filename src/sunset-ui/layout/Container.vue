@@ -38,7 +38,7 @@
             position: relative;
             width: 300px;
             background: #2c2e2f;
-            z-index: 0;
+            z-index: 1;
         }
         .sunset-content {
             display: table-cell;
@@ -52,7 +52,7 @@
 </style>
 <template>
     <div class="sunset-container">
-        <div class="sunset-leftside">
+        <div class="sunset-leftside" :style="{width:leftWidth+'px'}">
             <slot name="leftside"></slot>
         </div>
         <div class="sunset-content">
@@ -61,5 +61,16 @@
     </div>
 </template>
 <script>
-    export default {};
+    export default {
+        data() {
+            return {
+                leftWidth: 240
+            }
+        },
+        methods: {
+            changeSideWidth(leftWidth) {
+                this.leftWidth = leftWidth;
+            }
+        }
+    };
 </script>

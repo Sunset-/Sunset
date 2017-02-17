@@ -184,23 +184,31 @@
                                 onDrop: (event, treeId, treeNodes, targetNode, moveType, isCopy) => {
                                     var src = treeNodes[0].data,
                                         tgt = targetNode.data;
-                                    if (src.parentId == tgt.parentId && (moveType == 'next' || moveType == 'prev')) {
-                                        var children = targetNode.getParentNode().children;
-                                        var changes = []
-                                        if (children && children.length) {
-                                            children.forEach((c, index) => {
-                                                if (c.data.orderField != index + 1) {
-                                                    changes.push(`${c.data.id}-${index+1}`);
-                                                    c.data.orderField = index + 1;
-                                                }
-                                            })
-                                        }
-                                        if (changes.length) {
-                                            MenuStore.orderMenu(changes.join(','));
+                                    if (moveType == 'next' || moveType == 'prev') {
+                                        if (src.parentId == tgt.parentId) {
+                                            var children = targetNode.getParentNode().children;
+                                            var changes = []
+                                            if (children && children.length) {
+                                                children.forEach((c, index) => {
+                                                    if (c.data.orderField != index + 1) {
+                                                        changes.push(`${c.data.id}-${index+1}`);
+                                                        c.data.orderField = index + 1;
+                                                    }
+                                                })
+                                            }
+                                            if (changes.length) {
+                                                MenuStore.orderMenu(changes.join(','));
+                                            }
+                                        } else {
+                                            var newSrc = Object.assign({}, src);
+                                            newSrc.parentId = tgt.parentId;
+                                            MenuStore.save(newSrc).then(res => {
+                                                this.refreshTree();
+                                            });
                                         }
                                     } else if (moveType == 'inner') {
                                         var newSrc = Object.assign({}, src);
-                                        newSrc.parentId = tgt.id;
+                                        newSrc.parentId = tgt.id || '0';
                                         MenuStore.save(newSrc).then(res => {
                                             this.refreshTree();
                                         });
@@ -211,7 +219,7 @@
                                         parent = treeNode && treeNode.data;
                                     if (dragModule && !parent.module) {
                                         MenuStore.save({
-                                            parentId: parent.id,
+                                            parentId: parent.id || '0',
                                             name: dragModule.title,
                                             module: dragModule.name,
                                             icon: dragModule.treeIcon || 'attribute_item.png',
@@ -256,7 +264,8 @@
                         }, {
                             label: '图标',
                             name: 'icon',
-                            widget: 'input',
+                            widget: 'icon',
+                            title : '选择菜单图标',
                             validate: {
                                 required: true,
                                 maxlength: 32

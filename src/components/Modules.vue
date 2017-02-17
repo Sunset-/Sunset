@@ -1,6 +1,6 @@
 <template>
-    <sunset-container>
-        <sunset-sidebar v-ref:sidebar slot="leftside" :menus="menus" logo="Sunset管理框架"></sunset-sidebar>
+    <sunset-container v-ref:container>
+        <sunset-sidebar v-ref:sidebar @change="changeSideWidth" slot="leftside" :menus="menus" logo="Sunset管理框架"></sunset-sidebar>
         <sunset-header :current-user="currentUser" :menus="headerMenus">
         </sunset-header>
         <sunset-major>
@@ -28,6 +28,11 @@
                     }
                 }],
                 menus: []
+            }
+        },
+        methods: {
+            changeSideWidth(leftWidth) {
+                this.$refs.container.changeSideWidth(leftWidth);
             }
         },
         ready() {

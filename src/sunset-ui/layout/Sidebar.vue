@@ -3,16 +3,26 @@
 		height: 100%;
 		display: table-cell;
 		position: relative;
-		width: 300px;
+		width: 240px;
 		background: #2c2e2f;
 		z-index: 1;
+		.side-toggler {
+			position: absolute;
+			bottom: 0px;
+			left: 0px;
+			right: 0px;
+			text-align: center;
+			padding: 5px 0px;
+			cursor: pointer;
+			&:hover {
+				color: #cdcdcd;
+			}
+		}
 		.sidebar-menu-inner {
 			position: fixed;
 			left: 0;
 			top: 0;
 			bottom: 0;
-			width: inherit;
-			overflow: hidden;
 		}
 		.logo-env {
 			display: block;
@@ -47,6 +57,11 @@
 			margin-top: 15px;
 			margin-bottom: 15px;
 			list-style: none;
+			.ivu-icon {
+				vertical-align: middle;
+				width: 22px;
+				text-align: center;
+			}
 			li {
 				&.has-sub>a:before {
 					position: relative;
@@ -103,11 +118,51 @@
 				}
 			}
 		}
+		.mini-main-menu {
+			&>li {
+				position: relative;
+				&>div {
+					display: block;
+					width: 50px;
+					height: 50px;
+					text-align: center;
+					line-height: 50px;
+					font-size: 30px;
+					color: #40bbea;
+					&:hover {
+						background: #414446;
+					}
+					&:hover>ul {
+						display: block;
+					}
+				}
+				ul {
+					position: absolute;
+					left: 50px;
+					top: 0px;
+					width: 120px;
+					display: none;
+					li {
+						height: 50px;
+						line-height: 50px;
+						font-size: 14px;
+						background: #2c2e2f;
+						a {
+							display: block;
+							color: #40bbea;
+						}
+						&:hover {
+							background: #414446;
+						}
+					}
+				}
+			}
+		}
 	}
 </style>
 <template>
 	<div class="sunset-sidebar sidebar-menu toggle-others fixed">
-		<div class="sidebar-menu-inner">
+		<div class="sidebar-menu-inner" v-show="theme=='normal'">
 			<header class="logo-env">
 				<!-- logo -->
 				<div class="logo">
@@ -117,19 +172,42 @@
 			<ul id="main-menu" class="main-menu">
 				<li v-permission="menu.permission" :id="menu.id" v-for="menu in menus" :class="{'has-sub':menu.subMenus,expanded : openedMenu==menu}">
 					<a :class="'menu-'+$index" href="javascript:;" @click="toggleMenu(menu,$index,true)">
-						<Icon v-if="menu.icon" :type="menu.icon" :size="14"></Icon>
+						<Icon v-if="menu.icon" :type="menu.icon" :size="20"></Icon>
 						<span class="title">{{menu.title}}</span>
 					</a>
 					<ul v-if="menu.subMenus">
 						<li v-for="subMenu in menu.subMenus" v-permission="subMenu.permission" :class="{'active':activeMenu==subMenu}">
 							<a href="javascript:;" @click="go(subMenu.path)">
-								<Icon v-if="subMenu.icon" :type="subMenu.icon" :size="14"></Icon>
+								<Icon v-if="subMenu.icon" :type="subMenu.icon" :size="20"></Icon>
 								<span class="title">{{subMenu.title}}</span>
 							</a>
 						</li>
 					</ul>
 				</li>
 			</ul>
+			<div class="side-toggler" @click="toggleMenuType">
+				<Icon type="chevron-left" size="26"></Icon>
+			</div>
+		</div>
+		<div class="sidebar-menu-inner" v-show="theme=='mini'">
+			<ul class="mini-main-menu">
+				<li v-permission="menu.permission" :id="menu.id" v-for="menu in menus" :class="{'has-sub':menu.subMenus,expanded : openedMenu==menu}">
+					<div :class="'mini-menu-'+$index" href="javascript:;" @click="toggleMenu(menu,$index,true)">
+						<Icon v-if="menu.icon" :type="menu.icon"></Icon>
+						<ul v-if="menu.subMenus">
+							<li v-for="subMenu in menu.subMenus" v-permission="subMenu.permission" :class="{'active':activeMenu==subMenu}">
+								<a href="javascript:;" @click="go(subMenu.path)">
+									<Icon v-if="subMenu.icon" :type="subMenu.icon" :size="20"></Icon>
+									<span class="title">{{subMenu.title}}</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+			<div class="side-toggler" @click="toggleMenuType">
+				<Icon type="chevron-right" size="26"></Icon>
+			</div>
 		</div>
 	</div>
 </template>
@@ -141,9 +219,22 @@
 		},
 		data() {
 			return {
+				theme: 'normal',
+				leftWidth: {
+					normal: 240,
+					mini: 50
+				},
+				subMenuHeight: 47,
 				openedMenu: null,
 				activeMenu: null,
 				hideMenu: {}
+			}
+		},
+		computed: {
+			sideStyle() {
+				return {
+					'width': this.theme == 'normal' ? '300px' : '30px'
+				};
 			}
 		},
 		methods: {
@@ -172,7 +263,7 @@
 				this.activeMenu = subMenu;
 			},
 			openSubMenu($subMenu) {
-				var subMenuHeight = $subMenu.outerHeight();
+				var subMenuHeight = $subMenu.children().length * this.subMenuHeight + 'px';
 				$subMenu.css({
 					height: 0
 				}).show().animate({
@@ -230,6 +321,10 @@
 						});
 					}
 				});
+			},
+			toggleMenuType() {
+				this.theme = this.theme == 'normal' ? 'mini' : 'normal';
+				this.$emit('change', this.leftWidth[this.theme]);
 			}
 		},
 		ready() {

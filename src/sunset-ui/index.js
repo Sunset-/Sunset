@@ -3,6 +3,8 @@ import 'iview/dist/styles/iview.css';
 
 const prefix = 'Sunset';
 
+import FormWidgets from './components/crud/widgets/widgets';
+
 import Sunset from './common/sunset';
 import Filters from './common/filters';
 import Directives from './common/directives';
@@ -101,4 +103,8 @@ exports.install = function install(Vue, options) {
     // Vue.prototype.$Message = Message;
     // Vue.prototype.$Modal = Modal;
     // Vue.prototype.$Notice = Notice;
+}
+
+exports.registFormWidget = function (name, widget) {
+    FormWidgets[`Widget${name}`] = widget;
 }

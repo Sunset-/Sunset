@@ -373,6 +373,9 @@ CRUD_OPERATE_SEARCH(filter) 查询
 					}
 				}
 			},
+			setData(data){
+				this.data = data;
+			},
 			checkItem(item, ev) {
 				this.checkRecord(item, ev.currentTarget.checked);
 			},

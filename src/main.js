@@ -1,13 +1,16 @@
 import config from './config';
+import Base from './base';
 
 import Vue from 'vue';
 import Router from 'vue-router';
 import VueTouch from 'vue-touch';
 import SunsetUI from 'sunset-ui';
+import SunsetUIExt from './sunset-ui-ext';
 
 Vue.use(Router);
 Vue.use(VueTouch);
 Vue.use(SunsetUI);
+
 
 import App from './components/App.vue';
 import Modules from './components/Modules.vue';

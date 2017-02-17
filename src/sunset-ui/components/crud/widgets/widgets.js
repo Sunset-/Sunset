@@ -12,7 +12,8 @@ const widgets = {
 	'Image': 'Image',
 	'Editor': 'Editor',
 	'Tableselect': 'Tableselect',
-	'Table': 'Table'
+	'Table': 'Table',
+	'Icon' : 'Icon'
 }
 
 
