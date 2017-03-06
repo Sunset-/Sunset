@@ -37,7 +37,7 @@
 </style>
 <template>
     <Modal class-name="sunset-table-modal" :visible.sync="visible" :title="options.title" @on-ok="ok" @on-cancel="cancel" :width="options.width||700">
-        <div class="table-modal-selected-wrap">
+        <div v-show="checked.multi" class="table-modal-selected-wrap">
             <div class="table-modal-selected-item" v-for="item in checkeds">
                 <span>{{item[label]}}</span>
                 <Icon type="ios-close-empty" size="14" @click="removeItem($index)"></Icon>
@@ -139,6 +139,7 @@
                     this.promise && this.promise.resolve(result);
                     this.$emit('submit', result);
                 }).catch(e => {
+                    console.error(e);
                     Sunset.tip(e.message, 'warning');
                     this.modal_loading = false;
                     this.promise && this.promise.reject(e);
@@ -150,4 +151,5 @@
             }
         }
     };
+
 </script>

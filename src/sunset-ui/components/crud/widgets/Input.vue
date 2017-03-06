@@ -3,9 +3,9 @@
 		<label class="sunset-field-label">{{options.label}}</label>
 		<div class="sunset-field">
 			<i-input :type="type" :value.sync="value" :maxlength="maxlength" :disabled="options.disabled" :readonly="options.readonly"
-							:placeholder="options.placeholder" :icon="options.icon" :size="options.size" :style="options.style">
+			    :placeholder="options.placeholder" :icon="options.icon" :size="options.size" :style="options.style">
 				<span v-if="options.prepend" slot="prepend">{{options.prepend}}</span>
-				<span v-if="options.append" slot="append">{{options.append}}</span>
+				<span v-if="options.append" style="cursor:pointer;" @click="clickButton" slot="append">{{options.append}}</span>
 			</i-input>
 		</div>
 	</div>
@@ -29,6 +29,13 @@
 			maxlength() {
 				return this.options.maxlength || this.options.validate && this.options.validate.maxlength && this.options.validate.maxlength
 					.rule;
+			}
+		},
+		methods: {
+			clickButton() {
+				if (this.options.click) {
+					this.options.click(this.options);
+				}
 			}
 		}
 	};

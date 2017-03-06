@@ -43,27 +43,13 @@
 			return {
 				record: null,
 				model: {},
-				hasModel: false
+				hasModel: false,
+				fields: []
 			}
 		},
 		computed: {
 			cols() {
 				return this.options.cols || DEFAULT_COLS;
-			},
-			fields() {
-				var fields = this.options && this.options.fields || [],
-					record = this.record;
-				fields = fields.filter(field => !!field.name && (field.premise ? field.premise(this.model) : true));
-				//初始化
-				if (record) {
-					fields = fields.map(f => {
-						if (Sunset.isFunction(f.init)) {
-							f = f.init(this.hasModel ? record : null) || f;
-						}
-						return f;
-					});
-				}
-				return fields;
 			},
 			tools() {
 				return this.options.tools || [{
@@ -98,6 +84,21 @@
 					return FULL_COLS / this.cols;
 				}
 			},
+			initFields(model) {
+				var fields = this.options && this.options.fields || [],
+					record = this.record;
+				fields = fields.filter(field => !!field.name && (field.premise ? field.premise(model) : true));
+				//初始化
+				if (record) {
+					fields = fields.map(f => {
+						if (Sunset.isFunction(f.init)) {
+							f = f.init(this.hasModel ? record : null) || f;
+						}
+						return f;
+					});
+				}
+				this.fields = fields;
+			},
 			generateModel() {
 				if (!this.formValid) {
 					throw new Error('校验不通过');
@@ -105,34 +106,25 @@
 				}
 				//var model = Object.assign({}, this.model);
 				var model = JSON.parse(JSON.stringify(this.model));
+				//表单项格式化
+				//var fields = this.fields;
+				//格式化
 				if (Sunset.isFunction(this.options.format)) {
 					model = this.options.format && this.options.format(model, this.record) || model;
 				}
+				//校验
 				if (Sunset.isFunction(this.options.validate) && (!this.options.validate(model))) {
 					throw new Error('校验不通过');
 					return;
 				}
 				return model;
-				//this.$broadcast('REFRESH_WIDGET_VALUE');
-				//if (this.formValid) {
-				// if (Sunset.isFunction(this.options.save)) {
-				// 	this.options.save(model);
-				// } else {
-				// 	this.store[this.options.method || 'save'](model).then(res => {
-				// 		Sunset.tip('保存成功', 'success');
-				// 		this.$dispatch('saved');
-				// 		this.$dispatch('CRUD_OPERATE_HOME');
-				// 		this.$dispatch('CRUD_FORM_SAVED', res, model);
-				// 	});
-				// }
-				//}
 			},
 			operateSignal(signal) {
 				switch (signal) {
 					case 'SUBMIT':
 						try {
 							this.submit();
-						} catch (e) {}
+						} catch (e) { }
 						break;
 					default:
 						this.$emit.apply(this, ['signal'].concat([].slice.call(arguments)));
@@ -162,6 +154,7 @@
 				if (Sunset.isFunction(this.options.cast)) {
 					model = this.options.cast(model) || model;
 				}
+				this.initFields(model);
 				this.$broadcast('REFRESH_WIDGET_VALUE');
 				this.$nextTick(() => {
 					this.model = model;
@@ -180,4 +173,5 @@
 			}
 		}
 	}
+
 </script>

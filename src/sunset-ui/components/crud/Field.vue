@@ -4,9 +4,11 @@
 		width: 76%;
 		margin-left: 20px;
 		margin-bottom: 15px;
+		font-size:0px;
 		.sunset-field-wrap {
 			width: 100%;
 			display: inline-table;
+			font-size:12px;
 			.sunset-field-label {
 				display: table-cell;
 				min-width: 70px;
@@ -17,7 +19,7 @@
 			}
 			.sunset-field {
 				display: table-cell;
-				width: 100%;
+				width:100%;
 			}
 		}
 		.field-invalid-tip {
@@ -125,8 +127,11 @@
 				//监听重建
 				this.options.watch.split(',').forEach(w => {
 					this.$watch(`model.${w}`, (v) => {
-						this.options.rebuild(this.generateWatchDependent());
-						this.$children[0].init && this.$children[0].init();
+						Promise.resolve().then(()=>{
+							return this.options.rebuild(this.generateWatchDependent());
+						}).then(res=>{
+							this.$children[0].init && this.$children[0].init();
+						});
 					});
 				})
 			}

@@ -2,8 +2,8 @@
 	<div :class="['sunset-field-wrap',invalid?'field-invalid':'']">
 		<label class="sunset-field-label">{{options.label}}</label>
 		<div class="sunset-field">
-			<i-select v-if="items.length" :model.sync="value" :placeholder="options.placeholder" :clearable="options.clearable" :multiple="options.multiple"
-							:filterable="options.filterable">
+			<i-select v-if="items.length" :model.sync="widgetValue" :placeholder="options.placeholder" :clearable="options.clearable"
+				:multiple="options.multiple" :filterable="options.filterable">
 				<template v-if="groupable">
 					<Option-group v-for="group in items" :label="group.group">
 						<i-option v-for="item in group.items" :value="item.value">{{ item.text }}</i-option>
@@ -12,7 +12,7 @@
 				<template v-if="!groupable">
 					<i-option v-for="item in items" :value="item.value">{{ item.text }}</i-option>
 				</template>
-			</i-select>
+				</i-select>
 		</div>
 	</div>
 </template>
@@ -25,16 +25,18 @@
 				type: Object
 			},
 			value: {
-				default () {
-					return [];
-				}
+				// default () {
+				// 	return [];
+				// }
 			},
 			invalid: {}
 		},
 		data() {
 			return {
 				groupable: false,
-				items: []
+				items: [],
+				widgetValue: [],
+				lock: false
 			};
 		},
 		computed: {},
@@ -75,9 +77,31 @@
 		},
 		ready() {
 			this.init();
-			if (!this.options.multiple) {
-				this.value = '';
+		},
+		watch: {
+			widgetValue(v) {
+				this.$nextTick(() => {
+					this.lock = true;
+					if (Sunset.isArray(v)) {
+						this.value = v.length ? v.join(',') : '';
+					} else {
+						this.value = v;
+					}
+					this.$nextTick(() => {
+						this.lock = false;
+					});
+				});
+			},
+			value(v) {
+				if (!this.lock) {
+					if (this.options.multiple) {
+						this.widgetValue = v;
+					} else {
+						this.widgetValue = v;
+					}
+				}
 			}
 		}
 	};
+
 </script>

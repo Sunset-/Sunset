@@ -13,7 +13,7 @@
 <!-- 数据表布局（标准增删改查） -->
 <template>
 	<div class="sunset-crud-container">
-		<div class="sunset-crud-breadcrumb">
+		<div v-show="options.title!==false" class="sunset-crud-breadcrumb">
 			<sunset-breadcrumb v-ref:breadcrumb :options="pathOptions" @route="routePath"></sunset-breadcrumb>
 		</div>
 		<!-- 数据表格 -->
@@ -24,6 +24,12 @@
 		<div v-show="PAGE=='CRUD_FORM'">
 			<div class="panel-body">
 				<sunset-form v-ref:form :options="options.formOptions" @signal="operateSignal"></sunset-form>
+			</div>
+		</div>
+		<!-- 查看页面 -->
+		<div v-show="PAGE=='CRUD_VIEW'">
+			<div class="panel-body">
+				<slot></slot>
 			</div>
 		</div>
 	</div>
@@ -81,6 +87,13 @@
 							title: '编辑'
 						});
 						break;
+					case 'VIEW':
+						this.PAGE = 'CRUD_VIEW';
+						this.PAGE_DETAIL = '查看';
+						this.$refs.breadcrumb.append({
+							title: '查看'
+						});
+						break;
 					case 'CANCEL':
 						this.PAGE = 'CRUD_TABLE';
 						this.$refs.breadcrumb.pop();
@@ -88,7 +101,11 @@
 					case 'REFRESH':
 						this.$refs.table.refresh(void 0, true);
 						break;
+					case 'RESET':
+						this.$refs.table.refresh(1, true);
+						break;
 				}
+				this.$emit('signal', signal, record);
 			},
 			routePath(path) {
 				if (path.key == 'HOME') {
@@ -103,4 +120,5 @@
 			});
 		}
 	};
+
 </script>

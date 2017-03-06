@@ -135,7 +135,7 @@
 					var item;
 					if (item = this.map[file.id]) {
 						item.status = 3;
-						item.src = response.data;
+						item.src = response._raw;
 					}
 					this.$dispatch('SUNSET_UPLOAD_SUCCESS');
 				});

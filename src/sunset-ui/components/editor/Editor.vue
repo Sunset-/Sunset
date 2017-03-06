@@ -31,21 +31,36 @@
 		data() {
 			return {
 				id: '',
+				waitValue : null,
+				ready : false,
 				pending: false
 			};
 		},
 		methods: {
 			init() {
-				var editor = this.editor;
-				//初始化值
-				editor.ready(() => {
-					editor.setContent(this.value || '');
-					//监听
-					editor.addListener('contentChange', () => {
-						this.pending || this.setValueSilent(editor.getContent());
-					});
-					editor.addListener('focus', () => {
-						this.pending || this.setValueSilent(editor.getContent());
+				this.ready = false;
+				this.id = `sunset-editor-${++uid}`;
+				this.$nextTick(() => {
+					//挂载插件
+					var opts = {
+						initialContent: '',
+						saveInterval: 9999999999
+					};
+					if (this.toolbar) {
+						opts.toolbars = [this.toolbar.split(',').map((item) => item.trim())];
+					}
+					var editor = this.editor = UE.getEditor(this.id, opts);
+					//初始化值
+					editor.ready(() => {
+						editor.setContent(this.waitValue || '');
+						this.ready = true;
+						//监听
+						editor.addListener('contentChange', () => {
+							this.pending || this.setValueSilent(editor.getContent());
+						});
+						editor.addListener('focus', () => {
+							this.pending || this.setValueSilent(editor.getContent());
+						});
 					});
 				});
 			},
@@ -61,25 +76,17 @@
 			}
 		},
 		ready() {
-			this.id = `sunset-editor-${++uid}`;
-			this.$nextTick(() => {
-				//挂载插件
-				var opts = {
-					initialContent: '',
-					saveInterval: 9999999999
-				};
-				if (this.toolbar) {
-					opts.toolbars = [this.toolbar.split(',').map((item) => item.trim())];
-				}
-				this.editor = UE.getEditor(this.id, opts);
-				this.init();
-			});
+			this.init();
 		},
 		watch: {
 			value(v) {
 				if (!this.pending) {
-					this.editor.setContent(v || '');
-					this.editor.focus(true);
+					if(this.ready){
+						this.editor.setContent(v || '');
+						this.editor.focus(true);
+					}else{
+						this.waitValue = v;
+					}
 				}
 			}
 		}

@@ -17,7 +17,6 @@
 			}
 			.sunset-field {
 				display: table-cell;
-				width: 100%;
 			}
 		}
 		.control-label {
@@ -117,11 +116,13 @@
 					this.value = this.options.defaultValue;
 				}
 			}
-			if (this.options.onChange) {
-				this.$watch('value', function (v) {
-					this.options.onChange(v);
+			if (this.options.onChange || this.options.changeFilter) {
+				this.$watch('value', (v) => {
+					this.options.onChange && this.options.onChange(v);
+					this.options.changeFilter && this.$dispatch('FIELD_SEARCH');
 				});
 			}
 		}
 	};
+
 </script>

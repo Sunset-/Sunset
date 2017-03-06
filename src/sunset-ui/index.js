@@ -15,6 +15,7 @@ import Filter from './components/crud/SearchForm.vue';
 import Toolbar from './components/crud/Toolbar.vue';
 import Table from './components/crud/Table.vue';
 import Form from './components/crud/Form.vue';
+import Editor from './components/editor/Editor';
 
 import Tree from './components/tree/Tree.vue';
 import Page from './components/pager/Page.vue';
@@ -22,6 +23,11 @@ import Page from './components/pager/Page.vue';
 import FormModal from './components/modal/FormModal.vue';
 import TableModal from './components/modal/TableModal.vue';
 import TreeModal from './components/modal/TreeModal.vue';
+import ViewModal from './components/modal/ViewModal.vue';
+
+import Breadcrumb from './components/breadcrumb/Breadcrumb';
+
+import ImageViewer from './components/commonImageViewer/ImageViewer';
 
 import {
     Container,
@@ -33,7 +39,6 @@ import {
 
 import Store from './components/crud/Store';
 
-
 const components = {
     Crud: Crud,
     Filter: Filter,
@@ -44,7 +49,10 @@ const components = {
     FormModal: FormModal,
     TableModal: TableModal,
     TreeModal: TreeModal,
-    Page: Page
+    ViewModal: ViewModal,
+    Breadcrumb: Breadcrumb,
+    Page: Page,
+    Editor: Editor
 }
 const Layouts = {
     Container: Container,
@@ -64,6 +72,9 @@ Object.keys(Services).forEach(s => {
     Sunset.Service[s] = Services[s];
 });
 
+var OuterVue = null,
+    waitRegistList = [];
+
 exports.install = function install(Vue, options) {
     Vue.use(iView);
     //布局
@@ -74,6 +85,12 @@ exports.install = function install(Vue, options) {
     Object.keys(components).forEach(c => {
         Vue.component(`${prefix}${c}`, components[c]);
     });
+    //扩展组件
+    OuterVue = Vue;
+    var extC;
+    while (extC = waitRegistList.pop()) {
+        Vue.component(extC.name, extC.widget);
+    }
     //全局提示
     var tipType = {
         info: 'info',
@@ -107,4 +124,15 @@ exports.install = function install(Vue, options) {
 
 exports.registFormWidget = function (name, widget) {
     FormWidgets[`Widget${name}`] = widget;
+}
+
+exports.registComponent = function (name, widget) {
+    if (OuterVue) {
+        OuterVue.component(name, widget);
+    } else {
+        waitRegistList.push({
+            name: name,
+            widget: widget
+        })
+    }
 }
