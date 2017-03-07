@@ -16,7 +16,7 @@
 	<div class="sunset-search-form-container">
 		<form :class="['sunset-search-form form-inline form-horizontal',right?'pull-right':'left-search-form']" onsubmit="return false">
 			<sunset-filter v-for="field in fields" :options="field" :value.sync="filter[field.name]"></sunset-filter>
-			<button v-if="searchButton" class="btn btn-info btn-sm search-form-button" @click="searchClick">{{searchButton}}</button>
+			<i-button v-if="searchButton" :type="searchButton.color||'primary'" :icon="searchButton.icon">{{searchButton.label}}</i-button>
 		</form>
 	</div>
 </template>
@@ -62,8 +62,8 @@
 			searchClick() {
 				this.search()
 			},
-			reset() {
-				this.filter = {};
+			reset(filter) {
+				this.filter = filter ? JSON.parse(JSON.stringify(filter)) : {};
 				this.search();
 			},
 			search() {

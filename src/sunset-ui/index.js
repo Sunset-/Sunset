@@ -28,6 +28,7 @@ import ViewModal from './components/modal/ViewModal.vue';
 import Breadcrumb from './components/breadcrumb/Breadcrumb';
 
 import ImageViewer from './components/commonImageViewer/ImageViewer';
+import Loading from './components/loading/Loading';
 
 import {
     Container,
@@ -52,7 +53,8 @@ const components = {
     ViewModal: ViewModal,
     Breadcrumb: Breadcrumb,
     Page: Page,
-    Editor: Editor
+    Editor: Editor,
+    Loading : Loading
 }
 const Layouts = {
     Container: Container,

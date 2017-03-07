@@ -138,40 +138,42 @@ CRUD_OPERATE_SEARCH(filter) 查询
 		</div>
 		<!--表格主体-->
 		<div class="table-wrap sunset-crud-table-wrap" :style="{maxHeight:domTableHeight}">
-			<table :class="['table table-bordered table-striped',options.condensed?'table-condensed':'']">
-				<thead>
-					<tr>
-						<th v-if="options.multiCheck" class="text-center" style="width:60px;">
-							<input type="checkbox" :checked="isAllCheck" @change="checkAll" />
-						</th>
-						<th v-if="options.showIndex" class="text-center" style="width:60px;">序号</th>
-						<th v-for="col in columns" :style="col.style||{}">
-							<div @click="sort(col)" style="cursor:pointer;">
-								{{col.title}}
-								<i v-if="sortable" :class="['fa',sortCol!=col.name?'fa-sort text-stable':(sortOrder=='ASC'?'fa-sort-asc':'fa-sort-desc')]"></i>
-							</div>
-						</th>
-						<th v-if="recordTools.length" class="text-center" :style="{width:(recordToolsWidth+'px')}">操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="item in list">
-						<th v-if="options.multiCheck" class="text-center">
-							<input type="checkbox" :value="item[idKey]" v-model="checkedIds" @change="checkItem(item,$event)" />
-						</th>
-						<td v-if="options.showIndex" class="text-center">{{(pageNumber-1)*pageSize+ $index+1}}</td>
-						<td v-for="col in columns" :style="col.style||{}">{{{getColValue(item,col.name) | sunset_transcode col item}}}</td>
-						<td class="sunset-table-record-tools" v-if="recordTools.length" class="text-center">
-							<div>
-								<div>
-									<sunset-toolbar :options="recordTools" :ctx="item" size="small" @signal="operateRecord"></sunset-toolbar>
+			<sunset-loading :loading.sync="loading" top="40">
+				<table :class="['table table-bordered table-striped',options.condensed?'table-condensed':'']">
+					<thead>
+						<tr>
+							<th v-if="options.multiCheck" class="text-center" style="width:60px;">
+								<input type="checkbox" :checked="isAllCheck" @change="checkAll" />
+							</th>
+							<th v-if="options.showIndex" class="text-center" style="width:60px;">序号</th>
+							<th v-for="col in columns" :style="col.style||{}">
+								<div @click="sort(col)" style="cursor:pointer;">
+									{{col.title}}
+									<i v-if="sortable" :class="['fa',sortCol!=col.name?'fa-sort text-stable':(sortOrder=='ASC'?'fa-sort-asc':'fa-sort-desc')]"></i>
 								</div>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-				<tfoot></tfoot>
-			</table>
+							</th>
+							<th v-if="recordTools.length" class="text-center" :style="{width:(recordToolsWidth+'px')}">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="item in list">
+							<th v-if="options.multiCheck" class="text-center">
+								<input type="checkbox" :value="item[idKey]" v-model="checkedIds" @change="checkItem(item,$event)" />
+							</th>
+							<td v-if="options.showIndex" class="text-center">{{(pageNumber-1)*pageSize+ $index+1}}</td>
+							<td v-for="col in columns" :style="col.style||{}">{{{getColValue(item,col.name) | sunset_transcode col item}}}</td>
+							<td class="sunset-table-record-tools" v-if="recordTools.length" class="text-center">
+								<div>
+									<div>
+										<sunset-toolbar :options="recordTools" :ctx="item" size="small" @signal="operateRecord"></sunset-toolbar>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot></tfoot>
+				</table>
+			</sunset-loading>
 		</div>
 		<!--分页-->
 		<div class="sunset-crud-table-footer">
@@ -233,7 +235,8 @@ CRUD_OPERATE_SEARCH(filter) 查询
 				isAllCheck: false,
 				domTableHeight: 'auto',
 				sortCol: null,
-				sortOrder: 'DESC'
+				sortOrder: 'DESC',
+				loading: false
 			}
 		},
 		computed: {
@@ -343,9 +346,11 @@ CRUD_OPERATE_SEARCH(filter) 查询
 						pageNumber;
 					filter[this.format['pageSize'] || 'pageSize'] = this.pageSize;
 					filter = this.formatFilter && this.formatFilter(filter) || filter;
+					this.loading = true;
 					this.store[this.options.method || 'list'](filter).then(res => {
 						this.data = res;
 						this.refrechCheckAll();
+						this.loading = false;
 					});
 				} else {
 					//本地分页
@@ -357,8 +362,10 @@ CRUD_OPERATE_SEARCH(filter) 查询
 							} else if (Sunset.isFunction(datasource)) {
 								var res = datasource();
 								if (res.then) {
+									this.loading = true;
 									res.then(data => {
 										this.data = Sunset.isArray(data) ? data.slice(0) : Object.assign({}, data);
+										this.loading = false;
 									});
 								} else {
 									this.data = Sunset.isArray(res) ? res.slice(0) : Object.assign({}, res);
@@ -366,14 +373,16 @@ CRUD_OPERATE_SEARCH(filter) 查询
 							}
 						} else {
 							filter = this.formatFilter && this.formatFilter(filter) || filter;
+							this.loading = true;
 							this.store[this.options.method || 'list'](filter).then(res => {
 								this.data = res;
+								this.loading = false;
 							});
 						}
 					}
 				}
 			},
-			setData(data){
+			setData(data) {
 				this.data = data;
 			},
 			checkItem(item, ev) {
