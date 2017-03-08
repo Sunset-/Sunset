@@ -124,7 +124,7 @@
 					case 'SUBMIT':
 						try {
 							this.submit();
-						} catch (e) { }
+						} catch (e) {}
 						break;
 					default:
 						this.$emit.apply(this, ['signal'].concat([].slice.call(arguments)));
@@ -140,10 +140,12 @@
 							Sunset.tip('保存成功', 'success');
 							this.$emit('signal', 'SAVED', res, model);
 						}).catch(e => {
+							consoel.error(e);
 							this.$emit('signal', 'SAVE-ERROR', e);
 						});
 					}
 				} catch (e) {
+					consoel.error(e);
 					this.$emit('signal', 'SAVE-ERROR', e);
 				}
 			},
@@ -173,5 +175,4 @@
 			}
 		}
 	}
-
 </script>
