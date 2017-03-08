@@ -54,7 +54,25 @@
 				if (tool.signal) {
 					this.$emit('signal', tool.signal, this.ctx);
 				} else if (Sunset.isFunction(tool.operate)) {
-					tool.operate(this.ctx);
+					if (tool.confirm) {
+						return Promise.resolve().then(() => {
+							return Sunset.isFunction(tool.confirm) ? tool.confirm(this.ctx) : tool.confirm;
+						}).then(confirmMsg => {
+							var clear = Sunset.confirm({
+								content: confirmMsg,
+								loading: true,
+								onOk: () => {
+									Promise.resolve().then(() => {
+										return tool.operate(this.ctx);
+									}).then(res => {
+										clear();
+									});
+								}
+							});
+						});
+					} else {
+						tool.operate(this.ctx);
+					}
 				}
 			}
 		}
