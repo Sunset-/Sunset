@@ -6,7 +6,7 @@
 </style>
 <template>
 	<div class="sunset-toolbar">
-		<template v-for="tool in options">
+		<template v-for="tool in showTools">
 			<div v-permission="tool.permission" class="sunset-toolbar-item">
 				<template v-if="!tool.type">
 					<i-button :size="size" :type="tool.color||'primary'" :icon="tool.icon" @click="operate(tool)">{{tool.label}}</i-button>
@@ -38,6 +38,15 @@
 				if (this.size == "small") {
 					return 'btn-xs';
 				}
+			},
+			showTools() {
+				return this.options && this.options.filter(item => {
+					if (item.premise && Sunset.isFunction(item.premise)) {
+						return item.premise(this.ctx);
+					} else {
+						return true;
+					}
+				});
 			}
 		},
 		methods: {
