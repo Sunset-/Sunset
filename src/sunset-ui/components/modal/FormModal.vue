@@ -9,8 +9,10 @@
 	<Modal class-name="sunset-form-modal" :visible.sync="visible" :title="options.title" @on-ok="ok" @on-cancel="cancel" :width="options.width||700">
 		<sunset-form v-ref:form :options="options.formOptions" @signal="operateSignal"></sunset-form>
 		<div slot="footer">
-			<i-button type="ghost" @click="cancel">{{options.cancelText||'取消'}}</i-button>
-			<i-button type="success" :loading="modal_loading" @click="ok">{{options.okText||'确定'}}</i-button>
+			<template v-if="!options.hideFooter">
+				<i-button type="ghost" @click="cancel">{{options.cancelText||'取消'}}</i-button>
+				<i-button type="success" :loading="modal_loading" @click="ok">{{options.okText||'确定'}}</i-button>
+			</template>
 		</div>
 	</Modal>
 </template>
@@ -41,11 +43,11 @@
 				this.modal_loading = false;
 				this.options.cancel && this.options.cancel();
 			},
-			operateSignal(signal) {
+			operateSignal(signal, res, model) {
 				switch (signal) {
 					case 'SAVED':
 						this.cancel();
-						this.$emit('saved');
+						this.$emit('saved', res, model);
 						break;
 					case 'SAVE-ERROR':
 						this.modal_loading = false;

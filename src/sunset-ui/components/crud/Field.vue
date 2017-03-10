@@ -128,7 +128,7 @@
 				this.options.watch.split(',').forEach(w => {
 					this.$watch(`model.${w}`, (v) => {
 						Promise.resolve().then(()=>{
-							return this.options.rebuild(this.generateWatchDependent());
+							return this.options.rebuild(this.generateWatchDependent(),this.options);
 						}).then(res=>{
 							this.$children[0].init && this.$children[0].init();
 						});

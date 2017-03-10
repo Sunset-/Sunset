@@ -71,7 +71,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 						padding: 12px 15px;
 						border: 1px solid #eee;
 						line-height: 1.42857143;
-						vertical-align: top;
+						vertical-align: middle;
 					}
 				}
 				tbody {
@@ -133,8 +133,8 @@ CRUD_OPERATE_SEARCH(filter) 查询
 	<div class="sunset-crud-table-container">
 		<!--过滤器-->
 		<div v-if="options.filter||options.toolbar" class="sunset-crud-table-toolbar-wrap">
-			<sunset-toolbar :options="options.toolbar" @signal="operateRecord"></sunset-toolbar>
-			<search-form v-ref:filter v-if="options.filter" :options="options.filter" @filter="search"></search-form>
+			<sunset-toolbar v-if="options.toolbar" :options="options.toolbar" @signal="operateRecord"></sunset-toolbar>
+			<search-form v-if="options.filter" v-ref:filter :options="options.filter" @filter="search"></search-form>
 		</div>
 		<!--表格主体-->
 		<div class="table-wrap sunset-crud-table-wrap" :style="{maxHeight:domTableHeight}">
@@ -236,7 +236,8 @@ CRUD_OPERATE_SEARCH(filter) 查询
 				domTableHeight: 'auto',
 				sortCol: null,
 				sortOrder: 'DESC',
-				loading: false
+				loading: false,
+				recordTools: []
 			}
 		},
 		computed: {
@@ -249,16 +250,17 @@ CRUD_OPERATE_SEARCH(filter) 查询
 			columns() {
 				return this.options.columns || [];
 			},
-			recordTools() {
-				return this.options.recordTools || [];
-			},
 			recordToolsWidth() {
-				var w = 0;
-				this.recordTools.forEach(t => {
-					w += t.label.length * 14 + (t.icon ? 20 : 0) + 25;
-				});
-				w += 30;
-				return w;
+				if (this.options.recordToolsWidth) {
+					return this.options.recordToolsWidth;
+				} else {
+					var w = 0;
+					this.recordTools.forEach(t => {
+						w += t.label.length * 14 + (t.icon ? 20 : 0) + 25;
+					});
+					w += 30;
+					return w;
+				}
 			},
 			format() {
 				return this.options.format || {};
@@ -325,8 +327,11 @@ CRUD_OPERATE_SEARCH(filter) 查询
 			getColValue(item, name) {
 				return Sunset.getAttribute(item, name, '');
 			},
-			resetFilter() {
-				this.$refs.filter && this.$refs.filter.reset();
+			setRecordTools(tools) {
+				return this.recordTools = tools || [];
+			},
+			resetFilter(filter) {
+				this.$refs.filter && this.$refs.filter.reset(filter);
 			},
 			search(filter, localFilter, force) {
 				this.filter = Object.assign(this.filter, filter || {});
@@ -503,6 +508,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 				this.refresh(1);
 			}
 			this.initStyle();
+			this.setRecordTools(this.options.recordTools);
 		}
 	}
 </script>

@@ -4,6 +4,9 @@
 			font-size: 16px;
 			padding: 5px 15px;
 		}
+		.ivu-alert{
+			margin-bottom:0px;
+		}
 	}
 </style>
 <template>
@@ -18,6 +21,9 @@
 				</i-col>
 			</template>
 		</Row>
+		<Alert v-if="options.tip" :type="tip.color">
+			{{{tip.text}}}
+		</Alert>
 		<sunset-toolbar v-if="options.tools!==false" :options="tools" @signal="operateSignal" style="text-align:center;"></sunset-toolbar>
 	</form>
 </template>
@@ -72,6 +78,9 @@
 					}
 				}
 				return true;
+			},
+			tip() {
+				return this.options.tip || {};
 			}
 		},
 		methods: {

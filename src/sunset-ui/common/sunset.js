@@ -371,16 +371,16 @@ window.Sunset = {
         if (r != null) return unescape(r[2]);
         return null;
     },
-    wait: function (promiseFactory) {
+    wait: function (promiseFactory, cacheHolder) {
         var lock = false,
-            cache = null,
             resolveStack = [];
-        return function () {
+        cacheHolder = cacheHolder || {};
+        return function (force) {
             var self = this,
                 args = [].slice.call(arguments);
             return new Promise((resolve, reject) => {
-                if (cache !== null) {
-                    resolve(cache);
+                if (!force && cacheHolder.cache !== null) {
+                    resolve(cacheHolder.cache);
                 } else {
                     resolveStack.push({
                         resolve: resolve,
@@ -389,7 +389,7 @@ window.Sunset = {
                     if (!lock) {
                         lock = true;
                         promiseFactory.apply(self, args).then(res => {
-                            cache = res;
+                            cacheHolder.cache = res;
                             lock = false;
                             while (resolveStack.length) {
                                 resolveStack.shift().resolve(res);

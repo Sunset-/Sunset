@@ -1,7 +1,17 @@
 <style lang="sass">
 	.sunset-search-form-container {
 		.sunset-search-form {
+			display: inline-block;
 			.search-form-button {
+				margin-bottom: 0px;
+			}
+		}
+		.sunset-search-form-tip {
+			display: inline-block;
+			float: right;
+			margin-left: 10px;
+			vertical-align: top;
+			&>div {
 				margin-bottom: 0px;
 			}
 		}
@@ -16,8 +26,11 @@
 	<div class="sunset-search-form-container">
 		<form :class="['sunset-search-form form-inline form-horizontal',right?'pull-right':'left-search-form']" onsubmit="return false">
 			<sunset-filter v-for="field in fields" :options="field" :value.sync="filter[field.name]"></sunset-filter>
-			<i-button v-if="searchButton" :type="searchButton.color||'primary'" :icon="searchButton.icon">{{searchButton.label}}</i-button>
+			<i-button v-if="searchButton" :type="searchButton.color||'primary'" :icon="searchButton.icon" @click="searchClick">{{searchButton.label}}</i-button>
 		</form>
+		<div class="sunset-search-form-tip" v-if="options.tip">
+			<Alert :type="options.tip.color" show-icon>{{options.tip.text}}</Alert>
+		</div>
 	</div>
 </template>
 <script>
@@ -43,6 +56,7 @@
 		},
 		data() {
 			return {
+				lock: false,
 				filter: {}
 			};
 		},
@@ -60,11 +74,15 @@
 				}
 			},
 			searchClick() {
-				this.search()
+				this.search();
 			},
 			reset(filter) {
+				this.lock = true;
 				this.filter = filter ? JSON.parse(JSON.stringify(filter)) : {};
 				this.search();
+				this.$nextTick(() => {
+					this.lock = false;
+				})
 			},
 			search() {
 				var filter = Object.assign({}, this.filter);
@@ -76,7 +94,7 @@
 		},
 		events: {
 			FIELD_SEARCH() {
-				this.search()
+				this.lock || this.search()
 			},
 			CRUD_TABLE_FILTER_RESET() {
 				this.filter = {};

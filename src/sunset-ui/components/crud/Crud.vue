@@ -104,6 +104,9 @@
 					case 'RESET':
 						this.$refs.table.refresh(1, true);
 						break;
+					case 'FILTER':
+						this.$refs.table.resetFilter(record);
+						break;
 				}
 				this.$emit('signal', signal, record);
 			},
@@ -120,5 +123,4 @@
 			});
 		}
 	};
-
 </script>

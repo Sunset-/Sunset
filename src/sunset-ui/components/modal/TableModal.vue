@@ -1,5 +1,10 @@
 <style lang="sass">
     .sunset-table-modal {
+        &.hide-footer {
+            .ivu-modal-footer {
+                display: none;
+            }
+        }
         .ivu-select-dropdown {
             position: absolute !important;
         }
@@ -36,7 +41,8 @@
     }
 </style>
 <template>
-    <Modal class-name="sunset-table-modal" :visible.sync="visible" :title="options.title" @on-ok="ok" @on-cancel="cancel" :width="options.width||700">
+    <Modal :class-name="'sunset-table-modal '+(!multi?'hide-footer':'')" :visible.sync="visible" :title="options.title" @on-ok="ok"
+        @on-cancel="cancel" :width="options.width||700">
         <div v-show="checked.multi" class="table-modal-selected-wrap">
             <div class="table-modal-selected-item" v-for="item in checkeds">
                 <span>{{item[label]}}</span>
@@ -48,7 +54,7 @@
         </div>
         <sunset-table v-ref:table :options="tableOptions" :checkeds.sync="checkeds" :store="options.store"></sunset-table>
         <div slot="footer">
-            <div v-if="!options.hideFooter">
+            <div v-if="multi">
                 <i-button type="ghost" @click="cancel">{{options.cancelText||'取消'}}</i-button>
                 <i-button type="info" :loading="modal_loading" @click="ok">{{options.okText||'确定'}}</i-button>
             </div>
@@ -71,25 +77,11 @@
             }
         },
         computed: {
+            multi() {
+                return this.checked.multi;
+            },
             tableOptions() {
-                var tableOptions = this.options.tableOptions;
-                //多选
-                if (this.checked.multi) {
-                    tableOptions.multiCheck = true;
-                    tableOptions.recordTools = [];
-                } else {
-                    tableOptions.multiCheck = false;
-                    tableOptions.recordTools = [{
-                        label: '选择',
-                        color: 'info',
-                        operate: (record) => {
-                            this.checkeds = [record];
-                            this.ok();
-                        }
-                    }];
-                }
-                tableOptions.condensed = true;
-                return tableOptions;
+                return this.options.tableOptions;
             },
             checked() {
                 return this.options.checked || {};
@@ -105,9 +97,31 @@
             removeAll() {
                 this.checkeds = [];
             },
-            open(checkeds) {
+            refreshTableOptions() {
+                var tableOptions = this.options.tableOptions;
+                //多选
+                if (this.multi) {
+                    tableOptions.multiCheck = true;
+                    this.$refs.table.setRecordTools();
+                } else {
+                    tableOptions.multiCheck = false;
+                    this.$refs.table.setRecordTools([{
+                        label: '选择',
+                        color: 'info',
+                        operate: (record) => {
+                            this.checkeds = [record];
+                            this.ok();
+                        }
+                    }]);
+                }
+                tableOptions.condensed = true;
+                return tableOptions;
+            },
+            open(checkeds, filter, force) {
+                this.refreshTableOptions();
                 this.checkeds = checkeds || [];
-                this.$refs.table.resetFilter();
+                this.$refs.table.resetFilter(filter);
+                force && this.$refs.table.refresh(1, true);
                 this.visible = true;
                 return new Promise((resolve, reject) => {
                     this.promise = {
@@ -151,5 +165,4 @@
             }
         }
     };
-
 </script>

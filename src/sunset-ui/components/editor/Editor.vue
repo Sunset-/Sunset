@@ -4,10 +4,18 @@
 		.edui-editor {
 			z-index: 800 !important;
 		}
+		.edui-editor-bottomContainer {
+			display: none;
+		}
+		&.sunset-editor-readonly {
+			.edui-editor-toolbarbox {
+				display: none;
+			}
+		}
 	}
 </style>
 <template>
-	<div class="sunset-editor-container">
+	<div :class="['sunset-editor-container',readOnly?'sunset-editor-readonly':'']">
 		<script :id="id" type="text/plain">
 			我是编辑器
 		</script>
@@ -26,15 +34,23 @@
 			},
 			value: {
 
+			},
+			readonly: {
+
 			}
 		},
 		data() {
 			return {
 				id: '',
-				waitValue : null,
-				ready : false,
+				waitValue: null,
+				ready: false,
 				pending: false
 			};
+		},
+		computed: {
+			readOnly() {
+				return this.readonly === true || this.readonly === "";
+			}
 		},
 		methods: {
 			init() {
@@ -61,6 +77,8 @@
 						editor.addListener('focus', () => {
 							this.pending || this.setValueSilent(editor.getContent());
 						});
+						//只读
+						this.readOnly && editor.setDisabled();
 					});
 				});
 			},
@@ -81,10 +99,10 @@
 		watch: {
 			value(v) {
 				if (!this.pending) {
-					if(this.ready){
+					if (this.ready) {
 						this.editor.setContent(v || '');
 						this.editor.focus(true);
-					}else{
+					} else {
 						this.waitValue = v;
 					}
 				}

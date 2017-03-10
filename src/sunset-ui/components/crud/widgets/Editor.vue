@@ -1,9 +1,6 @@
 <style lang="sass">
 	.editor-container {
 		position: relative;
-		&>div {
-			width: 500px;
-		}
 	}
 </style>
 <template>
@@ -11,7 +8,7 @@
 		<label class="sunset-field-label">{{options.label}}</label>
 		<div class="sunset-field editor-container">
 			<div>
-				<editor v-ref:editor :value.sync="value" :toolbar="options.toolbar"></editor>
+				<editor v-ref:editor :value.sync="value" :readonly="options.readonly" :toolbar="options.toolbar"></editor>
 			</div>
 		</div>
 	</div>
