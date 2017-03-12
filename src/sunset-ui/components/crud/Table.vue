@@ -330,7 +330,11 @@ CRUD_OPERATE_SEARCH(filter) 查询
 				return this.recordTools = tools || [];
 			},
 			resetFilter(filter) {
-				this.$refs.filter && this.$refs.filter.reset(filter);
+				if (this.$refs.filter) {
+					this.$refs.filter.reset(filter);
+				} else {
+					this.refresh(1, true);
+				}
 			},
 			search(filter, localFilter, force) {
 				this.filter = Object.assign(this.filter, filter || {});
