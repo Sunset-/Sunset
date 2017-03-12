@@ -114,6 +114,9 @@
 				if (path.key == 'HOME') {
 					this.PAGE = 'CRUD_TABLE';
 				}
+			},
+			getTableCheckeds(){
+				return this.$refs.table.getCheckeds();
 			}
 		},
 		ready() {

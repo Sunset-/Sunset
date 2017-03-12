@@ -1,7 +1,10 @@
 <style lang="sass">
-	.sunset-toolbar-item {
+	.sunset-toolbar {
 		display: inline-block;
-		padding: 0px 3px;
+		.sunset-toolbar-item {
+			display: inline-block;
+			padding: 0px 3px;
+		}
 	}
 </style>
 <template>

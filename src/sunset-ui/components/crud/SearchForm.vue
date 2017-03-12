@@ -1,5 +1,6 @@
 <style lang="sass">
 	.sunset-search-form-container {
+		display: inline-block;
 		.sunset-search-form {
 			display: inline-block;
 			.search-form-button {
@@ -24,9 +25,10 @@
 </style>
 <template>
 	<div class="sunset-search-form-container">
-		<form :class="['sunset-search-form form-inline form-horizontal',right?'pull-right':'left-search-form']" onsubmit="return false">
+		<form :class="['sunset-search-form form-inline form-horizontal',right?'pull-right':'']" onsubmit="return false">
 			<sunset-filter v-for="field in fields" :options="field" :value.sync="filter[field.name]"></sunset-filter>
 			<i-button v-if="searchButton" :type="searchButton.color||'primary'" :icon="searchButton.icon" @click="searchClick">{{searchButton.label}}</i-button>
+			<sunset-toolbar v-if="options.toolbar" :options="options.toolbar" @signal="operateRecord"></sunset-toolbar>
 		</form>
 		<div class="sunset-search-form-tip" v-if="options.tip">
 			<Alert :type="options.tip.color" show-icon>{{options.tip.text}}</Alert>

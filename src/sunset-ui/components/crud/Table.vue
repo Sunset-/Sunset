@@ -113,7 +113,6 @@ CRUD_OPERATE_SEARCH(filter) 查询
 		.sunset-crud-table-toolbar-wrap {
 			padding-bottom: 15px;
 			.sunset-toolbar {
-				float: left;
 				.btn {
 					margin-bottom: 0px;
 				}
@@ -484,6 +483,9 @@ CRUD_OPERATE_SEARCH(filter) 查询
 						});
 					}
 				});
+			},
+			getCheckeds() {
+				return this.checkeds;
 			}
 		},
 		events: {
