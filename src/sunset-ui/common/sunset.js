@@ -319,6 +319,22 @@ window.Sunset = {
             }
         }
     },
+    clone: function (obj) {
+        if (typeof (obj) != 'object')
+            return obj;
+        var re;
+        if (obj.constructor == Array) {
+            re = [];
+        } else {
+            re = {};
+        }
+        for (var i in obj) {
+            if (obj.hasOwnProperty(i)) {
+                re[i] = Sunset.clone(obj[i]);
+            }
+        }
+        return re;
+    },
     //获取命名空间下属性
     getAttribute: function (parent, namespace, defaultResult) {
         if (parent && namespace) {

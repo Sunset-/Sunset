@@ -15,6 +15,7 @@ import Filter from './components/crud/SearchForm.vue';
 import Toolbar from './components/crud/Toolbar.vue';
 import Table from './components/crud/Table.vue';
 import Form from './components/crud/Form.vue';
+import Datapage from './components/crud/Datapage.vue';
 import Editor from './components/editor/Editor';
 
 import Tree from './components/tree/Tree.vue';
@@ -46,6 +47,7 @@ const components = {
     Table: Table,
     Form: Form,
     Toolbar: Toolbar,
+    Datapage : Datapage,
     Tree: Tree,
     FormModal: FormModal,
     TableModal: TableModal,
