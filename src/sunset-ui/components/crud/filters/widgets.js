@@ -8,7 +8,8 @@ var widgets = {
 	WidgetSearch,
 	WidgetInput,
 	WidgetSelect,
-	WidgetDate
+	WidgetDate,
+	WidgetInput
 };
 
 export default widgets;

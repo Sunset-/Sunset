@@ -149,12 +149,12 @@
 							Sunset.tip('保存成功', 'success');
 							this.$emit('signal', 'SAVED', res, model);
 						}).catch(e => {
-							consoel.error(e);
+							console.error(e);
 							this.$emit('signal', 'SAVE-ERROR', e);
 						});
 					}
 				} catch (e) {
-					consoel.error(e);
+					console.error(e);
 					this.$emit('signal', 'SAVE-ERROR', e);
 				}
 			},

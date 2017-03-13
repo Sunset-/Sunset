@@ -23,7 +23,7 @@
 </template>
 <script>
 	import UEditorConfig from '../../vendor/ueditor/ueditor.config.js';
-	import UEditor from '../../vendor/ueditor/ueditor.all.js';
+	import UEditor from '../../vendor/ueditor/ueditor.sunset.js';
 
 	var uid = 0;
 

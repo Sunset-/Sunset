@@ -379,7 +379,7 @@ window.Sunset = {
             var self = this,
                 args = [].slice.call(arguments);
             return new Promise((resolve, reject) => {
-                if (!force && cacheHolder.cache !== null) {
+                if (!force && cacheHolder.cache) {
                     resolve(cacheHolder.cache);
                 } else {
                     resolveStack.push({

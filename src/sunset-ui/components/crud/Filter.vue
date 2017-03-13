@@ -14,6 +14,9 @@
 				white-space: nowrap;
 				text-align: right;
 				vertical-align: middle;
+				&.sunset-field-label-empty{
+					padding:0px;
+				}
 			}
 			.sunset-field {
 				display: table-cell;
@@ -124,5 +127,4 @@
 			}
 		}
 	};
-
 </script>

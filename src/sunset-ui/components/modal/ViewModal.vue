@@ -3,13 +3,20 @@
         .ivu-select-dropdown {
             position: absolute !important;
         }
+        &.hide-footer {
+            .ivu-modal-footer {
+                display: none;
+            }
+        }
     }
 </style>
 <template>
-    <Modal class-name="sunset-view-modal" :visible.sync="visible" :title="options.title" :width="options.width||700">
+    <Modal :class-name="'sunset-view-modal ' +(options.toolbar===false?'hide-footer':'')" :visible.sync="visible" :title="options.title"
+        :width="options.width||700">
         <slot></slot>
         <div slot="footer">
-            <i-button type="success" @click="cancel">{{options.okText||'确定'}}</i-button>
+            <sunset-toolbar v-if="customerTools" :options="options.toolbar"></sunset-toolbar>
+            <i-button v-if="!customerTools" type="success" @click="cancel">{{options.okText||'确定'}}</i-button>
         </div>
     </Modal>
 </template>
@@ -25,7 +32,11 @@
                 modal_loading: false
             }
         },
-        computed: {},
+        computed: {
+            customerTools() {
+                return Sunset.isArray(this.options.toolbar);
+            }
+        },
         methods: {
             open() {
                 this.visible = true;

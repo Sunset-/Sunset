@@ -1,6 +1,7 @@
 <style lang="sass">
 	.sunset-search-form-container {
 		display: inline-block;
+		vertical-align: top;
 		.sunset-search-form {
 			display: inline-block;
 			.search-form-button {
@@ -80,7 +81,8 @@
 			},
 			reset(filter) {
 				this.lock = true;
-				this.filter = filter ? JSON.parse(JSON.stringify(filter)) : {};
+				//this.filter = filter ? JSON.parse(JSON.stringify(filter)) : {};
+				this.filter = filter?Object.assign({},filter):{};
 				this.search();
 				this.$nextTick(() => {
 					this.lock = false;

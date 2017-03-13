@@ -1,6 +1,7 @@
 <style lang="sass">
 	.sunset-toolbar {
 		display: inline-block;
+		vertical-align: top;
 		.sunset-toolbar-item {
 			display: inline-block;
 			padding: 0px 3px;
