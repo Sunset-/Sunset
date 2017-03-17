@@ -69,7 +69,6 @@
 						this.$refs.table.refresh(void 0, true);
 						this.PAGE = 'CRUD_TABLE';
 						this.$refs.breadcrumb.pop();
-						Sunset.tip('保存成功', 'success');
 						break;
 					case 'ADD':
 						this.$refs.form.reset({});
@@ -115,7 +114,7 @@
 					this.PAGE = 'CRUD_TABLE';
 				}
 			},
-			getTableCheckeds(){
+			getTableCheckeds() {
 				return this.$refs.table.getCheckeds();
 			}
 		},

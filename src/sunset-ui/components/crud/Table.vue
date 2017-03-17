@@ -164,7 +164,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 							<td class="sunset-table-record-tools" v-if="recordTools.length" class="text-center">
 								<div>
 									<div>
-										<sunset-toolbar :options="recordTools" :ctx="item" size="small" @signal="operateRecord"></sunset-toolbar>
+										<sunset-toolbar :options="recordTools" :ctx="item" @signal="operateRecord"></sunset-toolbar>
 									</div>
 								</div>
 							</td>
@@ -175,7 +175,7 @@ CRUD_OPERATE_SEARCH(filter) 查询
 			</sunset-loading>
 		</div>
 		<!--分页-->
-		<div class="sunset-crud-table-footer">
+		<div v-show="totalPage" class="sunset-crud-table-footer">
 			<sunset-page @change="refresh" right="true" :page-number.sync="pageNumber" :show-total="true" :page-size="pageSize" :total.sync="count"></sunset-page>
 		</div>
 	</div>
@@ -308,6 +308,9 @@ CRUD_OPERATE_SEARCH(filter) 查询
 					//本地分页
 					return this.localCount;
 				}
+			},
+			totalPage() {
+				return this.count > this.pageSize;
 			},
 			datasource() {
 				return this.options.datasource;

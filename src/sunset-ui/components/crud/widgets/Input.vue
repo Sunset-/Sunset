@@ -34,7 +34,7 @@
 		methods: {
 			clickButton() {
 				if (this.options.click) {
-					this.options.click(this.options);
+					this.options.click(this.options, this.value);
 				}
 			}
 		}

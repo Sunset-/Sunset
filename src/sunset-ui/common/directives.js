@@ -5,12 +5,12 @@ import Vue from 'vue';
 var DEFAULT_IMG = {
 	DEFAULT : '/assets/img/nopic.png',
 	DICOM : '/assets/img/dicom-nopic.png',
-	AVATAR : '/assets/img/default_doctorhead.png'
+	AVATAR : '/assets/img/default-doctorhead.png'
 };
 
 Vue.directive('default-img', {
   update: function (newValue, oldValue) {
-  	var defaultImage = DEFAULT_IMG[this.expression]||DEFAULT_IMG.DICOM;
+  	var defaultImage = DEFAULT_IMG[this.expression]||DEFAULT_IMG.DEFAULT;
     this.el.onerror=()=>{
     	this.el.src = defaultImage;
     }

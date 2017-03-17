@@ -2,7 +2,7 @@
     @import '../../../style/index.scss';
     .widget-upload-btn {
         position: relative;
-        display: inline-block;
+        display: block;
         width: 60px;
         height: 60px;
         line-height: 29px;
@@ -11,6 +11,11 @@
         background: #FFF;
         color: #FFF;
         overflow: hidden;
+        &>div {
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+        }
         &:before {
             content: '';
             position: absolute;
@@ -35,31 +40,38 @@
             background: $border;
             cursor: pointer;
         }
+        &:hover {
+            border: 2px solid darken($border, 10%);
+            &:before {
+                background: darken($border, 10%);
+            }
+            &:after {
+                background: darken($border, 10%);
+            }
+        }
     }
 </style>
 <template>
     <div :class="['sunset-field-wrap']">
         <label class="sunset-field-label">{{options.label}}</label>
         <div class="sunset-field">
-            <upload-item v-for="item in queue" :data.sync="item" :size="options.size"></upload-item>
-            <div :id="id" class="widget-upload-btn">占位符占位符占位符占位符占位符</div>
+            <upload-image v-for="item in queue" :data.sync="item" :image-style="options.imageStyle"></upload-image>
+            <div :id="id" class="widget-upload-btn"></div>
             <span class="inline wrapper-x-sm" v-if="options.sizeTip">建议尺寸：{{options.sizeTip}}</span>
             <uploader v-ref:uploader :id="id" :url="options.url" :queue.sync="queue" :max="max"></uploader>
         </div>
     </div>
 </template>
 <script>
-    import {
-        Uploader,
-        UploadItem
-    } from '../../uploader/index';
+    import Uploader from '../../uploader/index';
+    import UploadImage from './tablet/UploadImage.vue';
 
     var uid = 0;
 
     export default {
         components: {
             Uploader,
-            UploadItem
+            UploadImage
         },
         props: {
             options: {
@@ -89,11 +101,16 @@
                 });
                 this.pending = true;
                 this.value = srcs.join(',');
+                this.$nextTick(() => {
+                    this.pending = false;
+                });
             }
         },
         events: {
             REFRESH_WIDGET_VALUE() {
-                this.$refs.uploader.init();
+                this.$nextTick(() => {
+                    this.$refs.uploader.init();
+                });
             },
             SUNSET_UPLOAD_SUCCESS() {
                 this.refreshValue();
@@ -121,7 +138,10 @@
                             });
                         });
                         this.pending = false;
+                    } else {
+                        while (queue.pop()) {}
                     }
+                    this.pending = false;
                 }
             }
         }

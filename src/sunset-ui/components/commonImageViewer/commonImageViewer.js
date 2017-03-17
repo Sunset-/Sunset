@@ -135,7 +135,7 @@
 				html.push('<div class="common-image-viewer">');
 				html.push('<ul class="common-viewer-thumbnails"></ul>');
 				html.push('<div title="关闭" class="image-viewer-close">X</div>');
-				html.push('<img class="image-viewer-img"  onerror="this.src=\'/assets/images/vehicle-no-picture440x330.png\'"/>');
+				html.push('<img class="image-viewer-img"  onerror="this.src=\'/assets/img/nopic.png\'"/>');
 				html.push('<div class="image-viewer-browse">');
 				html.push('<div class="image-viewer-browse-aperture"></div>');
 				html.push('</div>');

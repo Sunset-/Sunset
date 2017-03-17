@@ -4,14 +4,14 @@
 		width: 76%;
 		margin-left: 20px;
 		margin-bottom: 15px;
-		font-size:0px;
+		font-size: 0px;
 		.sunset-field-wrap {
 			width: 100%;
 			display: inline-table;
-			font-size:12px;
+			font-size: 12px;
 			.sunset-field-label {
 				display: table-cell;
-				min-width: 70px;
+				min-width: 80px;
 				white-space: nowrap;
 				text-align: right;
 				padding-right: 15px;
@@ -19,7 +19,7 @@
 			}
 			.sunset-field {
 				display: table-cell;
-				width:100%;
+				width: 100%;
 			}
 		}
 		.field-invalid-tip {
@@ -125,15 +125,19 @@
 			}
 			if (this.options.watch) {
 				//监听重建
-				this.options.watch.split(',').forEach(w => {
-					this.$watch(`model.${w}`, (v) => {
-						Promise.resolve().then(()=>{
-							return this.options.rebuild(this.generateWatchDependent(),this.options);
-						}).then(res=>{
-							this.$children[0].init && this.$children[0].init();
+				if (Sunset.isString(this.options.watch)) {
+					this.options.watch.split(',').forEach(w => {
+						this.$watch(`model.${w}`, (v) => {
+							Promise.resolve().then(() => {
+								return this.options.rebuild(this.generateWatchDependent(), this.options);
+							}).then(res => {
+								this.$children[0].init && this.$children[0].init();
+							});
 						});
 					});
-				})
+				} else {
+					console.error('watch must be a string');
+				}
 			}
 		}
 	};

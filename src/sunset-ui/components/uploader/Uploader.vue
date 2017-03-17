@@ -28,7 +28,7 @@
 				type: Array,
 				default: []
 			},
-			url : {
+			url: {
 
 			},
 			max: {
@@ -108,12 +108,12 @@
 						}
 					});
 					this.map = map;
-					//上传
-					uploader.upload();
 					//提示
 					if (overflow) {
 						Sunset.tip(`最多上传${max}张图片`);
 					}
+					//上传
+					uploader.upload();
 				});
 				//上传进度
 				uploader.on('uploadProgress', (file, percentage) => {

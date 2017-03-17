@@ -5,7 +5,7 @@
 		bottom: 0px;
 		left: 0px;
 		right: 0px;
-		top: 50px;
+		top: 30px;
 		padding: 15px;
 		background: #eeeeee;
 		overflow-x: hidden;

@@ -1,11 +1,14 @@
 <style>
     .radio-group-wrap .ivu-radio-group {
-        padding-top: 6px;
         height: 32px;
+    }
+    
+    .radio-group-wrap.radio-pd .ivu-radio-group {
+        padding-top: 6px;
     }
 </style>
 <template>
-    <div :class="['sunset-field-wrap',invalid?'field-invalid':'']">
+    <div :class="['sunset-field-wrap',invalid?'field-invalid':'',options.type=='button'?'':'radio-pd']">
         <label v-if="options.label" class="sunset-field-label">{{options.label}}</label>
         <div class="sunset-field radio-group-wrap">
             <Radio-group v-if="items.length" :type="options.type" :size="options.size" :model.sync="value">

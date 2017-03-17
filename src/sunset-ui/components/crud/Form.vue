@@ -4,13 +4,16 @@
 			font-size: 16px;
 			padding: 5px 15px;
 		}
-		.ivu-alert{
-			margin-bottom:0px;
+		.ivu-alert {
+			margin-bottom: 0px;
+		}
+		.sunset-toolbar {
+			display: block;
 		}
 	}
 </style>
 <template>
-	<form class="sunset-form form-horizontal">
+	<form class="sunset-form form-horizontal" @submit.prevent="submit">
 		<Row>
 			<template v-for="field in fields" v-ref:fields>
 				<i-col v-if="field.group" :span="24">
@@ -24,6 +27,7 @@
 		<Alert v-if="options.tip" :type="tip.color">
 			{{{tip.text}}}
 		</Alert>
+		<button style="display:none;" type="submit"></button>
 		<sunset-toolbar v-if="options.tools!==false" :options="tools" @signal="operateSignal" style="text-align:center;"></sunset-toolbar>
 	</form>
 </template>
@@ -122,11 +126,17 @@
 					model = this.options.format && this.options.format(model, this.record) || model;
 				}
 				//校验
-				if (Sunset.isFunction(this.options.validate) && (!this.options.validate(model))) {
-					throw new Error('校验不通过');
-					return;
-				}
-				return model;
+				return Promise.resolve().then(() => {
+					if (Sunset.isFunction(this.options.validate)) {
+						return Promise.resolve().then(() => {
+							return this.options.validate(model);
+						}).then(res => {
+							return model;
+						});
+					} else {
+						return model;
+					}
+				});
 			},
 			operateSignal(signal) {
 				switch (signal) {
@@ -141,18 +151,24 @@
 			},
 			submit() {
 				try {
-					var model = this.generateModel();
-					if (Sunset.isFunction(this.options.submit)) {
-						this.options.submit(model);
-					} else if (this.options.store) {
-						this.options.store[this.options.method || 'save'](model).then(res => {
-							Sunset.tip('保存成功', 'success');
-							this.$emit('signal', 'SAVED', res, model);
-						}).catch(e => {
-							console.error(e);
-							this.$emit('signal', 'SAVE-ERROR', e);
-						});
-					}
+					Promise.resolve().then(() => {
+						return this.generateModel();
+					}).then(model => {
+						if (Sunset.isFunction(this.options.submit)) {
+							this.options.submit(model);
+						} else if (this.options.store) {
+							this.options.store[this.options.method || 'save'](model).then(res => {
+								Sunset.tip(this.options.successTip || '保存成功', 'success');
+								this.$emit('signal', 'SAVED', res, model);
+							}).catch(e => {
+								console.error(e);
+								this.$emit('signal', 'SAVE-ERROR', e);
+							});
+						}
+					}).catch(e => {
+						console.error(e);
+						this.$emit('signal', 'SAVE-ERROR', e);
+					});
 				} catch (e) {
 					console.error(e);
 					this.$emit('signal', 'SAVE-ERROR', e);
@@ -182,6 +198,9 @@
 				});
 				return model;
 			}
+		},
+		ready() {
+			this.initFields({});
 		}
 	}
 </script>

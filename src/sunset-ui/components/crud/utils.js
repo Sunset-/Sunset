@@ -43,10 +43,10 @@ export default {
             var valuePlace = options.valuePlace || 'value',
                 textPlace = options.textPlace || 'text';
             data.forEach(item => {
-                items.push(Object.assign(item, {
+                items.push({
                     value: item[valuePlace],
                     text: item[textPlace]
-                }));
+                });
             });
         } else if (Sunset.isObject(data)) {
             //对象型
