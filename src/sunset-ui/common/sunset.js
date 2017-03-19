@@ -156,6 +156,16 @@ window.Sunset = {
             }
         }
     },
+    Numbers: {
+        fixed: function (value, point) {
+            point = point || 2;
+            if (!value) {
+                return '0.00';
+            } else {
+                return (+value).toFixed(point);
+            }
+        }
+    },
     /**
      * 字符串操作工具
      */
@@ -320,7 +330,7 @@ window.Sunset = {
         }
     },
     clone: function (obj) {
-        if (typeof (obj) != 'object')
+        if (typeof (obj) != 'object' || Sunset.isDate(obj))
             return obj;
         var re;
         if (obj.constructor == Array) {
