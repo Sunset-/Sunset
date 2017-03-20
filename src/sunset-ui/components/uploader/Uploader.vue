@@ -54,10 +54,14 @@
 					// 内部根据当前运行是创建，可能是input元素，也可能是flash.
 					pick: `#${this.id}`,
 					// 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-					resize: false
+					resize: false,
+					duplicate: true
 				});
 				//选择文件
 				uploader.on('filesQueued', files => {
+					if (!files || files[0].size == 0) {
+						return;
+					}
 					var queue = this.queue,
 						max = this.max === true ? 9999999 : this.max,
 						map = {},
@@ -137,6 +141,7 @@
 						item.status = 3;
 						item.src = response._raw;
 					}
+					$(`#${this.id} input`).val('');
 					this.$dispatch('SUNSET_UPLOAD_SUCCESS');
 				});
 			},
