@@ -1,8 +1,3 @@
-import {
-	Cache
-} from 'Decorators';
-
-
 export default class Store {
 
 	constructor(ops) {

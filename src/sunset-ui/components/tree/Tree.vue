@@ -4,8 +4,8 @@
 <script>
 	var treeCounter = 0;
 
-	import treeStyle from '../../vendor/ztree/zTreeStyle/zTreeStyle.css';
-	import treeScript from '../../vendor/ztree/jquery.ztree.all-3.5.min.js';
+	import treeStyle from 'ztree-style';
+	import treeScript from 'ztree';
 
 	var extractAttrs = ['id', 'name', 'title', 'type'];
 

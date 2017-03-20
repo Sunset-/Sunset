@@ -1,5 +1,5 @@
 import iView from 'iview';
-import 'iview/dist/styles/iview.css';
+import 'iview-style';
 
 const prefix = 'Sunset';
 

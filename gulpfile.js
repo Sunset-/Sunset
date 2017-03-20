@@ -58,5 +58,5 @@ gulp.task('unzip', ['upload'], function() {
 });
 
 gulp.task('publish', function(cb) {
-	gulpSequence('version', 'zip', 'unzip', cb);
+	gulpSequence('build', 'zip', 'unzip', cb);
 })

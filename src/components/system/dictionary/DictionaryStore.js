@@ -1,9 +1,3 @@
-import {
-	Cache,
-	Singleton
-} from 'Decorators';
-
-@Singleton
 class DictionaryStore extends Sunset.Service.Store {
 
 	constructor() {

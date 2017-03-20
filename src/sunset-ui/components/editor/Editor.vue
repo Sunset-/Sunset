@@ -22,8 +22,8 @@
 	</div>
 </template>
 <script>
-	import UEditorConfig from '../../vendor/ueditor/ueditor.config.js';
-	import UEditor from '../../vendor/ueditor/ueditor.sunset.js';
+	import UEditorConfig from 'ueditor-config';
+	import UEditor from 'ueditor';
 
 	var uid = 0;
 
