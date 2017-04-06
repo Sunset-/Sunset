@@ -22,6 +22,7 @@
                 currentAccount: null,
                 options: {
                     title: '管理账户',
+                    store: AccountStore,
                     //表格
                     tableOptions: {
                         columns: [{
@@ -40,6 +41,7 @@
                         localPage: false,
                         multiCheck: false,
                         sortable: true,
+                        lazy: true,
                         format: {
                             list: 'rows',
                             count: 'count',
@@ -61,7 +63,6 @@
                             label: '角色',
                             icon: 'ios-body',
                             color: 'info',
-                            permission: 'SYSTEM_MANAGER_DICTIONARY_UPDATE',
                             operate: (record) => {
                                 this.currentAccount = record;
                                 PermissionStore.rolesOfAccount(record.id).then(res => {
@@ -73,14 +74,25 @@
                             label: '修改',
                             icon: 'edit',
                             color: 'warning',
-                            permission: 'SYSTEM_MANAGER_DICTIONARY_UPDATE',
                             signal: 'MODIFY',
                             permission: 'Account_MODIFY'
+                        }, {
+                            label: '重置密码',
+                            icon: 'refresh',
+                            color: 'info',
+                            confirm: '确认重置密码？',
+                            operate: (record) => {
+                                AccountStore.resetPassword({
+                                    id: record.id
+                                }).then(res => {
+                                    Sunset.tip('重置成功', 'success');
+                                });
+                            },
+                            permission: 'Account_RESET_PASSWORD'
                         }, {
                             label: '删除',
                             icon: 'trash-a',
                             color: 'error',
-                            permission: 'SYSTEM_MANAGER_DICTIONARY_DELETE',
                             signal: 'DELETE',
                             permission: 'Account_DELETE'
                         }],
@@ -148,6 +160,7 @@
                             localPage: true,
                             multiCheck: true,
                             sortable: true,
+                            lazy: true,
                             format: {
                                 list: '',
                                 count: 'length',

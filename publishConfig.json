@@ -12,6 +12,6 @@
 		"pass": "123456",
 		"port": "22",
 		"key": "~/.ssh/sdfsfdsf",
-		"remotePath": "/home/referral/ui/manage"
+		"remotePath": "/home/peaimage/ui2017/manage"
 	}
 }

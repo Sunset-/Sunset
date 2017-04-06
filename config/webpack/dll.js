@@ -1,5 +1,6 @@
 module.exports = [
     'jquery',
+    'echarts',
     'vue',
     'vue-router',
     'iview',

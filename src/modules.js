@@ -1,8 +1,3 @@
-import Crud from './components/bootstrap/crud/Crud.vue';
-import Modal from './components/bootstrap/modal/Modal.vue';
-import Tree from './components/bootstrap/tree/Tree.vue';
-import View from './components/bootstrap/view/View.vue';
-
 //系统管理
 import Account from './components/system/account/Account.vue';
 import Dictionary from './components/system/dictionary/Dictionary.vue';
@@ -23,10 +18,16 @@ import Reported from './components/business/reportCenter/Reported.vue';
 import DicomImage from './components/business/dicomImage/DicomImage.vue';
 import Dailycase from './components/business/dailycase/Dailycase.vue';
 
+import PlatformStatistics from './components/business/reportStatistics/PlatformStatistics.vue';
+import TeamStatistics from './components/business/reportStatistics/TeamStatistics.vue';
+import CustomerStatistics from './components/business/reportStatistics/CustomerStatistics.vue';
+
 let permissions = {
+    VIEW: '查看',
     ADD: '新增',
     MODIFY: '修改',
     DELETE: '删除',
+    RESET_PASSWORD: '重置密码',
     ENUM_UPDATE: '枚举修改',
     ENUM_DELETE: '枚举删除',
     ENUM_ORDER: '枚举排序',
@@ -39,39 +40,12 @@ let permissions = {
 };
 
 let modules = [
-    //组件库
-    {
-        group: '组件库',
-        color: 'success',
-        name: 'Crud',
-        title: '增删改查',
-        permission: [],
-        component: Crud
-    }, {
-        group: '组件库',
-        color: 'success',
-        name: 'Modal',
-        title: '模态窗',
-        component: Modal
-    }, {
-        group: '组件库',
-        color: 'success',
-        name: 'Tree',
-        title: '树',
-        component: Tree
-    }, {
-        group: '组件库',
-        color: 'success',
-        name: 'View',
-        title: '视图组件',
-        component: View
-    },
     //系统模块
     {
         group: '系统模块',
         name: 'Account',
         title: '管理账户',
-        permission: ['ADD', 'MODIFY', 'DELETE', 'ROLE'],
+        permission: ['ADD', 'MODIFY', 'DELETE', 'RESET_PASSWORD', 'ROLE'],
         component: Account
     }, {
         group: '系统模块',
@@ -153,15 +127,36 @@ let modules = [
         color: 'warning',
         name: 'Reporting',
         title: '诊断中心',
-        permission: ['ADD', 'MODIFY', 'DELETE'],
+        permission: ['VIEW', 'DELETE'],
         component: Reporting
     }, {
         group: '业务模块',
         color: 'warning',
         name: 'Reported',
         title: '归档报告',
-        permission: ['ADD', 'MODIFY', 'DELETE'],
+        permission: ['VIEW', 'DELETE'],
         component: Reported
+    }, {
+        group: '统计模块',
+        color: 'success',
+        name: 'PlatformStatistics',
+        title: '平台统计',
+        permission: [],
+        component: PlatformStatistics
+    }, {
+        group: '统计模块',
+        color: 'success',
+        name: 'TeamStatistics',
+        title: '团队统计',
+        permission: [],
+        component: TeamStatistics
+    }, {
+        group: '统计模块',
+        color: 'success',
+        name: 'CustomerStatistics',
+        title: '医院申请数',
+        permission: [],
+        component: CustomerStatistics
     }
 ];
 

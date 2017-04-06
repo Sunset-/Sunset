@@ -195,7 +195,7 @@
 <template>
 	<div class="sign-container">
 		<div class="page-container sangto-login-container">
-			<h1 class="text-white">Sunset管理框架</h1>
+			<h1 class="text-white">豌豆管理平台</h1>
 			<form name="form" @submit="login" onsubmit="return false;">
 				<input type="text" class="username" autocomplete="off" v-model="model.account" required placeholder="用户名" ng-change="authError=null"
 				/>
@@ -220,6 +220,7 @@
 </template>
 <script>
 	import SignStore from './SignStore';
+	import MenuStore from '../system/menu/MenuStore';
 
 	export default {
 		data() {
@@ -232,8 +233,58 @@
 		},
 		methods: {
 			login() {
-				SignStore.login(this.model).then(function (data) {
-					Router.go('/');
+				SignStore.login(this.model).then(function (currentUser) {
+					MenuStore.getAllMenus().then(res => {
+						let menus = [];
+						let menuMap = {};
+						let module_menu = {};
+						let parent_menu = {};
+						res && res.forEach(m => {
+							if (m.parentId == '0') {
+								let parentMenu = {
+									title: m.name,
+									icon: m.icon,
+									path: m.module ? (`/app/${m.module}`) : null,
+									subMenus: m.module ? null : [],
+									permission: m.module ? m.module : null,
+									id: m.module ? null : `MENU-${m.id}`
+								};
+								if (!m.module) {
+									parent_menu[m.id] = `MENU-${m.id}`;
+								}
+								menus.push(parentMenu);
+								menuMap[m.id] = parentMenu;
+							} else {
+								menuMap[m.parentId].subMenus.push({
+									title: m.name,
+									icon: m.icon,
+									path: `/app/${m.module}`,
+									permission: m.module
+								});
+								module_menu[m.module] = m.parentId;
+							}
+						});
+						var jumpPath = null;
+						for (var i = 0, m; m = menus[i++];) {
+							for (var j = 0, n; n = m.subMenus[j++];) {
+								if (currentUser.permissionMap[n.permission]) {
+									jumpPath = n.path;
+									break;
+								}
+							}
+							if (jumpPath) {
+								break;
+							}
+						}
+						if (jumpPath) {
+							Router.go(jumpPath);
+						} else {
+							Sunset.tip('此帐户无任何权限');
+							SignStore.logout().then(res => {
+								Router.go('/sign');
+							});
+						}
+					});
 				});
 			}
 		},

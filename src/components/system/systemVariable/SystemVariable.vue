@@ -16,6 +16,7 @@
             return {
                 options: {
                     title: '系统变量',
+                    store: SystemVariableStore,
                     //表格
                     tableOptions: {
                         columns: [{
@@ -39,6 +40,7 @@
                         localPage: false,
                         multiCheck: false,
                         sortable: true,
+                        lazy: true,
                         format: {
                             list: 'rows',
                             count: 'count',
@@ -52,7 +54,7 @@
                             color: 'success',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_ADD',
                             signal: 'ADD',
-							permission: 'SystemVariable_ADD'
+                            permission: 'SystemVariable_ADD'
                         }],
                         //表格搜索
                         filter: false,
@@ -63,14 +65,14 @@
                             color: 'warning',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_UPDATE',
                             signal: 'MODIFY',
-							permission: 'SystemVariable_MODIFY'
+                            permission: 'SystemVariable_MODIFY'
                         }, {
                             label: '删除',
                             icon: 'trash-a',
                             color: 'error',
                             permission: 'SYSTEM_MANAGER_DICTIONARY_DELETE',
                             signal: 'DELETE',
-							permission: 'SystemVariable_DELETE'
+                            permission: 'SystemVariable_DELETE'
                         }],
                         store: SystemVariableStore
                     },

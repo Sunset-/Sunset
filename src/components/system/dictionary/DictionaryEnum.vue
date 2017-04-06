@@ -57,8 +57,13 @@
 						label: '删除',
 						icon: 'trash-a',
 						color: 'error',
+						confirm : '确定删除此项',
 						permission: 'Dictionary_ENUM_DELETE',
-						signal: 'DELETE'
+						operate: (record)=>{
+							DictionaryStore.removeEnum(record.id).then(res=>{
+								this.$refs.table.refresh(void 0, true);
+							});
+						}
 					}, {
 						label: '上移',
 						icon: 'arrow-up-c',

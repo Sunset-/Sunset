@@ -1,3 +1,5 @@
+const MenuCache = {};
+
 class MenuStore {
 
     constructor() {}
@@ -33,19 +35,24 @@ class MenuStore {
         });
     }
 
-    getAllMenus(force) {
+    getAllMenus = Sunset.wait((force) => {
         return Promise.resolve().then(() => {
-            if (!force && this.cacheAll) {
-                return this.cacheAll;
-            } else {
-                return $http({
-                    url: this.URLS.USE_ALL
-                }).then(res => {
-                    return this.cacheAll = res;
+            return $http({
+                url: this.URLS.USE_ALL
+            }).then(res => {
+                res && res.sort(function (o1, o2) {
+                    if ((o1.parentId == '0' || o2.parentId == '0') && o1.parentId != o2.parentId) {
+                        return o1.parentId == '0' ? -1 : (o2.parentId == '0' ? 1 : 0);
+                    } else {
+                        let f1 = +o1.orderField,
+                            f2 = +o2.orderField;
+                        return f1 < f2 ? -1 : (f1 > f2 ? 1 : 0);
+                    }
                 });
-            }
+                return MenuCache.cache = res;
+            });
         })
-    }
+    }, MenuCache)
 
     save(data) {
         return $http({

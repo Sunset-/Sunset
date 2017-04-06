@@ -1,11 +1,15 @@
 import Vue from 'vue';
 
+const SessionCache = {
+	cache: null
+}
+
 const URLS = {
 	LOGIN: '/service/manage/sign/login',
 	LOGOUT: '/service/manage/sign/logout',
 	CURRENT: '/service/manage/sign/currentUser',
 	FORGET: '/service/system/user/member/findPwd',
-	UPDATE_PASSWORD: '/service/system/user/member/updatePwd'
+	UPDATE_PASSWORD: '/service/manage/account/modifyPassword'
 };
 export default {
 	currentUserCache: null,
@@ -16,14 +20,14 @@ export default {
 			data: model
 		}).then(data => {
 			data && this.updatePermission(data.permissions);
-			return this.currentUserCache = data;
+			return SessionCache.cache = data;
 		});
 	},
 	logout() {
 		return $http({
 			url: URLS.LOGOUT
 		}).then(data => {
-			return this.currentUserCache = null;
+			return SessionCache.cache = null;
 		});
 	},
 	currentUser: Sunset.wait(function () {
@@ -31,12 +35,16 @@ export default {
 			url: URLS.CURRENT
 		}).then(data => {
 			data && this.updatePermission(data.permissions);
-			return this.currentUserCache = data;
+			return SessionCache.cache = data;
 		});
-	}),
+	}, SessionCache),
+	getCurrentUserSync() {
+		return SessionCache.cache;
+	},
 	updatePassword(model) {
 		return $http({
 			url: URLS.UPDATE_PASSWORD,
+			type: 'POST',
 			data: model
 		});
 	},

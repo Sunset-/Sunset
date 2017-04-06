@@ -1,11 +1,25 @@
+<style lang="sass">
+    .peaimage-manage-container {
+        .sunset-title {
+            font-size: 22px;
+            height: 40px;
+            line-height: 40px;
+            font-weight: normal;
+        }
+        .sunset-layout-content {
+            top: 40px;
+        }
+    }
+</style>
 <template>
-    <sunset-container v-ref:container>
-        <sunset-sidebar v-ref:sidebar @change="changeSideWidth" slot="leftside" :menus="menus" logo="Sunset管理框架"></sunset-sidebar>
+    <sunset-container v-ref:container class="peaimage-manage-container">
+        <sunset-sidebar v-ref:sidebar @change="changeSideWidth" slot="leftside" :menus="menus" logo="豌豆管理平台"></sunset-sidebar>
         <sunset-header :current-user="currentUser" :menus="headerMenus">
         </sunset-header>
         <sunset-major>
             <router-view></router-view>
         </sunset-major>
+        <sunset-form-modal v-ref:passwordmodal :options="updatePasswordOptions"></sunset-form-modal>
     </sunset-container>
 </template>
 <script>
@@ -20,6 +34,13 @@
             return {
                 currentUser: null,
                 headerMenus: [{
+                    title: '修改密码',
+                    operate: () => {
+                        this.$refs.passwordmodal.open({
+                            id: SignStore.getCurrentUserSync().id
+                        });
+                    }
+                }, {
                     title: '安全退出',
                     operate() {
                         SignStore.logout().then(data => {
@@ -27,6 +48,56 @@
                         });
                     }
                 }],
+                updatePasswordOptions: {
+                    title: '修改密码',
+                    width: '800',
+                    formOptions: {
+                        cols: 2,
+                        method: 'updatePassword',
+                        store: SignStore,
+                        fields: [{
+                            label: '原密码',
+                            name: 'oldPassword',
+                            widget: 'input',
+                            type: 'password',
+                            validate: {
+                                required: true,
+                                maxlength: 26
+                            }
+                        }, {
+                            label: '新密码',
+                            name: 'password',
+                            widget: 'input',
+                            type: 'password',
+                            validate: {
+                                required: true,
+                                maxlength: 26
+                            }
+                        }, {
+                            label: '重复密码',
+                            name: 'pwdAgain',
+                            widget: 'input',
+                            type: 'password',
+                            validate: {
+                                required: true,
+                                maxlength: 26
+                            }
+                        }],
+                        method: 'updatePassword',
+                        format: (model) => {
+                            return model;
+                        },
+                        validate: (model) => {
+                            if (model.password != model.pwdAgain) {
+                                Sunset.tip('两次密码输入不一致', 'warning');
+                                throw new Error();
+                                return false;
+                            }
+                            return true;
+                        },
+                        tools: false
+                    }
+                },
                 menus: []
             }
         },
@@ -43,15 +114,6 @@
             });
             //菜单
             MenuStore.getAllMenus().then(res => {
-                res && res.sort(function (o1, o2) {
-                    if ((o1.parentId == '0' || o2.parentId == '0') && o1.parentId != o2.parentId) {
-                        return o1.parentId == '0' ? -1 : (o2.parentId == '0' ? 1 : 0);
-                    } else {
-                        let f1 = +o1.orderField,
-                            f2 = +o2.orderField;
-                        return f1 < f2 ? -1 : (f1 > f2 ? 1 : 0);
-                    }
-                });
                 let menus = [];
                 let menuMap = {};
                 let module_menu = {};

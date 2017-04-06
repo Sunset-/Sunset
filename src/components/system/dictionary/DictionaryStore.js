@@ -2,7 +2,6 @@ class DictionaryStore extends Sunset.Service.Store {
 
 	constructor() {
 		super();
-		this.getAll();
 	}
 
 	URLS = {
@@ -37,33 +36,36 @@ class DictionaryStore extends Sunset.Service.Store {
 	}
 
 	getAll() {
-		$http({
-			url: this.URLS.ALL,
-			async: false,
-			success: (data) => {
-				this.cacheDictionary(data.data);
-			}
+		return $http({
+			url: this.URLS.ALL
+		}).then(data => {
+			return this.cacheDictionary(data);
 		});
 	}
 
 	cacheDictionary(data) {
+		var dictionaryItems = [];
 		if (data && data.length) {
 			var ENUMS = {},
-				ENUM_MAP = {};
+				ENUM_MAP = {},
+				enumItem;
 			//按type分类
 			data.forEach(item => {
 				var enums = ENUMS[item.type] || (ENUMS[item.type] = []),
 					enumMap = ENUM_MAP[item.type] || (ENUM_MAP[item.type] = {});
-				enums.push({
+				enums.push(enumItem = {
+					type : item.type,
 					key: item.value,
 					value: item.name
 				});
 				enumMap[item.value] = item.name;
+				dictionaryItems.push(enumItem);
 			});
 			//挂载到全局业务对象中
 			Base.ENUMS = ENUMS;
 			Base.ENUM_MAP = ENUM_MAP;
 		}
+		return dictionaryItems;
 	}
 
 	/**

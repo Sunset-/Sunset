@@ -1,13 +1,13 @@
 var alias = {
     'jquery': 'jquery/dist/jquery.min.js',
     'font-awesome': 'font-awesome/css/font-awesome.min.css',
-    'ueditor': '../src/sunset-ui/vendor/ueditor/ueditor.sunset.js',
-    'ueditor-config': '../src/sunset-ui/vendor/ueditor/ueditor.config.js',
-    'ztree': '../src/sunset-ui/vendor/ztree/zTreeStyle/zTreeStyle.css',
-    'ztree-style': '../src/sunset-ui/vendor/ztree/jquery.ztree.all-3.5.min.js',
+    'echarts' : 'echarts',
+    'ueditor': '../src/vendor/ueditor/ueditor.sunset.js',
+    'ueditor-config': '../src/vendor/ueditor/ueditor.config.js',
+    'ztree': '../src/vendor/ztree/zTreeStyle/zTreeStyle.css',
+    'ztree-style': '../src/vendor/ztree/jquery.ztree.all-3.5.min.js',
     'iview': 'iview/dist/iview.min.js',
-    'iview-style' : 'iview/dist/styles/iview.css',
-    'sunset': '../src/sunset-ui/index.js'
+    'iview-style' : 'iview/dist/styles/iview.css'
 };
 
 const path = require('path');

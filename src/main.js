@@ -1,20 +1,27 @@
-import config from './config';
-import Base from './base';
+import config from './common/config';
+import Base from './common/base';
+import 'ztree';
+import 'ztree-style';
+import 'ueditor-config';
+import 'ueditor';
+import echarts from 'echarts';
+window.echarts = echarts;
 
 import Vue from 'vue';
 import Router from 'vue-router';
-import VueTouch from 'vue-touch';
+import iview from 'iview';
+import iviewstyle from 'iview-style';
 import SunsetUI from 'sunset-ui';
 import SunsetUIExt from './sunset-ui-ext';
 
 Vue.use(Router);
-Vue.use(VueTouch);
+Vue.use(iview);
 Vue.use(SunsetUI);
-
 
 import App from './components/App.vue';
 import Modules from './components/Modules.vue';
 import MenuStore from './components/system/menu/MenuStore';
+import DictionaryStore from './components/system/dictionary/DictionaryStore';
 
 import Sign from './components/sign/Sign.vue';
 import SignStore from './components/sign/SignStore';
@@ -42,14 +49,20 @@ router.beforeEach(function (transition) {
 	}
 })
 
-MenuStore.getAllMenus().then(res => {
+Promise.all([
+	MenuStore.getAllMenus(),
+	DictionaryStore.getAll()
+]).then(res => {
+	var menus = res[0],
+		dictionary = res[1];
+
+	//初始化菜单
 	var mountedModule = {};
-	res && res.forEach(menu => {
+	menus && menus.forEach(menu => {
 		if (menu.module) {
 			mountedModule[menu.module] = true;
 		}
 	});
-
 	router.map({
 		'/sign': {
 			component: Sign
@@ -70,5 +83,9 @@ MenuStore.getAllMenus().then(res => {
 		}
 	});
 
+	//安装字典
+	Sunset.Service.Dictionary.install(dictionary);
+
+	//开始
 	router.start(App, 'app');
 })

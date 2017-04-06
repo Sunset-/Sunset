@@ -11,8 +11,7 @@ const Alias = require('./alias');
 
 
 var entry = {   
-    index: ['webpack/hot/only-dev-server', './src/app.js'],
-    opc: ['webpack/hot/only-dev-server', './src/opc.js']   
+    index: ['webpack/hot/only-dev-server', './src/main.js']
 };
 
 var output = {
@@ -51,51 +50,7 @@ var config = {
         alias: {},
         extensions: ['', '.js', '.vue', '.coffee', '.html', '.css', '.scss']
     },
-    devServer: {
-        contentBase: 'src/www',
-        devtool: 'eval',
-        hot: true,
-        inline: true,
-        host: '0.0.0.0',
-        port: 3000,
-        proxy: {
-            '/service/*': {
-                //  target: 'http://www.peaimage.com/',
-                //target: 'http://www.peaimage.com/',
-                //target:'localhost:8080/',
-                target: 'http://192.168.0.148:10003/',
-                //target: 'http://192.168.0.147:10000/',
-                //target: 'http://192.168.0.143:8080/',
-                // target: 'http://localhost:20002/',
-                secure: false,
-                changeOrigin: true
-            },
-            '/upload/*': {
-                // target: 'http://www.peaimage.com',
-                target: 'http://192.168.0.148:10003/',
-                secure: false,
-                changeOrigin: true
-
-            },
-            '/local_service/*': {
-                target: 'http://192.168.0.145:80/',
-                //target: 'http://192.168.0.147:10000/',
-                secure: false
-            },
-            '/local_upload/*': {
-                target: 'http://192.168.0.145:80/',
-                secure: false
-            },
-            '/cateyes/*': {
-                // target: 'http://www.peaimage.com',
-                target: 'http://192.168.0.148:10003/',
-                secure: false,
-                changeOrigin: true
-
-            }
-        },
-        outputPath: path.resolve(__dirname, './build'),
-    },
+    devServer: require('./devServer'),
     postcss: function () {
         return [autoprefixer, precss];
     },
@@ -106,16 +61,10 @@ var config = {
             name: 'dll'
         }),
         new htmlWebpackPlugin({
-            title: '豌豆医学影像平台',
+            title: '豌豆医学影像管理平台',
             template: './src/template/index.html',
             filename: 'index.html',
-            chunks: ['vendor', 'index']
-        }),
-        new htmlWebpackPlugin({
-            title: '豌豆医学影像工作站',
-            template: './src/template/index.html',
-            filename: 'opc.html',
-            chunks: ['vendor', 'opc']
+            chunks: ['index']
         }),
         new webpack.HotModuleReplacementPlugin()
     ]

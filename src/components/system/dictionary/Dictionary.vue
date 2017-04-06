@@ -16,6 +16,7 @@
 			return {
 				options: {
 					title: '数据字典',
+					store : DictionaryStore,
 					tableOptions: {
 						store: DictionaryStore,
 						showIndex: true,
@@ -28,6 +29,7 @@
 						}],
 						pageSize: 10,
 						localPage: false,
+						lazy : true,
 						format: {
 							list: 'rows',
 							count: 'count',

@@ -77,6 +77,18 @@ var config = {
 			'/service/*': {
 				target: 'http://127.0.0.1:20002/',
 				secure: false
+			},
+			'/upload/*': {
+				target: 'http://127.0.0.1:20002/',
+				secure: false
+			},
+			'/business-service/*': {
+				target: 'http://127.0.0.1:20002/',
+				secure: false
+			},
+			'/manage-service/*': {
+				target: 'http://127.0.0.1:20002/',
+				secure: false
 			}
 		},
 		// Required for webpack-dev-server.

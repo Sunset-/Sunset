@@ -15,8 +15,7 @@ require('./clean')(path.resolve(__dirname, '../../build/scripts'));
 require('./clean')(path.resolve(__dirname, '../../build/style'));
 
 var entry = {
-    index: './src/app.js',
-    opc: './src/opc.js'
+    index: './src/main.js'
 };
 var output = {
     path: path.resolve(__dirname, '../../build'),
@@ -84,13 +83,7 @@ var config = {
             title: '豌豆医学影像平台',
             template: './src/template/index.html',
             filename: 'index.html',
-            chunks: ['vendor', 'index']
-        }),
-        new htmlWebpackPlugin({
-            title: '豌豆医学影像工作站',
-            template: './src/template/index.html',
-            filename: 'opc.html',
-            chunks: ['vendor', 'opc']
+            chunks: ['index']
         }),
         new webpack.ProvidePlugin({
             '$': "jquery"
